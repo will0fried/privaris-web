@@ -1,0 +1,28 @@
+{# @var episode \App\Entity\Episode #}
+<article class="episode-row">
+    <a href="{{ path('app_podcast_show', {slug: episode.slug}) }}" class="episode-row__link group">
+
+        {# Numéro d'épisode — signature typographique, padded "01", "02"... #}
+        <span class="episode-row__number" aria-hidden="true">{{ '%02d'|format(episode.number) }}</span>
+
+        {# Play bouton discret #}
+        <span class="episode-row__play" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </span>
+
+        {# Corps #}
+        <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 text-[11px] text-fog mb-1 font-mono uppercase tracking-[0.12em]">
+                <span class="text-navy">{{ episode.season }}</span>
+                <span aria-hidden="true">·</span>
+                <span>{{ episode.duration }}</span>
+            </div>
+            <h3 class="text-ink font-semibold mb-1 text-balance leading-snug">{{ episode.title }}</h3>
+            <p class="text-fog text-sm leading-relaxed line-clamp-2">{{ episode.excerpt }}</p>
+        </div>
+
+        <time datetime="{{ episode.publishedAt|date('c') }}" class="hidden md:block text-xs text-fog whitespace-nowrap mt-1.5 font-mono">
+            {{ episode.publishedAt|format_datetime(pattern='d MMM', locale='fr') }}
+        </time>
+    </a>
+</article>

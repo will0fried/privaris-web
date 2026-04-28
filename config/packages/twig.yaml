@@ -1,0 +1,10 @@
+twig:
+    default_path: '%kernel.project_dir%/templates'
+    globals:
+        brand_navy: '#0A2540'
+        brand_name: 'Privaris'
+        brand_tagline: 'La cybersécurité claire, humaine et utile.'
+
+when@test:
+    twig:
+        strict_variables: true

@@ -1,0 +1,542 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}À propos · Privaris, et pourquoi on le fait{% endblock %}
+{% block description %}Privaris, c'est un média cyber en français pour les particuliers. Qui on est, comment on travaille, pourquoi il n'y a ni pub ni traceurs.{% endblock %}
+
+{% block body %}
+    {# ========= HERO compact (même langage que la home) ========= #}
+    <section class="pt-14 md:pt-20 pb-10 md:pb-14 has-decor">
+        <div class="container-wide">
+            <div class="flex items-end justify-between gap-10 flex-wrap">
+                <div class="max-w-4xl">
+                    <p class="eyebrow animate-fade-in">À propos de Privaris</p>
+                    <h1 class="text-[clamp(2.25rem,5.5vw,5rem)] font-semibold leading-[1.08] md:leading-[1.02] tracking-[-0.02em] md:tracking-[-0.03em] text-ink text-balance animate-slide-up">
+                        Un média cyber pour ceux <span class="text-navy">qui ne sont pas dans la tech</span>.
+                    </h1>
+                    <p class="text-lg md:text-xl text-fog leading-relaxed max-w-2xl mt-8">
+                        Un SMS «&nbsp;Ameli&nbsp;» vous a fait douter.
+                        Un proche a cliqué sur le mauvais lien.
+                        Vous avez cherché une procédure à 23h.
+                        On a fait ce site pour ces moments-là.
+                    </p>
+                </div>
+                <div class="flex items-center gap-3 text-sm">
+                    <span class="status-pill">
+                        <span class="status-pill__dot" aria-hidden="true"></span>
+                        Indépendant · édition {{ "now"|date('Y') }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {# =====================================================
+       MANIFESTE + FICHE ÉDITORIALE — grille 8/4 comme la home.
+       8 cols : texte éditorial long. 4 cols sticky : signal-panel
+       avec les 4 métriques (Articles, Épisodes, Depuis, Pub/Traceurs).
+       ===================================================== #}
+    <section class="pb-14 md:pb-24 border-t border-mist pt-10 md:pt-16">
+        <div class="container-wide">
+            <div class="grid lg:grid-cols-12 gap-8 md:gap-10 lg:gap-14 items-start">
+
+                {# ---- MANIFESTE (8 cols) ---- #}
+                <div class="lg:col-span-8">
+                    <p class="eyebrow mb-6">Ce qu'on fait</p>
+                    <p class="text-statement text-balance mb-10">
+                        Un sujet à la fois.
+                        <span class="text-fog">En français, posément.</span>
+                    </p>
+                    <p class="text-lg text-ink/85 leading-relaxed max-w-3xl mb-6">
+                        Privaris est écrit depuis une cuisine, un café à portée,
+                        un téléphone posé à côté. Chaque semaine, on reçoit les
+                        messages que vous nous transférez : SMS bizarres, emails
+                        trop beaux, appels qui sentent l'entourloupe. On les
+                        ouvre, on les démonte, et on vous raconte ce qu'on a
+                        trouvé.
+                    </p>
+                    <p class="text-lg text-ink/85 leading-relaxed max-w-3xl mb-6">
+                        La méthode tient en trois gestes. <span class="text-navy font-medium">Prendre
+                        le piège en vrai</span>, sans l'inventer. <span class="text-navy font-medium">Le
+                        mettre à plat</span>, sans jargon. <span class="text-navy font-medium">Pointer
+                        le détail</span> qui aurait dû vous alerter. Pas de théorie.
+                        Pas de leçon. Juste «&nbsp;tenez, regardez, voilà ce qui
+                        clochait&nbsp;».
+                    </p>
+                    <p class="text-lg text-ink/85 leading-relaxed max-w-3xl mb-8">
+                        L'objectif, au bout du chemin, c'est qu'on vous devienne
+                        inutile. Que vous voyiez les pièges venir sans nous.
+                        En attendant, on est là tous les mardis matin : un
+                        article, un réflexe, un piège de moins qui marche.
+                    </p>
+
+                    <div class="flex items-center gap-3 pt-6 border-t border-mist max-w-3xl">
+                        <div class="w-8 h-px bg-navy/40" aria-hidden="true"></div>
+                        <span class="font-mono text-[11px] uppercase tracking-[0.18em] text-fog">
+                            Arsène Cipher · fondateur
+                        </span>
+                    </div>
+                </div>
+
+                {# ---- FICHE ÉDITORIALE (4 cols sticky) ---- #}
+                <aside class="lg:col-span-4 lg:sticky lg:top-24">
+                    <div class="signal-panel signal-panel--compact">
+                        <div class="signal-panel__header">
+                            <p class="signal-panel__label">
+                                <span class="signal-panel__live" aria-hidden="true"></span>
+                                Fiche éditoriale
+                            </p>
+                            <p class="signal-panel__meta">
+                                <time datetime="{{ "now"|date('c') }}">
+                                    mise à jour · {{ "now"|format_datetime(pattern='d MMM', locale='fr') }}
+                                </time>
+                            </p>
+                        </div>
+
+                        <div class="signal-panel__items">
+                            <div class="flex items-center justify-between gap-4 border-t border-mist" style="padding:0.875rem 1.5rem;">
+                                <p class="font-mono uppercase text-fog" style="font-size:10px;letter-spacing:0.18em;margin:0;">Articles publiés</p>
+                                <p class="font-semibold text-ink tabular-nums" style="margin:0;font-size:0.95rem;letter-spacing:-0.005em;">{{ stats.articles|number_format(0, ',', ' ') }}</p>
+                            </div>
+                            <div class="flex items-center justify-between gap-4 border-t border-mist" style="padding:0.875rem 1.5rem;">
+                                <p class="font-mono uppercase text-fog" style="font-size:10px;letter-spacing:0.18em;margin:0;">Épisodes podcast</p>
+                                <p class="font-semibold text-ink tabular-nums" style="margin:0;font-size:0.95rem;letter-spacing:-0.005em;">{{ stats.episodes|number_format(0, ',', ' ') }}</p>
+                            </div>
+                            <div class="flex items-center justify-between gap-4 border-t border-mist" style="padding:0.875rem 1.5rem;">
+                                <p class="font-mono uppercase text-fog" style="font-size:10px;letter-spacing:0.18em;margin:0;">En ligne depuis</p>
+                                <p class="font-semibold text-ink" style="margin:0;font-size:0.95rem;letter-spacing:-0.005em;">
+                                    {% if stats.firstDate %}
+                                        {{ stats.firstDate|format_datetime(pattern='MMM yyyy', locale='fr')|lower|replace({'.': ''}) }}
+                                    {% else %}
+                                        {{ "now"|format_datetime(pattern='MMM yyyy', locale='fr')|lower|replace({'.': ''}) }}
+                                    {% endif %}
+                                </p>
+                            </div>
+                            <div class="flex items-center justify-between gap-4 border-t border-mist" style="padding:0.875rem 1.5rem;">
+                                <p class="font-mono uppercase text-fog" style="font-size:10px;letter-spacing:0.18em;margin:0;">Publicité · traceurs</p>
+                                <p class="font-semibold tabular-nums" style="margin:0;font-size:0.95rem;letter-spacing:-0.005em;color:var(--color-ok);">0</p>
+                            </div>
+                        </div>
+
+                        <div class="signal-panel__footer">
+                            <p class="signal-panel__footer-note">
+                                Hébergé en France · RGPD
+                            </p>
+                            <a href="{{ path('app_privacy') }}" class="btn-link text-xs">
+                                Confidentialité
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </aside>
+
+            </div>
+        </div>
+    </section>
+
+    {# =====================================================
+       PRINCIPES — 3 engagement-cards, même langage que home.
+       ===================================================== #}
+    <section class="section border-t border-mist">
+        <div class="container-wide">
+            <div class="max-w-5xl">
+                <div class="reveal" data-controller="reveal">
+                    <p class="eyebrow">Ce qu'on tient</p>
+                    <p class="text-statement text-balance mb-16">
+                        Trois règles, même quand c'est inconfortable.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6 md:gap-8">
+                    <div class="engagement-card reveal" data-controller="reveal" data-reveal-delay-value="0">
+                        <h3 class="text-xl font-semibold text-ink mb-3">Un humain qui répond</h3>
+                        <p class="text-fog leading-relaxed">
+                            Chaque mail est lu, chaque message reçoit une réponse. Pas de bot, pas de chatbot déguisé.
+                        </p>
+                        <p class="engagement-card__tag">
+                            <span class="engagement-card__tag-dot" aria-hidden="true"></span>
+                            INCARNÉ
+                        </p>
+                    </div>
+                    <div class="engagement-card reveal" data-controller="reveal" data-reveal-delay-value="80">
+                        <h3 class="text-xl font-semibold text-ink mb-3">Un geste, pas une leçon</h3>
+                        <p class="text-fog leading-relaxed">
+                            Chaque article vous laisse avec une chose à faire ce soir. Rien à apprendre par cœur, rien à retenir pour plus tard.
+                        </p>
+                        <p class="engagement-card__tag">
+                            <span class="engagement-card__tag-dot" aria-hidden="true"></span>
+                            APPLICABLE
+                        </p>
+                    </div>
+                    <div class="engagement-card reveal" data-controller="reveal" data-reveal-delay-value="160">
+                        <h3 class="text-xl font-semibold text-ink mb-3">Personne ne nous achète</h3>
+                        <p class="text-fog leading-relaxed">
+                            Zéro pub, zéro traceur, zéro contenu sponsorisé. Vous êtes le seul client ici, et ça reste comme ça.
+                        </p>
+                        <p class="engagement-card__tag">
+                            <span class="engagement-card__tag-dot" aria-hidden="true"></span>
+                            LIBRE
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {# =====================================================
+       CHARTE — Deux cartes opposées, typographiées.
+       On fait ↔ On ne fait pas, avec icônes check / minus.
+       ===================================================== #}
+    <section class="section border-t border-mist bg-bone">
+        <div class="container-wide">
+            <div class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+
+                {# ---- Colonne label (4 cols) ---- #}
+                <div class="lg:col-span-4">
+                    <p class="eyebrow mb-5">Charte</p>
+                    <p class="text-statement text-balance mb-5">
+                        Ce qu'on publie.<br>
+                        Ce qu'on <span class="text-fog">refuse</span>.
+                    </p>
+                    <p class="text-base text-fog leading-relaxed max-w-sm mb-8">
+                        Quatre règles tenues, même quand c'est inconfortable.
+                        La charte est publique pour être tenable.
+                    </p>
+                    <div class="flex items-center gap-3 pt-6 border-t border-mist max-w-sm">
+                        <span class="inline-block" style="width:2rem;height:1px;background:rgba(28,58,102,0.4);" aria-hidden="true"></span>
+                        <span class="font-mono uppercase text-fog" style="font-size:11px;letter-spacing:0.18em;">
+                            Révisée · {{ "now"|format_datetime(pattern='MMM yyyy', locale='fr')|lower|replace({'.':''}) }}
+                        </span>
+                    </div>
+                </div>
+
+                {# ---- Deux cartes opposées (8 cols) ---- #}
+                <div class="lg:col-span-8">
+                    <div class="grid md:grid-cols-2 gap-5 md:gap-6">
+
+                        {# --- ON FAIT --- #}
+                        <article class="rounded-2xl border border-mist bg-paper" style="padding:1.75rem 1.5rem;box-shadow:0 1px 0 rgba(10,18,33,0.02);">
+                            <header class="flex items-center gap-2.5 border-b border-mist" style="padding-bottom:1rem;margin-bottom:0.25rem;">
+                                <span class="inline-block rounded-full" style="width:6px;height:6px;background:var(--color-ok);" aria-hidden="true"></span>
+                                <p class="font-mono font-semibold uppercase" style="font-size:10px;letter-spacing:0.22em;color:var(--color-ok);margin:0;">
+                                    On fait
+                                </p>
+                            </header>
+                            <ul class="divide-y divide-mist" style="list-style:none;padding:0;margin:0;">
+                                <li class="flex items-start gap-3 py-3">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="margin-top:5px;flex-shrink:0;color:var(--color-ok);" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                                    <span class="text-ink leading-relaxed" style="font-size:0.95rem;">Des articles sur les arnaques qui tournent, avant qu'elles arrivent chez vous.</span>
+                                </li>
+                                <li class="flex items-start gap-3 py-3">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="margin-top:5px;flex-shrink:0;color:var(--color-ok);" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                                    <span class="text-ink leading-relaxed" style="font-size:0.95rem;">Des guides pas à pas, testés à la maison et en famille.</span>
+                                </li>
+                                <li class="flex items-start gap-3 py-3">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="margin-top:5px;flex-shrink:0;color:var(--color-ok);" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                                    <span class="text-ink leading-relaxed" style="font-size:0.95rem;">Des mots simples pour des concepts compliqués. Promis, sans jargon.</span>
+                                </li>
+                                <li class="flex items-start gap-3 py-3">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="margin-top:5px;flex-shrink:0;color:var(--color-ok);" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+                                    <span class="text-ink leading-relaxed" style="font-size:0.95rem;">Un podcast court&nbsp;: un sujet, 3 à 4 minutes, chaque mardi.</span>
+                                </li>
+                            </ul>
+                        </article>
+
+                        {# --- ON NE FAIT PAS --- #}
+                        <article class="rounded-2xl border border-mist" style="padding:1.75rem 1.5rem;background:#FAFBFC;box-shadow:0 1px 0 rgba(10,18,33,0.02);">
+                            <header class="flex items-center gap-2.5 border-b border-mist" style="padding-bottom:1rem;margin-bottom:0.25rem;">
+                                <span class="inline-block rounded-full" style="width:6px;height:6px;background:var(--color-fog);" aria-hidden="true"></span>
+                                <p class="font-mono font-semibold uppercase text-fog" style="font-size:10px;letter-spacing:0.22em;margin:0;">
+                                    On ne fait pas
+                                </p>
+                            </header>
+                            <ul class="divide-y divide-mist" style="list-style:none;padding:0;margin:0;">
+                                <li class="flex items-start gap-3 py-3">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="margin-top:5px;flex-shrink:0;color:#C0C5CE;" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                    <span class="text-fog leading-relaxed" style="font-size:0.95rem;">Alarmisme, titres anxiogènes, «&nbsp;cyber-apocalypse&nbsp;».</span>
+                                </li>
+                                <li class="flex items-start gap-3 py-3">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="margin-top:5px;flex-shrink:0;color:#C0C5CE;" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                    <span class="text-fog leading-relaxed" style="font-size:0.95rem;">Publicité, contenu sponsorisé caché, partenariats-pubs.</span>
+                                </li>
+                                <li class="flex items-start gap-3 py-3">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="margin-top:5px;flex-shrink:0;color:#C0C5CE;" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                    <span class="text-fog leading-relaxed" style="font-size:0.95rem;">Jargon gratuit, anglicismes quand le français suffit.</span>
+                                </li>
+                                <li class="flex items-start gap-3 py-3">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="margin-top:5px;flex-shrink:0;color:#C0C5CE;" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                                    <span class="text-fog leading-relaxed" style="font-size:0.95rem;">Clickbait, promesses miracles, produits magiques.</span>
+                                </li>
+                            </ul>
+                        </article>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    {# =====================================================
+       RÉDACTION — byline éditorial avec "radar" en filigrane
+       (même placeholder que les articles sans couverture).
+       ===================================================== #}
+    <section class="section border-t border-mist">
+        <div class="container-wide">
+            <div class="grid lg:grid-cols-12 gap-8 md:gap-10 lg:gap-14 items-center">
+
+                {# Radar décoratif 5 cols — même vocabulaire visuel que les articles #}
+                <div class="lg:col-span-5">
+                    <div class="relative rounded-2xl overflow-hidden bg-bone border border-mist" style="aspect-ratio:4/3;">
+                        {% include 'components/_cover_placeholder.html.twig' with {seed: 7, large: false} only %}
+                    </div>
+                </div>
+
+                {# Byline 7 cols #}
+                <div class="lg:col-span-7">
+                    <p class="eyebrow">Fiche de personnage</p>
+                    <p class="text-statement text-balance mb-8">
+                        Arsène Cipher, en quelques lignes.
+                    </p>
+
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-14 h-14 rounded-full bg-navy/10 flex items-center justify-center text-navy text-lg font-semibold">
+                            AC
+                        </div>
+                        <div>
+                            <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-navy mb-0.5">
+                                Fondateur · journaliste
+                            </p>
+                            <p class="text-xl font-semibold text-ink">Arsène Cipher</p>
+                        </div>
+                    </div>
+
+                    <p class="text-lg text-ink/85 leading-relaxed max-w-2xl mb-7">
+                        Le nom est un pseudo : la cyber en coulisses plutôt
+                        qu'en vitrine. Il écrit les articles, anime le podcast,
+                        répond aux mails. Pas de posture d'expert, pas d'image
+                        de marque — juste quelqu'un qui a pris le temps de lire
+                        ce que vous n'avez pas envie de lire, pour vous en
+                        ressortir l'essentiel.
+                    </p>
+
+                    <div class="flex flex-wrap items-center gap-x-6 gap-y-3 pt-6 border-t border-mist max-w-2xl">
+                        <a href="{{ path('app_contact') }}" class="btn-link text-sm">
+                            Me contacter
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                        </a>
+                        <span class="text-mist" aria-hidden="true">·</span>
+                        <a href="{{ path('app_blog_index') }}" class="btn-link text-sm">
+                            Lire les articles
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                        </a>
+                        <span class="text-mist" aria-hidden="true">·</span>
+                        <a href="{{ path('app_podcast_index') }}" class="btn-link text-sm">
+                            Écouter le podcast
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    {# =====================================================
+       MÉTHODOLOGIE — comment on vérifie, comment on cite,
+       comment on décide de publier. Bloc dense, typographié,
+       2 colonnes (label / contenu) dans l'esprit éditorial.
+       ===================================================== #}
+    <section class="section border-t border-mist">
+        <div class="container-wide">
+            <div class="grid lg:grid-cols-12 gap-8 md:gap-10 lg:gap-14 items-start">
+
+                <div class="lg:col-span-4">
+                    <p class="eyebrow mb-5">Méthodologie</p>
+                    <p class="text-statement text-balance mb-5">
+                        Comment on <span class="text-navy">travaille</span>.
+                    </p>
+                    <p class="text-base text-fog leading-relaxed max-w-sm">
+                        Pas de recettes secrètes. Juste une méthode écrite,
+                        appliquée à chaque article, auditable si on vous demande
+                        comment on a vérifié tel fait.
+                    </p>
+                </div>
+
+                <div class="lg:col-span-8">
+                    <ol class="space-y-8" style="list-style:none;padding:0;margin:0;">
+                        <li class="flex gap-5 pb-8 border-b border-mist">
+                            <p class="font-mono text-navy flex-shrink-0" style="font-size:14px;letter-spacing:0.1em;font-weight:600;min-width:48px;">01</p>
+                            <div>
+                                <h3 class="text-xl font-semibold text-ink mb-2.5">Deux sources minimum</h3>
+                                <p class="text-fog leading-relaxed">
+                                    Toute affirmation chiffrée ou factuelle est recoupée par
+                                    au moins deux sources indépendantes (ANSSI, CERT, CNIL, éditeurs de
+                                    sécurité reconnus, communiqués officiels). Pas de reprise brute
+                                    d'une source unique, même prestigieuse.
+                                </p>
+                            </div>
+                        </li>
+
+                        <li class="flex gap-5 pb-8 border-b border-mist">
+                            <p class="font-mono text-navy flex-shrink-0" style="font-size:14px;letter-spacing:0.1em;font-weight:600;min-width:48px;">02</p>
+                            <div>
+                                <h3 class="text-xl font-semibold text-ink mb-2.5">Citation systématique</h3>
+                                <p class="text-fog leading-relaxed">
+                                    Les sources sont liées en fin d'article ou en note, avec la date
+                                    de consultation. Si une donnée n'est pas sourçable publiquement,
+                                    on le dit. On n'habille pas.
+                                </p>
+                            </div>
+                        </li>
+
+                        <li class="flex gap-5 pb-8 border-b border-mist">
+                            <p class="font-mono text-navy flex-shrink-0" style="font-size:14px;letter-spacing:0.1em;font-weight:600;min-width:48px;">03</p>
+                            <div>
+                                <h3 class="text-xl font-semibold text-ink mb-2.5">Relecture par un expert</h3>
+                                <p class="text-fog leading-relaxed">
+                                    Les articles de fond sont relus par un professionnel
+                                    du sujet avant publication, et surtout testés sur des
+                                    lecteurs non spécialistes, pour vérifier qu'on explique
+                                    vraiment. Les erreurs restantes sont les nôtres.
+                                </p>
+                            </div>
+                        </li>
+
+                        <li class="flex gap-5 pb-8 border-b border-mist">
+                            <p class="font-mono text-navy flex-shrink-0" style="font-size:14px;letter-spacing:0.1em;font-weight:600;min-width:48px;">04</p>
+                            <div>
+                                <h3 class="text-xl font-semibold text-ink mb-2.5">Corrections signalées</h3>
+                                <p class="text-fog leading-relaxed">
+                                    Une erreur signalée est corrigée, et la correction est
+                                    mentionnée en bas d'article avec la date. Jamais en douce.
+                                </p>
+                            </div>
+                        </li>
+
+                        <li class="flex gap-5">
+                            <p class="font-mono text-navy flex-shrink-0" style="font-size:14px;letter-spacing:0.1em;font-weight:600;min-width:48px;">05</p>
+                            <div>
+                                <h3 class="text-xl font-semibold text-ink mb-2.5">Transparence des conflits</h3>
+                                <p class="text-fog leading-relaxed">
+                                    Si on parle d'un outil qu'on a utilisé, on le dit.
+                                    Si un lien est affilié (ce qui reste rare), on le marque
+                                    explicitement. Aucun contenu sponsorisé.
+                                </p>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    {# =====================================================
+       FAQ — SEO-friendly, structured data FAQPage injecté via JSON-LD
+       dans le <head>. 6 questions courtes et utiles.
+       ===================================================== #}
+    <section class="section border-t border-mist bg-bone">
+        <div class="container-wide">
+            <div class="grid lg:grid-cols-12 gap-8 md:gap-10 lg:gap-14 items-start">
+
+                <div class="lg:col-span-4">
+                    <p class="eyebrow mb-5">Questions fréquentes</p>
+                    <p class="text-statement text-balance mb-5">
+                        Ce qu'on nous <span class="text-navy">demande</span> souvent.
+                    </p>
+                    <p class="text-base text-fog leading-relaxed max-w-sm mb-6">
+                        Réponses courtes, sans détour. Pour tout le reste,
+                        la boîte mail est ouverte.
+                    </p>
+                    <a href="{{ path('app_contact') }}" class="btn-link text-sm">
+                        Poser une question
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                    </a>
+                </div>
+
+                <div class="lg:col-span-8">
+                    <div class="divide-y divide-mist" style="border-top:1px solid var(--color-mist);border-bottom:1px solid var(--color-mist);">
+                        <details class="group" style="padding:1.25rem 0.25rem;">
+                            <summary class="flex items-start justify-between gap-6 cursor-pointer list-none">
+                                <h3 class="text-lg font-semibold text-ink group-hover:text-navy transition-colors">Privaris est-il gratuit ?</h3>
+                                <svg class="text-fog group-hover:text-navy transition-transform group-open:rotate-45 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+                            </summary>
+                            <p class="text-fog leading-relaxed mt-4 max-w-2xl">
+                                Oui, intégralement. Articles, podcasts, newsletters : tout est gratuit, rien n'est caché derrière un mur payant.
+                            </p>
+                        </details>
+
+                        <details class="group" style="padding:1.25rem 0.25rem;">
+                            <summary class="flex items-start justify-between gap-6 cursor-pointer list-none">
+                                <h3 class="text-lg font-semibold text-ink group-hover:text-navy transition-colors">À qui s'adresse le site ?</h3>
+                                <svg class="text-fog group-hover:text-navy transition-transform group-open:rotate-45 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+                            </summary>
+                            <p class="text-fog leading-relaxed mt-4 max-w-2xl">
+                                À vous, vos proches, vos parents. Toute personne qui veut se protéger en ligne sans avoir à devenir informaticien.
+                            </p>
+                        </details>
+
+                        <details class="group" style="padding:1.25rem 0.25rem;">
+                            <summary class="flex items-start justify-between gap-6 cursor-pointer list-none">
+                                <h3 class="text-lg font-semibold text-ink group-hover:text-navy transition-colors">Qui écrit ?</h3>
+                                <svg class="text-fog group-hover:text-navy transition-transform group-open:rotate-45 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+                            </summary>
+                            <p class="text-fog leading-relaxed mt-4 max-w-2xl">
+                                Arsène Cipher, fondateur, écrit la majorité des contenus. Des invités (éducateurs, enquêteurs, médecins, proches) viennent ponctuellement partager leur regard.
+                            </p>
+                        </details>
+
+                        <details class="group" style="padding:1.25rem 0.25rem;">
+                            <summary class="flex items-start justify-between gap-6 cursor-pointer list-none">
+                                <h3 class="text-lg font-semibold text-ink group-hover:text-navy transition-colors">Pourquoi pas de publicité ?</h3>
+                                <svg class="text-fog group-hover:text-navy transition-transform group-open:rotate-45 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+                            </summary>
+                            <p class="text-fog leading-relaxed mt-4 max-w-2xl">
+                                Parce que la pub en ligne colle des traceurs partout, soit l'inverse de ce qu'on défend. Vous êtes notre seul client.
+                            </p>
+                        </details>
+
+                        <details class="group" style="padding:1.25rem 0.25rem;">
+                            <summary class="flex items-start justify-between gap-6 cursor-pointer list-none">
+                                <h3 class="text-lg font-semibold text-ink group-hover:text-navy transition-colors">Le podcast, à quelle fréquence ?</h3>
+                                <svg class="text-fog group-hover:text-navy transition-transform group-open:rotate-45 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+                            </summary>
+                            <p class="text-fog leading-relaxed mt-4 max-w-2xl">
+                                Un épisode chaque mardi matin. Trois à quatre minutes. Apple Podcasts, Spotify, ou RSS.
+                            </p>
+                        </details>
+
+                        <details class="group" style="padding:1.25rem 0.25rem;">
+                            <summary class="flex items-start justify-between gap-6 cursor-pointer list-none">
+                                <h3 class="text-lg font-semibold text-ink group-hover:text-navy transition-colors">Comment proposer un sujet ou témoigner ?</h3>
+                                <svg class="text-fog group-hover:text-navy transition-transform group-open:rotate-45 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+                            </summary>
+                            <p class="text-fog leading-relaxed mt-4 max-w-2xl">
+                                Écrivez à <a href="mailto:redaction@privaris.fr" class="text-navy">redaction@privaris.fr</a>, ou via la <a href="{{ path('app_contact') }}" class="text-navy">page contact</a>. On peut anonymiser.
+                            </p>
+                        </details>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    {# JSON-LD FAQPage — structured data pour Google, invisible à l'utilisateur #}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {"@type": "Question", "name": "Privaris est-il gratuit ?", "acceptedAnswer": {"@type": "Answer", "text": "Oui, intégralement. Articles, podcasts, newsletters : rien n'est payant. Le modèle reposera à terme sur des partenariats éditoriaux transparents et des ateliers ou formations grand public."}},
+            {"@type": "Question", "name": "À qui s'adresse le site ?", "acceptedAnswer": {"@type": "Answer", "text": "À toute personne qui souhaite se protéger sur internet sans jargon : particuliers, parents, aidants accompagnant un proche âgé, personnes curieuses de reprendre la main sur leurs données."}},
+            {"@type": "Question", "name": "Qui écrit les articles ?", "acceptedAnswer": {"@type": "Answer", "text": "Arsène Cipher, fondateur (pseudonyme), signe la majorité des contenus. Des invités (éducateurs, enquêteurs, médecins, professionnels de la cyber) participent ponctuellement sur des sujets précis, en apportant leur regard de terrain."}},
+            {"@type": "Question", "name": "Pourquoi pas de publicité sur Privaris ?", "acceptedAnswer": {"@type": "Answer", "text": "Parce que la publicité en ligne entraîne presque toujours des traceurs, qui contredisent la maîtrise de ses données. Et parce qu'un média cyber payé par des annonceurs cyber perd sa liberté de critique."}},
+            {"@type": "Question", "name": "À quelle fréquence est publié le podcast Privaris ?", "acceptedAnswer": {"@type": "Answer", "text": "Un épisode par semaine, le mardi matin. Format court de 3 à 4 minutes, disponible sur Apple Podcasts, Spotify, et via le flux RSS du site."}},
+            {"@type": "Question", "name": "Comment proposer un sujet ou témoigner ?", "acceptedAnswer": {"@type": "Answer", "text": "Par la page contact, ou en écrivant à redaction@privaris.fr. Les témoignages d'incidents peuvent être traités en anonymisé si besoin."}}
+        ]
+    }
+    </script>
+
+    {% include 'components/_newsletter.html.twig' with {source: 'about'} only %}
+{% endblock %}

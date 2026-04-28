@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /login
+Disallow: /2fa
+Disallow: /_profiler
+Disallow: /_wdt
+
+Sitemap: https://privaris.fr/sitemap.xml

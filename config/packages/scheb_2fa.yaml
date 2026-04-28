@@ -1,0 +1,16 @@
+scheb_two_factor:
+    security_tokens:
+        - Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken
+
+    totp:
+        enabled: true
+        server_name: 'Privaris Admin'
+        issuer: 'Privaris'
+        leeway: 30
+        template: 'security/2fa_form.html.twig'
+
+# Note : les fonctionnalités trusted_device et backup_codes sont désormais
+# fournies par des bundles séparés à installer au besoin :
+#   composer require scheb/2fa-trusted-device
+#   composer require scheb/2fa-backup-code
+# Chacun ajoute sa propre clé de config à la racine (scheb_trusted_device, ...).

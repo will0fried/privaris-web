@@ -1,0 +1,24 @@
+{# @var episode \App\Entity\Episode
+   Card compacte pour scroll-row podcast. #}
+<a href="{{ path('app_podcast_show', {slug: episode.slug}) }}" class="episode-card group">
+
+    <div class="episode-card__head">
+        <span class="episode-card__play" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </span>
+        <div>
+            <p class="episode-card__number">Épisode {{ '%02d'|format(episode.number) }}</p>
+            <p class="episode-card__season">{{ episode.season }}</p>
+        </div>
+    </div>
+
+    <h3 class="episode-card__title">{{ episode.title }}</h3>
+    <p class="episode-card__excerpt">{{ episode.excerpt }}</p>
+
+    <div class="episode-card__meta">
+        <time datetime="{{ episode.publishedAt|date('c') }}">
+            {{ episode.publishedAt|format_datetime(pattern='d MMM yyyy', locale='fr') }}
+        </time>
+        <span class="tabular-nums">{{ episode.duration }}</span>
+    </div>
+</a>

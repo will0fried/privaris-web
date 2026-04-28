@@ -1,0 +1,63 @@
+{% set route = app.request.attributes.get('_route') %}
+{% set has_alert = app.request.attributes.get('_has_alert', false) %}
+
+<header class="nav-frosted sticky top-0 z-40">
+    <div class="container-wide flex items-center justify-between h-16">
+        <a href="{{ path('app_home') }}" class="flex items-center gap-2.5 no-underline group" aria-label="Privaris, retour à l'accueil">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden="true"
+                 class="transition-transform group-hover:rotate-[22deg] duration-500">
+                <circle cx="16" cy="16" r="13" stroke="{{ brand_navy }}" stroke-width="1.5"/>
+                <circle cx="16" cy="16" r="8"  stroke="{{ brand_navy }}" stroke-width="1.5"/>
+                <circle cx="16" cy="16" r="3"  fill="{{ brand_navy }}"/>
+                <line x1="16" y1="3" x2="16" y2="29" stroke="{{ brand_navy }}" stroke-width="1" opacity="0.4"/>
+                <line x1="3" y1="16" x2="29" y2="16" stroke="{{ brand_navy }}" stroke-width="1" opacity="0.4"/>
+            </svg>
+            <span class="font-semibold text-navy tracking-tight text-lg">Privaris</span>
+        </a>
+
+        <nav class="hidden md:flex items-center gap-7 text-sm" aria-label="Menu principal">
+            {# Articles — avec indicateur d'alerte si alerte en cours #}
+            <a href="{{ path('app_blog_index') }}"
+               class="nav-link {{ route starts with 'app_blog' ? 'is-active' : '' }}">
+                Articles
+                {% if has_alert %}
+                    <span class="nav-alert-dot" title="Alerte en cours" aria-label="Alerte en cours"></span>
+                {% endif %}
+            </a>
+            <a href="{{ path('app_podcast_index') }}"
+               class="nav-link {{ route starts with 'app_podcast' ? 'is-active' : '' }}">Podcast</a>
+            <a href="{{ path('app_about') }}"
+               class="nav-link {{ route == 'app_about' ? 'is-active' : '' }}">À propos</a>
+            <a href="{{ path('app_contact') }}"
+               class="nav-link {{ route == 'app_contact' ? 'is-active' : '' }}">Contact</a>
+        </nav>
+
+        <a href="#newsletter" class="hidden md:inline-flex btn-primary">S'abonner</a>
+
+        <button class="mobile-menu-btn md:hidden" data-controller="mobile-menu" data-action="click->mobile-menu#toggle" aria-label="Menu">
+            <svg class="mobile-menu-btn__icon mobile-menu-btn__icon--open" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                <line x1="3" y1="7"  x2="21" y2="7"/>
+                <line x1="3" y1="12" x2="21" y2="12"/>
+                <line x1="3" y1="17" x2="21" y2="17"/>
+            </svg>
+            <svg class="mobile-menu-btn__icon mobile-menu-btn__icon--close" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                <line x1="5" y1="5"  x2="19" y2="19"/>
+                <line x1="19" y1="5" x2="5"  y2="19"/>
+            </svg>
+        </button>
+    </div>
+
+    {# Menu mobile — volet déroulant animé #}
+    <div id="mobile-menu" class="mobile-menu-panel md:hidden hidden" role="dialog" aria-modal="true" aria-label="Menu principal">
+        <nav class="mobile-menu-panel__nav container-wide" aria-label="Menu mobile">
+            <a href="{{ path('app_blog_index') }}"    class="mobile-menu-panel__link {{ route starts with 'app_blog' ? 'is-active' : '' }}">
+                Articles
+                {% if has_alert %}<span class="nav-alert-dot" aria-label="Alerte en cours"></span>{% endif %}
+            </a>
+            <a href="{{ path('app_podcast_index') }}" class="mobile-menu-panel__link {{ route starts with 'app_podcast' ? 'is-active' : '' }}">Podcast</a>
+            <a href="{{ path('app_about') }}"         class="mobile-menu-panel__link {{ route == 'app_about' ? 'is-active' : '' }}">À propos</a>
+            <a href="{{ path('app_contact') }}"       class="mobile-menu-panel__link {{ route == 'app_contact' ? 'is-active' : '' }}">Contact</a>
+            <a href="#newsletter" class="btn-primary mobile-menu-panel__cta">S'abonner</a>
+        </nav>
+    </div>
+</header>

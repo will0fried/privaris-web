@@ -1,0 +1,10 @@
+framework:
+    rate_limiter:
+        newsletter_subscription:
+            policy: 'token_bucket'
+            limit: 3
+            rate: { interval: '1 hour', amount: 3 }
+        contact_form:
+            policy: 'sliding_window'
+            limit: 5
+            interval: '1 hour'

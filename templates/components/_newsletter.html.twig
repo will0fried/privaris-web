@@ -1,0 +1,49 @@
+{#
+    Bloc newsletter — réutilisé sur home, blog, podcast, about.
+    Style Stripe/Apple : band discret, titre à gauche, form à droite.
+    Ancre #newsletter pour le lien du header.
+#}
+<section id="newsletter" class="border-t border-mist bg-paper">
+    <div class="container-wide py-20 md:py-24">
+        <div class="grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
+
+            {# Gauche : label + titre + description — moitié largeur #}
+            <div class="lg:col-span-6">
+                <p class="eyebrow">Le briefing du dimanche</p>
+                <h2 class="text-h1 text-balance mb-5">
+                    Ce qui a tourné cette semaine.<br><span class="text-navy">Le geste à faire avant lundi.</span>
+                </h2>
+                <p class="text-lg text-fog leading-relaxed max-w-lg">
+                    Un email court le dimanche soir. Les pièges de la semaine, le
+                    réflexe à garder, un lien utile à suivre. Trois minutes de
+                    lecture, pas une de plus. Zéro pub, zéro traceur, désinscription
+                    en un clic.
+                </p>
+            </div>
+
+            {# Droite : form compact — moitié largeur, aligné bas #}
+            <div class="lg:col-span-6 lg:pt-12">
+                <form class="newsletter-form flex flex-col sm:flex-row gap-3 max-w-lg"
+                      data-controller="newsletter"
+                      data-newsletter-endpoint-value="{{ path('app_newsletter_subscribe') }}"
+                      data-action="submit->newsletter#submit">
+                    <input type="email" name="email" required autocomplete="email"
+                           placeholder="votre@email.fr"
+                           data-newsletter-target="email"
+                           aria-label="Votre adresse email">
+                    <input type="hidden" name="source" value="{{ source|default('home') }}">
+                    <button type="submit" class="btn-primary whitespace-nowrap"
+                            data-newsletter-target="submitBtn">S'abonner</button>
+                </form>
+
+                <p data-newsletter-target="message" class="text-sm mt-3 min-h-[1.25rem]" aria-live="polite"></p>
+                <p class="text-xs text-fog mt-2 max-w-lg leading-relaxed">
+                    En vous abonnant vous acceptez notre
+                    <a href="{{ path('app_privacy') }}" class="text-navy">politique de confidentialité</a>.
+                    Désinscription en un clic.
+                </p>
+            </div>
+
+        </div>
+    </div>
+</section>

@@ -1,0 +1,66 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+    app.brevo_api_key: '%env(BREVO_API_KEY)%'
+    app.brevo_list_id: '%env(BREVO_LIST_ID)%'
+    app.newsletter_double_opt_in: '%env(bool:NEWSLETTER_DOUBLE_OPT_IN)%'
+    app.mailer_from_email: '%env(MAILER_FROM_EMAIL)%'
+    app.mailer_from_name: '%env(MAILER_FROM_NAME)%'
+    app.podcast:
+        title: '%env(PODCAST_TITLE)%'
+        subtitle: '%env(PODCAST_SUBTITLE)%'
+        description: '%env(PODCAST_DESCRIPTION)%'
+        author: '%env(PODCAST_AUTHOR)%'
+        email: '%env(PODCAST_EMAIL)%'
+        language: '%env(PODCAST_LANGUAGE)%'
+        category: '%env(PODCAST_CATEGORY)%'
+        explicit: '%env(bool:PODCAST_EXPLICIT)%'
+        cover_url: '%env(PODCAST_COVER_URL)%'
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    # Newsletter service (Brevo)
+    App\Service\NewsletterService:
+        arguments:
+            $apiKey: '%app.brevo_api_key%'
+            $listId: '%app.brevo_list_id%'
+            $doubleOptIn: '%app.newsletter_double_opt_in%'
+            $fromEmail: '%app.mailer_from_email%'
+            $fromName: '%app.mailer_from_name%'
+
+    # Podcast RSS feed generator
+    App\Service\PodcastFeedGenerator:
+        arguments:
+            $config: '%app.podcast%'
+
+    # Contact controller needs mailer sender binding
+    App\Controller\ContactController:
+        arguments:
+            $fromEmail: '%app.mailer_from_email%'
+            $fromName: '%app.mailer_from_name%'
+
+    # Security headers (défense en profondeur)
+    App\EventSubscriber\SecurityHeadersSubscriber:
+        arguments:
+            $kernelEnvironment: '%kernel.environment%'
+
+    # Image optimizer : redimensionne + convertit en WebP les images uploadées
+    App\Service\ImageOptimizer:
+        arguments:
+            $projectDir: '%kernel.project_dir%'

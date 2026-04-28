@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription confirmée · Privaris{% endblock %}
+
+{% block body %}
+    <section class="section">
+        <div class="container-narrow text-center">
+            <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-ok/10 text-ok flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <h1 class="text-h1 mb-4">Bienvenue à bord</h1>
+            <p class="text-fog text-lg leading-relaxed mb-10">
+                Votre adresse est confirmée. Le prochain briefing atterrit dans
+                votre boîte dimanche soir. D'ici là, les articles vous attendent.
+            </p>
+            <a href="{{ path('app_home') }}" class="btn-primary">Retour à l'accueil</a>
+        </div>
+    </section>
+{% endblock %}

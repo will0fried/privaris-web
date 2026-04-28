@@ -1,0 +1,203 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ episode.title }} · Podcast Privaris{% endblock %}
+{% block description %}{{ episode.excerpt }}{% endblock %}
+{% block og_type %}article{% endblock %}
+
+{% block head_extra %}
+    {# JSON-LD PodcastEpisode + BreadcrumbList — structured data Google / Spotify #}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "PodcastEpisode",
+        "url": "{{ url('app_podcast_show', {slug: episode.slug}) }}",
+        "name": {{ episode.title|json_encode|raw }},
+        "description": {{ episode.excerpt|json_encode|raw }},
+        "datePublished": "{{ episode.publishedAt|date('c') }}",
+        "duration": "{{ episode.duration }}",
+        "episodeNumber": {{ episode.number }},
+        "seasonNumber": {{ episode.season|replace({'S': ''}) }},
+        "inLanguage": "fr-FR",
+        "associatedMedia": {
+            "@type": "MediaObject",
+            "contentUrl": "{{ episode.audioUrl }}",
+            "encodingFormat": "{{ episode.audioMimeType }}"
+        },
+        "partOfSeries": {
+            "@type": "PodcastSeries",
+            "name": "Privaris",
+            "url": "{{ url('app_podcast_index') }}",
+            "webFeed": "{{ url('app_podcast_feed') }}"
+        }
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "{{ absolute_url('/') }}" },
+            { "@type": "ListItem", "position": 2, "name": "Podcast", "item": "{{ url('app_podcast_index') }}" },
+            { "@type": "ListItem", "position": 3, "name": {{ episode.title|json_encode|raw }}, "item": "{{ url('app_podcast_show', {slug: episode.slug}) }}" }
+        ]
+    }
+    </script>
+{% endblock %}
+
+{% block body %}
+    <article>
+        {# ========= HEADER ÉPISODE ========= #}
+        <header class="pt-16 md:pt-22 pb-10">
+            <div class="container-wide">
+                <div class="max-w-prose-narrow">
+                    <p class="text-xs uppercase tracking-[0.2em] text-fog mb-4">
+                        Podcast · {{ episode.season }} · Épisode {{ episode.number }} ·
+                        <time datetime="{{ episode.publishedAt|date('c') }}">{{ episode.publishedAt|format_datetime(pattern='d MMMM yyyy', locale='fr') }}</time>
+                    </p>
+                    <h1 class="text-h1 text-balance mb-5 animate-slide-up">{{ episode.title }}</h1>
+                    <p class="text-fog text-lg leading-relaxed mb-10">{{ episode.excerpt }}</p>
+
+                    {# ========= LECTEUR AUDIO — bandeau éditorial ========= #}
+                    <div data-controller="audio-player" class="audio-player">
+                        <audio data-audio-player-target="audio" src="{{ episode.audioUrl }}" preload="metadata" type="{{ episode.audioMimeType }}"></audio>
+
+                        <div class="flex items-center gap-5">
+                            <button data-audio-player-target="playBtn"
+                                    data-action="click->audio-player#toggle"
+                                    class="audio-player__btn"
+                                    aria-label="Lecture / pause">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                            </button>
+                            <div class="flex-1 min-w-0">
+                                <p class="font-mono text-[10px] uppercase tracking-[0.2em] text-fog mb-2">À l'écoute · Épisode {{ episode.number }}</p>
+                                <div class="flex items-center gap-3">
+                                    <span data-audio-player-target="currentTime" class="font-mono text-[11px] text-fog tabular-nums w-10">0:00</span>
+                                    <input type="range" min="0" max="100" value="0" step="0.1"
+                                           data-audio-player-target="seek"
+                                           data-action="input->audio-player#seek"
+                                           class="audio-player__seek flex-1"
+                                           aria-label="Progression">
+                                    <span data-audio-player-target="duration" class="font-mono text-[11px] text-fog tabular-nums w-10 text-right">{{ episode.duration }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        {# ========= CORPS + ASIDE ========= #}
+        <div class="container-wide pb-16">
+            <div class="grid lg:grid-cols-3 gap-10 lg:gap-14 items-start">
+
+                {# --- Colonne écoute / lecture --- #}
+                <div class="lg:col-span-2 max-w-prose-narrow">
+                    <div class="prose-privaris">
+                        {{ episode.description|raw }}
+                    </div>
+
+                    {% if episode.transcript %}
+                    <details class="mt-12 pt-8 border-t border-mist">
+                        <summary class="cursor-pointer text-navy font-medium hover:opacity-70">Transcription complète</summary>
+                        <div class="prose-privaris mt-6">{{ episode.transcript|raw }}</div>
+                    </details>
+                    {% endif %}
+                </div>
+
+                {# --- Aside : abonnement, article lié, partage --- #}
+                <aside class="lg:col-span-1 lg:pl-8 lg:border-l border-mist lg:sticky lg:top-24 space-y-8"
+                       aria-label="À propos de cet épisode">
+
+                    {# S'abonner au podcast #}
+                    <div>
+                        <p class="text-xs uppercase tracking-[0.2em] text-fog mb-3">S'abonner</p>
+                        <div class="flex flex-wrap gap-2">
+                            <a href="{{ url('app_podcast_feed') }}"
+                               class="text-xs px-3 py-1.5 rounded-full border border-mist text-fog no-underline hover:border-navy hover:text-navy">
+                                RSS
+                            </a>
+                            <a href="#"
+                               class="text-xs px-3 py-1.5 rounded-full border border-mist text-fog no-underline hover:border-navy hover:text-navy">
+                                Apple Podcasts
+                            </a>
+                            <a href="#"
+                               class="text-xs px-3 py-1.5 rounded-full border border-mist text-fog no-underline hover:border-navy hover:text-navy">
+                                Spotify
+                            </a>
+                            <a href="#"
+                               class="text-xs px-3 py-1.5 rounded-full border border-mist text-fog no-underline hover:border-navy hover:text-navy">
+                                Deezer
+                            </a>
+                        </div>
+                        <p class="text-xs text-fog mt-3 leading-relaxed">
+                            Ajoutez le flux à votre appli d'écoute préférée pour ne rien manquer.
+                        </p>
+                    </div>
+
+                    {# Article lié #}
+                    {% if episode.article %}
+                    <div>
+                        <p class="text-xs uppercase tracking-[0.2em] text-fog mb-3">Article associé</p>
+                        <a href="{{ path('app_blog_show', {slug: episode.article.slug}) }}"
+                           class="card-link block no-underline">
+                            <p class="text-[10px] uppercase tracking-[0.18em] font-semibold text-navy mb-1.5">Article</p>
+                            <p class="font-semibold text-ink text-sm leading-snug mb-1.5">{{ episode.article.title }}</p>
+                            <p class="text-xs text-fog line-clamp-2 leading-relaxed">{{ episode.article.excerpt }}</p>
+                        </a>
+                    </div>
+                    {% endif %}
+
+                    {# Partager #}
+                    <div>
+                        <p class="text-xs uppercase tracking-[0.2em] text-fog mb-3">Partager</p>
+                        <div class="flex flex-wrap gap-2">
+                            <a href="https://twitter.com/intent/tweet?url={{ url('app_podcast_show', {slug: episode.slug})|url_encode }}&text={{ episode.title|url_encode }}"
+                               target="_blank" rel="noopener"
+                               class="text-xs px-3 py-1.5 rounded-full border border-mist text-fog no-underline hover:border-navy hover:text-navy">
+                                X / Twitter
+                            </a>
+                            <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ url('app_podcast_show', {slug: episode.slug})|url_encode }}"
+                               target="_blank" rel="noopener"
+                               class="text-xs px-3 py-1.5 rounded-full border border-mist text-fog no-underline hover:border-navy hover:text-navy">
+                                LinkedIn
+                            </a>
+                            <a href="mailto:?subject={{ episode.title|url_encode }}&body={{ url('app_podcast_show', {slug: episode.slug})|url_encode }}"
+                               class="text-xs px-3 py-1.5 rounded-full border border-mist text-fog no-underline hover:border-navy hover:text-navy">
+                                Email
+                            </a>
+                            <button type="button"
+                                    class="copy-link-btn text-xs px-3 py-1.5 rounded-full border border-mist text-fog hover:border-navy hover:text-navy inline-flex items-center gap-1.5"
+                                    data-controller="copy-link"
+                                    data-copy-link-url-value="{{ url('app_podcast_show', {slug: episode.slug}) }}"
+                                    data-copy-link-label-value="Copier le lien"
+                                    data-copy-link-success-label-value="✓ Copié"
+                                    data-action="click->copy-link#copy"
+                                    aria-label="Copier le lien de l'épisode">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                                </svg>
+                                <span data-copy-link-target="label">Copier le lien</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </aside>
+            </div>
+        </div>
+    </article>
+
+    {% if related|length > 0 %}
+    <section class="section border-t border-mist">
+        <div class="container-wide">
+            <h2 class="text-h2 mb-6">Autres épisodes</h2>
+            {% for r in related|filter(r => r.id != episode.id) %}
+                {% include 'components/_episode_row.html.twig' with {episode: r} only %}
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    {% include 'components/_newsletter.html.twig' with {source: 'episode'} only %}
+{% endblock %}

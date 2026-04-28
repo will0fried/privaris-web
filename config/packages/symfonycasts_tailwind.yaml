@@ -1,0 +1,4 @@
+symfonycasts_tailwind:
+    # The path to the entry CSS file (relative to project dir)
+    input_css: 'assets/styles/app.css'
+    # tailwind.config.js est auto-détecté à la racine du projet

@@ -1,0 +1,336 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Privaris · Cybersécurité au quotidien, expliquée sans jargon{% endblock %}
+{% block description %}Privaris couvre les arnaques en ligne, les comptes piratés et la protection des proches. Un sujet par article, en français, sans jargon.{% endblock %}
+
+{% block body %}
+    {# =====================================================
+       HERO — Tagline + scène + signature, status-pill à droite.
+       Composition équilibrée (texte gauche / pastille bas-droite).
+       ===================================================== #}
+    <section class="pt-14 md:pt-20 pb-10 md:pb-14 has-decor">
+        <div class="container-wide">
+            <div class="flex items-end justify-between gap-10 flex-wrap">
+                <div class="max-w-4xl">
+                    <p class="eyebrow animate-fade-in">Privaris · Cybersécurité au quotidien</p>
+                    <p class="text-xl md:text-2xl text-fog leading-relaxed max-w-3xl mt-8 animate-fade-in">
+                        Un SMS «&nbsp;Ameli&nbsp;» qui met la pression.
+                        Un mail qui ressemble à celui de la banque.
+                        Un ado qui ne répond plus sur Snapchat.
+                    </p>
+                    <h1 class="text-[clamp(2rem,4.75vw,4rem)] font-semibold leading-[1.1] tracking-[-0.02em] text-ink text-balance mt-8 animate-slide-up">
+                        À ces heures-là, <span class="text-navy">Privaris</span>.
+                    </h1>
+                </div>
+                <div class="flex items-center gap-5 text-sm">
+                    <span class="status-pill">
+                        <span class="status-pill__dot" aria-hidden="true"></span>
+                        En ligne · {{ "now"|format_datetime(pattern='d MMM', locale='fr') }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {# =====================================================
+       Données préparées côté contrôleur :
+         - alerts   : articles avec alert=true (sidebar Signal — 3 max)
+         - featured : article avec featured=true (La Une) — admin-driven,
+                     fallback au dernier article publié si aucun flag
+         - rest     : articles récents hors alerts/featured (rail "À lire aussi")
+       La sidebar Signal s'affiche TOUJOURS : si pas d'alerte, message "neutre"
+       pour garder l'équilibre visuel de la home.
+       ===================================================== #}
+
+    {# =====================================================
+       LA UNE + SIGNAL SIDEBAR — row principal
+       8 cols La Une · 4 cols Signal (sticky, toujours visible)
+       ===================================================== #}
+    {% if featured %}
+    <section class="pb-14 md:pb-24 border-t border-mist pt-10 md:pt-16">
+        <div class="container-wide">
+            <div class="grid lg:grid-cols-12 gap-8 md:gap-10 lg:gap-14 items-start">
+
+                {# ---- LA UNE (8 cols) ---- #}
+                <div class="lg:col-span-8">
+                    <p class="eyebrow mb-6">La Une</p>
+                    <a href="{{ path('app_blog_show', {slug: featured.slug}) }}" class="article-feature group no-underline block">
+                        <div class="article-feature__cover mb-8">
+                            {% if featured.coverImageUrl %}
+                                <img src="{{ featured.coverImageUrl|media_url('articles') }}"
+                                     alt="{{ featured.coverImageAlt ?: featured.title }}"
+                                     class="w-full h-full object-cover"
+                                     fetchpriority="high" decoding="async">
+                            {% else %}
+                                {% include 'components/_cover_placeholder.html.twig' with {seed: featured.id|default(1), large: true} only %}
+                            {% endif %}
+                        </div>
+
+                        <div class="flex items-center gap-3 mb-5">
+                            {% if featured.category %}
+                                <span class="article-kicker">{{ featured.category.name }}</span>
+                                <span class="text-mist" aria-hidden="true">·</span>
+                            {% endif %}
+                            <time datetime="{{ featured.publishedAt|date('c') }}" class="font-mono text-[11px] uppercase tracking-[0.15em] text-fog">
+                                {{ featured.publishedAt|format_datetime(pattern='d MMM yyyy', locale='fr') }}
+                            </time>
+                        </div>
+
+                        <h2 class="text-[clamp(1.75rem,3vw,2.75rem)] font-semibold leading-[1.08] tracking-[-0.02em] text-ink text-balance mb-5 group-hover:text-navy transition-colors">
+                            {{ featured.title }}
+                        </h2>
+
+                        <p class="text-lg text-fog leading-relaxed mb-7 line-clamp-3 max-w-3xl">{{ featured.excerpt }}</p>
+
+                        <div class="flex items-center justify-between pt-6 border-t border-mist max-w-3xl">
+                            {% if featured.author %}
+                                <div class="flex items-center gap-2.5 text-sm">
+                                    {% if featured.author.avatarUrl %}
+                                        <img src="{{ featured.author.avatarUrl|media_url('avatars') }}" alt="" class="w-7 h-7 rounded-full" loading="lazy" decoding="async">
+                                    {% else %}
+                                        <div class="w-7 h-7 rounded-full bg-navy/10 flex items-center justify-center text-navy text-xs font-semibold">
+                                            {{ (featured.author.displayName ?: featured.author.email)|first|upper }}
+                                        </div>
+                                    {% endif %}
+                                    <span class="text-ink font-medium">{{ featured.author.displayName ?: featured.author.email }}</span>
+                                </div>
+                            {% else %}
+                                <span class="text-sm text-fog">Rédaction Privaris</span>
+                            {% endif %}
+                            <span class="font-mono text-[11px] uppercase tracking-[0.14em] text-fog tabular-nums">{{ featured.readingMinutes }} MIN</span>
+                        </div>
+                    </a>
+                </div>
+
+                {# ---- SIGNAL SIDEBAR (4 cols) — TOUJOURS affichée ---- #}
+                <aside class="lg:col-span-4 lg:sticky lg:top-24">
+                    <div class="signal-panel signal-panel--compact">
+
+                        <div class="signal-panel__header">
+                            <p class="signal-panel__label">
+                                <span class="signal-panel__live" aria-hidden="true"></span>
+                                Signal · Veille cyber
+                            </p>
+                            <p class="signal-panel__meta">
+                                <time datetime="{{ "now"|date('c') }}">
+                                    {{ "now"|format_datetime(pattern='d MMM · HH:mm', locale='fr') }}
+                                </time>
+                            </p>
+                        </div>
+
+                        <div class="signal-panel__items">
+                            {% if alerts|length > 0 %}
+                                {# Boucle sur les VRAIES alertes seulement. La premiere = SEV-1. #}
+                                {% for a in alerts %}
+                                    {% set sev_num = loop.index %}
+                                    {% set sev_label = {1: 'En hausse', 2: 'Nouveau', 3: 'De retour'}[sev_num]|default('À suivre') %}
+                                    {% set sev_kind = a.category ? a.category.name : 'Signalement' %}
+                                    <a href="{{ path('app_blog_show', {slug: a.slug}) }}"
+                                       class="signal-panel__item group">
+                                        <span class="signal-panel__sev signal-panel__sev--{{ sev_num }}">{{ sev_label }}</span>
+                                        <div class="signal-panel__item-body">
+                                            <p class="signal-panel__kind">{{ sev_kind }}</p>
+                                            <p class="signal-panel__title">{{ a.title }}</p>
+                                        </div>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="signal-panel__arrow" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                                    </a>
+                                {% endfor %}
+                            {% else %}
+                                {# État vide — pas d'alerte en cours, on garde la même structure visuelle
+                                   pour éviter que la home paraisse cassée ou déséquilibrée. #}
+                                <div class="py-6 text-center" style="display:flex;flex-direction:column;align-items:center;gap:0.75rem;">
+                                    <span style="display:inline-flex;align-items:center;justify-content:center;width:2.25rem;height:2.25rem;border-radius:9999px;background:rgba(16,185,129,0.08);">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+                                    </span>
+                                    <p class="text-sm leading-relaxed text-fog" style="max-width:20rem;margin:0 auto;">
+                                        Il n'y a pas d'alerte pour l'instant.
+                                    </p>
+                                    <p class="text-fog" style="font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;">
+                                        Veille active · CERT-FR
+                                    </p>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="signal-panel__footer">
+                            <p class="signal-panel__footer-note">
+                                CERT-FR · ANSSI · Éditeurs
+                            </p>
+                            <a href="{{ path('app_blog_index') }}" class="btn-link text-xs">
+                                Toute la veille
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    {# =====================================================
+       SCROLL ARTICLES — rail horizontal snap
+       ===================================================== #}
+    {% if rest|length > 0 %}
+    <section class="pb-14 md:pb-28 border-t border-mist pt-12 md:pt-20">
+        <div class="container-wide">
+            <div class="scroll-row" data-controller="scroll-row">
+                <div class="scroll-row__controls">
+                    <div class="reveal" data-controller="reveal">
+                        <p class="eyebrow">À lire aussi</p>
+                        <h2 class="text-h1 text-balance">Les articles récents</h2>
+                    </div>
+                    <div class="scroll-row__nav">
+                        <div class="scroll-row__progress" aria-hidden="true">
+                            <span class="scroll-row__progress-bar" data-scroll-progress></span>
+                        </div>
+                        <button type="button" class="scroll-row__arrow" data-scroll-prev aria-label="Précédent">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                        </button>
+                        <button type="button" class="scroll-row__arrow" data-scroll-next aria-label="Suivant">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="scroll-row__track" data-scroll-track>
+                    {% for article in rest %}
+                        <div class="scroll-row__item">
+                            {% include 'components/_article_card.html.twig' with {article: article} only %}
+                        </div>
+                    {% endfor %}
+                    {# Dernier item : call-to-action "Voir tout le journal" #}
+                    <div class="scroll-row__item">
+                        <a href="{{ path('app_blog_index') }}" class="flex flex-col justify-center items-start h-full bg-bone border border-mist rounded-2xl p-8 no-underline text-ink transition hover:border-navy/30">
+                            <p class="font-mono text-[11px] uppercase tracking-[0.2em] text-navy mb-4">Aller plus loin</p>
+                            <p class="text-2xl font-semibold text-ink leading-tight mb-4">Tous les articles</p>
+                            <p class="text-fog text-sm leading-relaxed mb-6">Archives, catégories, tags. Tout ce qu'on a publié depuis le début.</p>
+                            <span class="btn-link text-sm">
+                                Parcourir
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    {# =====================================================
+       SCROLL PODCASTS — rail horizontal
+       ===================================================== #}
+    {% if episodes|length > 0 %}
+    <section class="section border-t border-mist bg-bone">
+        <div class="container-wide">
+            <div class="scroll-row scroll-row--narrow" data-controller="scroll-row">
+                <div class="scroll-row__controls">
+                    <div class="reveal" data-controller="reveal">
+                        <p class="eyebrow">Podcast · 3 minutes, tous les mardis</p>
+                        <h2 class="text-h1 text-balance">Épisodes récents</h2>
+                    </div>
+                    <div class="scroll-row__nav">
+                        <div class="scroll-row__progress" aria-hidden="true">
+                            <span class="scroll-row__progress-bar" data-scroll-progress></span>
+                        </div>
+                        <button type="button" class="scroll-row__arrow" data-scroll-prev aria-label="Précédent">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                        </button>
+                        <button type="button" class="scroll-row__arrow" data-scroll-next aria-label="Suivant">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="scroll-row__track" data-scroll-track>
+                    {% for episode in episodes %}
+                        <div class="scroll-row__item">
+                            {% include 'components/_episode_card.html.twig' with {episode: episode} only %}
+                        </div>
+                    {% endfor %}
+                    <div class="scroll-row__item">
+                        <a href="{{ path('app_podcast_index') }}" class="flex flex-col justify-center items-start h-full bg-paper border border-mist rounded-2xl p-8 no-underline text-ink transition hover:border-navy/30">
+                            <p class="font-mono text-[11px] uppercase tracking-[0.2em] text-navy mb-4">La série complète</p>
+                            <p class="text-xl font-semibold text-ink leading-tight mb-4">Tous les épisodes</p>
+                            <p class="text-fog text-sm leading-relaxed mb-6">Saison 1, 2, bientôt 3. Flux RSS, Apple Podcasts, Spotify.</p>
+                            <span class="btn-link text-sm">
+                                Écouter la série
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    {# =====================================================
+       Empty state — quand absolument rien n'est publié
+       ===================================================== #}
+    {% if featured is null and episodes|length == 0 %}
+    <section class="pb-14 md:pb-32 border-t border-mist pt-14 md:pt-20">
+        <div class="container-wide text-center max-w-2xl mx-auto">
+            <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 32 32" fill="none" class="mx-auto mb-8 text-navy/15" aria-hidden="true">
+                <circle cx="16" cy="16" r="13" stroke="currentColor" stroke-width="1"/>
+                <circle cx="16" cy="16" r="8"  stroke="currentColor" stroke-width="1"/>
+                <circle cx="16" cy="16" r="3"  fill="currentColor"/>
+            </svg>
+            <p class="text-xl text-fog">Les premiers articles arrivent très bientôt.</p>
+            <a href="#newsletter" class="btn-link mt-6">Être prévenu du lancement →</a>
+        </div>
+    </section>
+    {% endif %}
+
+    {# =====================================================
+       MANIFESTE — 3 engagements éditoriaux.
+       ===================================================== #}
+    <section class="section border-t border-mist">
+        <div class="container-wide">
+            <div class="max-w-5xl">
+                <div class="reveal" data-controller="reveal">
+                    <p class="eyebrow">Ce qu'on fait ici</p>
+                    <p class="text-statement text-balance mb-16">
+                        Avant. Pendant. Et ceux qui comptent.
+                    </p>
+                </div>
+
+                <div class="grid md:grid-cols-3 gap-6 md:gap-8">
+                    <div class="engagement-card reveal" data-controller="reveal" data-reveal-delay-value="0">
+                        <h3 class="text-xl font-semibold text-ink mb-3">Avant le clic</h3>
+                        <p class="text-fog leading-relaxed">
+                            Un SMS qui fait peur, un mail qui imite votre banque. On vous apprend à repérer ce qui cloche, avant de cliquer.
+                        </p>
+                        <p class="engagement-card__tag">
+                            <span class="engagement-card__tag-dot" aria-hidden="true"></span>
+                            RECONNAÎTRE
+                        </p>
+                    </div>
+                    <div class="engagement-card reveal" data-controller="reveal" data-reveal-delay-value="80">
+                        <h3 class="text-xl font-semibold text-ink mb-3">Quand ça dérape</h3>
+                        <p class="text-fog leading-relaxed">
+                            Compte piraté, mot de passe volé, argent parti. Étape par étape, on vous aide à reprendre la main.
+                        </p>
+                        <p class="engagement-card__tag">
+                            <span class="engagement-card__tag-dot" aria-hidden="true"></span>
+                            REPRENDRE LA MAIN
+                        </p>
+                    </div>
+                    <div class="engagement-card reveal" data-controller="reveal" data-reveal-delay-value="160">
+                        <h3 class="text-xl font-semibold text-ink mb-3">Pour vos proches</h3>
+                        <p class="text-fog leading-relaxed">
+                            Un ado, un parent, un ami pas à l'aise avec la tech. On vous donne les mots pour les aider, sans les braquer.
+                        </p>
+                        <p class="engagement-card__tag">
+                            <span class="engagement-card__tag-dot" aria-hidden="true"></span>
+                            ACCOMPAGNER
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {# ========= NEWSLETTER ========= #}
+    {% include 'components/_newsletter.html.twig' with {source: 'home'} only %}
+{% endblock %}

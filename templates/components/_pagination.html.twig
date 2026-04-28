@@ -1,0 +1,89 @@
+{#
+    Composant pagination — Privaris
+    -------------------------------
+    Paramètres :
+      pagination   : tableau {page, pages, total, perPage} renvoyé par ArticleRepository::paginatePublished()
+      route        : nom de la route (ex 'app_blog_index', 'app_blog_category')
+      routeParams  : tableau de paramètres complémentaires pour la route (ex {slug: category.slug})
+
+    Design : 90/10 navy sur blanc, typo Inter, même vocabulaire visuel que le reste du site.
+#}
+{% set page  = pagination.page|default(1) %}
+{% set pages = pagination.pages|default(1) %}
+{% set routeParams = routeParams|default({}) %}
+
+{% if pages > 1 %}
+    <nav class="pt-16 md:pt-20 border-t border-mist" aria-label="Pagination des articles">
+        <div class="flex items-center justify-between gap-6 flex-wrap">
+
+            {# --- Compteur --- #}
+            <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-fog tabular-nums">
+                Page {{ page }} / {{ pages }} · {{ pagination.total }} article{{ pagination.total > 1 ? 's' : '' }}
+            </p>
+
+            {# --- Boutons numérotés --- #}
+            <ul class="flex items-center gap-1.5" style="list-style:none;padding:0;margin:0;">
+                {# Précédent #}
+                <li>
+                    {% if page > 1 %}
+                        <a href="{{ path(route, routeParams|merge({page: page - 1})) }}"
+                           rel="prev"
+                           class="inline-flex items-center gap-2 px-3 py-2 text-sm rounded-full border border-mist text-ink hover:border-navy hover:text-navy no-underline transition"
+                           aria-label="Page précédente">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                            <span>Précédent</span>
+                        </a>
+                    {% else %}
+                        <span class="inline-flex items-center gap-2 px-3 py-2 text-sm rounded-full border border-mist text-mist cursor-not-allowed" aria-disabled="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                            <span>Précédent</span>
+                        </span>
+                    {% endif %}
+                </li>
+
+                {# Numéros : on montre 1, page-1, page, page+1, pages, avec ellipses #}
+                {% set numbers = [] %}
+                {% for p in 1..pages %}
+                    {% if p == 1 or p == pages or (p >= page - 1 and p <= page + 1) %}
+                        {% set numbers = numbers|merge([p]) %}
+                    {% endif %}
+                {% endfor %}
+
+                {% set prev = 0 %}
+                {% for p in numbers %}
+                    {% if p - prev > 1 %}
+                        <li aria-hidden="true" class="px-2 text-mist">…</li>
+                    {% endif %}
+                    <li>
+                        {% if p == page %}
+                            <span class="inline-flex items-center justify-center min-w-[2.4rem] h-10 px-3 text-sm rounded-full bg-navy text-paper font-medium" aria-current="page">{{ p }}</span>
+                        {% else %}
+                            <a href="{{ path(route, routeParams|merge({page: p})) }}"
+                               class="inline-flex items-center justify-center min-w-[2.4rem] h-10 px-3 text-sm rounded-full border border-mist text-ink hover:border-navy hover:text-navy no-underline transition tabular-nums">{{ p }}</a>
+                        {% endif %}
+                    </li>
+                    {% set prev = p %}
+                {% endfor %}
+
+                {# Suivant #}
+                <li>
+                    {% if page < pages %}
+                        <a href="{{ path(route, routeParams|merge({page: page + 1})) }}"
+                           rel="next"
+                           class="inline-flex items-center gap-2 px-3 py-2 text-sm rounded-full border border-mist text-ink hover:border-navy hover:text-navy no-underline transition"
+                           aria-label="Page suivante">
+                            <span>Suivant</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                        </a>
+                    {% else %}
+                        <span class="inline-flex items-center gap-2 px-3 py-2 text-sm rounded-full border border-mist text-mist cursor-not-allowed" aria-disabled="true">
+                            <span>Suivant</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                        </span>
+                    {% endif %}
+                </li>
+            </ul>
+
+        </div>
+    </nav>
+{% endif %}

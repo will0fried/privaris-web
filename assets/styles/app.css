@@ -1,0 +1,1189 @@
+/* ---------------------------------------------------------
+   Privaris — Tailwind v4 + design tokens
+   Palette navy #1A3A5C, minimal, Apple-like.
+   --------------------------------------------------------- */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap');
+
+@import "tailwindcss";
+
+/* Plugin typography (installé via npm) */
+@plugin "@tailwindcss/typography";
+
+/* Où Tailwind doit chercher les classes */
+@source "../../templates/**/*.html.twig";
+@source "../../src/**/*.php";
+@source "../**/*.js";
+
+/* ---------------------------------------------------------
+   Design tokens — exposés comme classes Tailwind (bg-navy, text-fog, ...)
+   --------------------------------------------------------- */
+@theme {
+    /* --- Couleurs ---
+       Navy profond éditorial (plus serré, plus "tech sérieux"). */
+    --color-navy:     #0A2540;
+    --color-navy-50:  #EEF2F6;
+    --color-navy-100: #D3DCE6;
+    --color-navy-200: #A6B9CE;
+    --color-navy-300: #6E89A8;
+    --color-navy-400: #3A577D;
+    --color-navy-500: #0A2540;
+    --color-navy-600: #081E33;
+    --color-navy-700: #061826;
+    --color-navy-800: #05111F;
+    --color-navy-900: #030B14;
+
+    --color-ink:      #0E1621;
+    --color-fog:      #6B7685;
+    --color-mist:     #EDEFF2;   /* gris neutre FROID pour les bordures (Stripe-like) */
+    --color-paper:    #FFFFFF;
+    --color-bone:     #F7F8FA;   /* off-white FROID Stripe/Apple, pas crème chaud */
+    --color-alert:    #B83D3D;
+    --color-alert-bg: #FBEFEF;
+    --color-ok:       #2F7D4F;
+
+    /* Accents "signal" — palette cyber pour varier covers, chips, graphiques.
+       Utilisés en discret, le navy reste dominant. */
+    --color-signal-teal:  #1E7A8C;   /* cyan-techno sobre */
+    --color-signal-plum:  #7B3D6A;   /* magenta retenu, alerte menace */
+    --color-signal-amber: #B8752E;   /* ambre attention, advisory */
+    --color-signal-sage:  #3E7B5F;   /* vert forêt, protection */
+
+    /* --- Typographie --- */
+    --font-sans:  "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    --font-serif: "Source Serif 4", ui-serif, Georgia, serif;
+    --font-mono:  ui-monospace, "SF Mono", Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
+
+    --text-display: clamp(3rem, 5.4vw, 5.5rem);
+    --text-display--line-height: 1.02;
+    --text-display--letter-spacing: -0.028em;
+    --text-display--font-weight: 600;
+
+    /* Hero "Stripe / Apple" — énorme, le titre fait le design.
+       Utilisé pour About, Contact, Blog index, Podcast index.
+       line-height 1.05 pour éviter le crop visuel sur mobile. */
+    --text-hero: clamp(2.75rem, 7.5vw, 6rem);
+    --text-hero--line-height: 1.05;
+    --text-hero--letter-spacing: -0.035em;
+    --text-hero--font-weight: 600;
+
+    /* Statement : gros paragraphe éditorial pour les sections manifesto */
+    --text-statement: clamp(1.5rem, 2.6vw, 2.25rem);
+    --text-statement--line-height: 1.35;
+    --text-statement--letter-spacing: -0.015em;
+    --text-statement--font-weight: 450;
+
+    --text-h1: clamp(2rem, 3.2vw, 2.75rem);
+    --text-h1--line-height: 1.15;
+    --text-h1--letter-spacing: -0.02em;
+    --text-h1--font-weight: 600;
+
+    --text-h2: 1.75rem;
+    --text-h2--line-height: 1.25;
+    --text-h2--letter-spacing: -0.015em;
+    --text-h2--font-weight: 600;
+
+    --text-h3: 1.25rem;
+    --text-h3--line-height: 1.4;
+    --text-h3--font-weight: 600;
+
+    /* --- Espacements custom --- */
+    --spacing-18: 4.5rem;
+    --spacing-22: 5.5rem;
+    --spacing-30: 7.5rem;
+
+    /* --- Largeurs de contenu --- */
+    --container-prose-narrow: 44rem;   /* ~704px — lecture confort */
+    --container-prose-wide:   80rem;   /* ~1280px — respire sur écrans larges */
+
+    /* --- Ombres --- */
+    --shadow-card:   0 1px 2px rgba(14, 22, 33, 0.04), 0 4px 16px rgba(14, 22, 33, 0.04);
+    --shadow-raised: 0 2px 6px rgba(14, 22, 33, 0.06), 0 12px 40px rgba(14, 22, 33, 0.08);
+    --shadow-nav:    0 1px 0 rgba(14, 22, 33, 0.06);
+
+    /* --- Animations --- */
+    --animate-fade-in:  fadeIn 0.4s ease-out;
+    --animate-slide-up: slideUp 0.5s ease-out;
+
+    @keyframes fadeIn {
+        0%   { opacity: 0; }
+        100% { opacity: 1; }
+    }
+    @keyframes slideUp {
+        0%   { opacity: 0; transform: translateY(12px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+}
+
+/* ---------------------------------------------------------
+   Base — reset et styles globaux
+   --------------------------------------------------------- */
+@layer base {
+    html {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        scroll-behavior: smooth;
+    }
+
+    body {
+        @apply bg-paper text-ink font-sans;
+        font-feature-settings: "ss01", "cv11";
+    }
+
+    h1, h2, h3, h4 {
+        @apply text-navy;
+    }
+
+    a {
+        @apply text-navy underline-offset-4;
+    }
+
+    ::selection {
+        background: var(--color-navy);
+        color: #fff;
+    }
+
+    /* Focus accessible, visuel Stripe-like : un anneau cool gris-navy sans éclat brutal */
+    :focus-visible {
+        outline: 2px solid var(--color-navy);
+        outline-offset: 3px;
+        border-radius: 4px;
+    }
+    a:focus-visible,
+    button:focus-visible {
+        outline-offset: 3px;
+    }
+
+    /* Tabulation nombres & monospace éditoriale */
+    .font-mono { font-family: ui-monospace, "SF Mono", Menlo, Monaco, "Roboto Mono", monospace; }
+
+    /* ---------- Turbo : progress bar + transitions de page ---------- */
+    .turbo-progress-bar {
+        height: 2px;
+        background: var(--color-navy);
+        box-shadow: 0 0 10px rgba(10, 37, 64, 0.4);
+    }
+
+    /* Transition subtile entre pages (rendered = nouveau body prêt) */
+    html[data-turbo-preview] main { opacity: 0.75; }
+    main {
+        transition: opacity 180ms ease;
+    }
+
+    /* Respect des préférences utilisateur — on coupe tout si motion reduced */
+    @media (prefers-reduced-motion: reduce) {
+        html { scroll-behavior: auto; }
+        main { transition: none; }
+        *, *::before, *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
+}
+
+/* ---------------------------------------------------------
+   Composants — classes réutilisables
+   --------------------------------------------------------- */
+@layer components {
+    .container-narrow { @apply max-w-prose-narrow mx-auto px-5 md:px-6; }
+    .container-wide   { @apply max-w-prose-wide   mx-auto px-5 md:px-6; }
+
+    /* Cadre « lecture » : même frame extérieur que container-wide,
+       mais contenu contraint à une colonne étroite alignée à gauche.
+       → garantit que toutes les pages ont le même bord gauche que la nav. */
+    .container-reading { @apply max-w-prose-wide mx-auto px-6; }
+    .container-reading > * { max-width: var(--container-prose-narrow); }
+
+    /* Nav — frosted glass, sticky */
+    .nav-frosted {
+        background: rgba(255, 255, 255, 0.72);
+        -webkit-backdrop-filter: saturate(180%) blur(20px);
+        backdrop-filter: saturate(180%) blur(20px);
+        @apply shadow-nav;
+    }
+
+    /* Nav link — état actif souligné, indicateur de page courante */
+    .nav-link {
+        @apply relative inline-flex items-center gap-1.5 no-underline text-ink transition-colors;
+    }
+    .nav-link:hover { @apply text-navy; }
+    .nav-link.is-active { @apply text-navy font-medium; }
+    .nav-link.is-active::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -22px;
+        height: 2px;
+        background: var(--color-navy);
+        border-radius: 2px;
+    }
+    .nav-alert-dot {
+        @apply inline-block w-1.5 h-1.5 rounded-full bg-alert;
+        box-shadow: 0 0 0 0 rgba(184, 61, 61, 0.5);
+        animation: pulse-alert 2s infinite;
+    }
+    @keyframes pulse-alert {
+        0%   { box-shadow: 0 0 0 0 rgba(184, 61, 61, 0.5); }
+        70%  { box-shadow: 0 0 0 6px rgba(184, 61, 61, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(184, 61, 61, 0); }
+    }
+
+    /* =====================================================
+       MOBILE MENU — bouton toggle + volet animé.
+       Touch-target ≥ 44px, iconographie qui bascule burger ↔ croix,
+       panneau qui slide depuis le haut avec fade doux.
+       ===================================================== */
+    .mobile-menu-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        margin-right: -0.5rem;
+        color: var(--color-ink);
+        border-radius: 10px;
+        transition: background 180ms ease;
+        position: relative;
+    }
+    .mobile-menu-btn:hover { background: rgba(10, 37, 64, 0.05); }
+    .mobile-menu-btn:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 2px var(--color-navy);
+    }
+    .mobile-menu-btn__icon {
+        position: absolute;
+        inset: 0;
+        margin: auto;
+        transition: opacity 180ms ease, transform 220ms ease;
+    }
+    .mobile-menu-btn__icon--close {
+        opacity: 0;
+        transform: rotate(-90deg) scale(0.9);
+    }
+    .mobile-menu-btn[aria-expanded="true"] .mobile-menu-btn__icon--open {
+        opacity: 0;
+        transform: rotate(90deg) scale(0.9);
+    }
+    .mobile-menu-btn[aria-expanded="true"] .mobile-menu-btn__icon--close {
+        opacity: 1;
+        transform: rotate(0deg) scale(1);
+    }
+
+    .mobile-menu-panel {
+        border-top: 1px solid var(--color-mist);
+        background: var(--color-paper);
+        overflow: hidden;
+        max-height: 0;
+        opacity: 0;
+        transition: max-height 280ms cubic-bezier(0.22, 1, 0.36, 1),
+                    opacity 220ms ease;
+    }
+    .mobile-menu-panel.is-open {
+        max-height: calc(100vh - 4rem);
+        opacity: 1;
+    }
+    .mobile-menu-panel__nav {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+        padding-top: 0.75rem;
+        padding-bottom: 1.5rem;
+    }
+    .mobile-menu-panel__link {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 0.25rem;
+        color: var(--color-ink);
+        text-decoration: none;
+        font-size: 1rem;
+        font-weight: 500;
+        border-bottom: 1px solid rgba(10, 37, 64, 0.06);
+        transition: color 160ms ease, padding-left 200ms ease;
+        min-height: 44px;
+    }
+    .mobile-menu-panel__link:hover,
+    .mobile-menu-panel__link:active {
+        color: var(--color-navy);
+        padding-left: 0.5rem;
+    }
+    .mobile-menu-panel__link.is-active {
+        color: var(--color-navy);
+        font-weight: 600;
+    }
+    .mobile-menu-panel__link.is-active::before {
+        content: "";
+        display: inline-block;
+        width: 3px;
+        height: 16px;
+        background: var(--color-navy);
+        border-radius: 2px;
+        margin-right: 0.5rem;
+    }
+    .mobile-menu-panel__cta {
+        align-self: flex-start;
+        margin-top: 1rem;
+    }
+
+    /* Buttons — styles inlinés (pas de classe .btn intermédiaire, Tailwind v4 ne l'autorise plus via @apply) */
+    .btn-primary {
+        @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition bg-navy text-white hover:bg-navy-600;
+    }
+    .btn-ghost {
+        @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium transition border border-navy/20 text-navy hover:border-navy/60;
+    }
+    .btn-link {
+        @apply inline-flex items-center gap-1 text-navy text-sm font-medium no-underline hover:opacity-70;
+    }
+
+    /* Article / episode cards (conteneur générique) */
+    .card {
+        @apply bg-paper border border-mist rounded-2xl p-6 transition;
+    }
+    .card-hover {
+        @apply hover:shadow-card hover:-translate-y-0.5 transition-transform duration-200;
+    }
+
+    /* Carte-lien compacte (aside : article lié, épisode lié, mini-CTA) */
+    .card-link {
+        @apply block bg-paper border border-mist rounded-2xl p-5 transition;
+    }
+    a.card-link:hover {
+        @apply border-navy/40;
+        box-shadow: 0 1px 2px rgba(14, 22, 33, 0.04), 0 4px 12px rgba(14, 22, 33, 0.05);
+    }
+
+    /* ---- Lecteur audio éditorial ---- */
+    .audio-player {
+        @apply bg-paper border border-mist rounded-2xl px-5 py-5 md:px-6 md:py-6 relative overflow-hidden;
+    }
+    .audio-player::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--color-navy) 0%, var(--color-navy) 50%, transparent 50%, transparent 100%);
+        background-size: 200% 100%;
+        background-position: -100% 0;
+        opacity: 0.85;
+    }
+    .audio-player__btn {
+        @apply w-14 h-14 rounded-full bg-navy text-white flex items-center justify-center hover:bg-navy-600 transition flex-shrink-0;
+        box-shadow: 0 1px 2px rgba(10, 37, 64, 0.15), 0 4px 14px rgba(10, 37, 64, 0.18);
+    }
+    .audio-player__btn:focus-visible {
+        @apply outline-none;
+        box-shadow: 0 0 0 3px rgba(10, 37, 64, 0.25), 0 1px 2px rgba(10, 37, 64, 0.15), 0 4px 14px rgba(10, 37, 64, 0.18);
+    }
+    .audio-player__seek {
+        appearance: none;
+        -webkit-appearance: none;
+        background: transparent;
+        height: 18px;
+    }
+    .audio-player__seek::-webkit-slider-runnable-track {
+        height: 2px;
+        background: var(--color-mist);
+        border-radius: 2px;
+    }
+    .audio-player__seek::-moz-range-track {
+        height: 2px;
+        background: var(--color-mist);
+        border-radius: 2px;
+    }
+    .audio-player__seek::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--color-navy);
+        margin-top: -5px;
+        box-shadow: 0 0 0 4px rgba(10, 37, 64, 0.08);
+        transition: box-shadow 150ms ease;
+    }
+    .audio-player__seek::-moz-range-thumb {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: var(--color-navy);
+        border: 0;
+    }
+    .audio-player__seek:hover::-webkit-slider-thumb {
+        box-shadow: 0 0 0 6px rgba(10, 37, 64, 0.14);
+    }
+
+    /* =====================================================
+       CARTE ARTICLE — éditorial, Stripe-blog.
+       Compact par défaut, variant "large" pour les slots premium.
+       Structure flex-col + h-full : la byline est TOUJOURS collée en bas,
+       peu importe la longueur du titre / de l'extrait.
+       ===================================================== */
+    .article-card {
+        @apply flex flex-col h-full no-underline text-ink;
+    }
+    .article-card__cover {
+        @apply aspect-[4/3] bg-bone rounded-xl overflow-hidden mb-5 relative flex-shrink-0;
+    }
+    .article-card--large .article-card__cover {
+        @apply aspect-[16/10] rounded-2xl mb-7;
+    }
+    .article-card__cover img {
+        @apply w-full h-full object-cover transition-transform duration-700;
+    }
+    .article-card:hover .article-card__cover img {
+        transform: scale(1.035);
+    }
+
+    /* Meta top : catégorie · date — monospace Stripe-blog */
+    .article-card__meta-top {
+        @apply flex items-center gap-2.5 mb-3 flex-shrink-0;
+    }
+
+    /* Kicker catégorie — pill navy discrète */
+    .article-kicker {
+        @apply inline-flex items-center text-[11px] font-semibold uppercase tracking-[0.14em] text-navy;
+    }
+
+    /* Titre : forcé sur 2 lignes → toutes les cards alignent leurs bylines.
+       min-height reserve l'espace même quand le titre fait 1 ligne seulement. */
+    .article-card__title {
+        @apply text-ink font-semibold text-xl text-balance mb-3 line-clamp-2;
+        line-height: 1.2;
+        min-height: calc(1.2em * 2);
+        letter-spacing: -0.015em;
+        transition: color 180ms ease;
+    }
+    .article-card--large .article-card__title {
+        @apply text-[1.625rem] md:text-[1.875rem] mb-4;
+        line-height: 1.15;
+        min-height: calc(1.15em * 2);
+    }
+    .article-card:hover .article-card__title {
+        @apply text-navy;
+    }
+
+    /* Extrait : prend la place restante, 2 lignes fixes (3 pour large).
+       flex-grow pousse la byline en bas même si l'extrait est court. */
+    .article-card__excerpt {
+        @apply text-fog text-sm leading-relaxed line-clamp-2 mb-5;
+        min-height: calc(1.625em * 2);
+        flex-grow: 1;
+    }
+    .article-card--large .article-card__excerpt {
+        @apply text-base line-clamp-3 mb-7;
+        min-height: calc(1.625em * 3);
+    }
+
+    /* Byline toujours en bas, alignée sur toutes les cards */
+    .article-card__byline {
+        @apply flex items-center justify-between pt-5 border-t border-mist flex-shrink-0;
+        margin-top: auto;
+    }
+
+    @keyframes underline-grow {
+        from { background-size: 0 1px; }
+        to   { background-size: 100% 1px; }
+    }
+
+    /* =====================================================
+       ARTICLE FEATURE — La Une, article phare home + blog index.
+       ===================================================== */
+    .article-feature { @apply block no-underline; }
+    .article-feature__cover {
+        @apply aspect-[16/11] bg-bone rounded-2xl overflow-hidden relative;
+    }
+    .article-feature__cover img {
+        @apply w-full h-full object-cover transition-transform duration-700;
+    }
+    .article-feature:hover .article-feature__cover img {
+        transform: scale(1.025);
+    }
+
+    /* =====================================================
+       COVER PLACEHOLDER — chaque variant a sa teinte signal.
+       Varie selon l'id d'article pour casser la monotonie.
+       ===================================================== */
+    .cover-placeholder {
+        @apply w-full h-full relative overflow-hidden;
+        color: var(--color-navy);
+    }
+    /* Grain subtil — superposé sur toutes les variantes */
+    .cover-placeholder::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.25 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        opacity: 0.45;
+        mix-blend-mode: multiply;
+        pointer-events: none;
+    }
+
+    /* Variant 0 — NAVY (brand dominant) */
+    .cover-placeholder--variant-0 {
+        color: var(--color-navy);
+        background:
+            radial-gradient(ellipse at 30% 20%, rgba(10, 37, 64, 0.14), transparent 55%),
+            radial-gradient(ellipse at 80% 85%, rgba(10, 37, 64, 0.08), transparent 55%),
+            linear-gradient(135deg, #EEF2F6 0%, #D3DCE6 100%);
+    }
+    /* Variant 1 — TEAL signal cool */
+    .cover-placeholder--variant-1 {
+        color: var(--color-signal-teal);
+        background:
+            radial-gradient(ellipse at 75% 25%, rgba(30, 122, 140, 0.18), transparent 55%),
+            radial-gradient(ellipse at 20% 80%, rgba(30, 122, 140, 0.08), transparent 55%),
+            linear-gradient(135deg, #EEF5F7 0%, #CCE2E8 100%);
+    }
+    /* Variant 2 — PLUM alerte retenue */
+    .cover-placeholder--variant-2 {
+        color: var(--color-signal-plum);
+        background:
+            radial-gradient(ellipse at 20% 70%, rgba(123, 61, 106, 0.15), transparent 60%),
+            radial-gradient(ellipse at 85% 20%, rgba(123, 61, 106, 0.07), transparent 55%),
+            linear-gradient(135deg, #F5EEF3 0%, #E1CEDB 100%);
+    }
+    /* Variant 3 — AMBER advisory */
+    .cover-placeholder--variant-3 {
+        color: var(--color-signal-amber);
+        background:
+            radial-gradient(ellipse at 50% 30%, rgba(184, 117, 46, 0.15), transparent 55%),
+            radial-gradient(ellipse at 15% 85%, rgba(184, 117, 46, 0.08), transparent 50%),
+            linear-gradient(135deg, #F6F0E8 0%, #E6D6C2 100%);
+    }
+
+    .cover-placeholder__grid {
+        @apply absolute inset-0 w-full h-full;
+        color: currentColor;
+        opacity: 0.7;
+    }
+    .cover-placeholder__mark {
+        @apply absolute w-[60%] h-[60%];
+        color: currentColor;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+    }
+    .cover-placeholder--large .cover-placeholder__mark {
+        @apply w-[50%] h-[50%];
+    }
+    .cover-placeholder__code,
+    .cover-placeholder__label {
+        @apply absolute font-mono text-[10px] uppercase tracking-[0.2em] tabular-nums;
+        color: currentColor;
+        opacity: 0.55;
+        z-index: 2;
+    }
+    .cover-placeholder__code  { @apply bottom-4 right-4; }
+    .cover-placeholder__label { @apply top-4 left-4; }
+
+    /* =====================================================
+       ALERT STRIP — bande alerte horizontale pleine largeur.
+       Plus éditorial qu'un carton rouge.
+       ===================================================== */
+    .alert-strip {
+        @apply flex items-center gap-4 px-5 py-4 rounded-xl border border-alert/25 bg-alert-bg no-underline transition;
+    }
+    .alert-strip:hover {
+        @apply border-alert/50;
+    }
+
+    /* Alert block (featured article "alert") */
+    .alert-block {
+        @apply bg-alert-bg border border-alert/20 rounded-2xl p-6 flex gap-4 items-start;
+    }
+
+    /* =====================================================
+       ENGAGEMENT CARD — manifeste home.
+       Frame léger, barre navy gauche, code + tag cyber discret.
+       ===================================================== */
+    .engagement-card {
+        @apply relative bg-paper border border-mist rounded-xl px-6 py-7 pl-8 flex flex-col h-full;
+        transition: border-color 180ms ease, transform 220ms ease;
+    }
+    .engagement-card > p + h3 + p {
+        /* excerpt : prend toute la place restante */
+        flex: 1 1 auto;
+    }
+    .engagement-card::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 1.75rem;
+        bottom: 1.75rem;
+        width: 2px;
+        background: var(--color-navy);
+        border-radius: 0 2px 2px 0;
+        opacity: 0.85;
+    }
+    .engagement-card:hover {
+        @apply border-navy/30;
+        transform: translateY(-1px);
+    }
+    .engagement-card__code {
+        @apply font-mono text-[11px] uppercase tracking-[0.22em] text-navy tabular-nums;
+    }
+    .engagement-card__tag {
+        @apply flex items-center gap-2 mt-auto pt-4 border-t border-mist font-mono text-[10px] uppercase tracking-[0.18em] text-fog;
+    }
+    .engagement-card__tag-dot {
+        @apply inline-block w-1 h-1 rounded-full bg-navy flex-shrink-0;
+        opacity: 0.45;
+    }
+
+    /* =====================================================
+       SIGNAL PANEL — bulletin de veille cyber, home.
+       Cadre éditorial : alerte principale + 2 secondaires.
+       Beaucoup de mono, indicators live, un peu cyber.
+       ===================================================== */
+    .signal-panel {
+        @apply relative rounded-2xl border border-mist bg-paper overflow-hidden;
+        box-shadow: 0 1px 2px rgba(14, 22, 33, 0.03);
+    }
+    /* Filet navy en haut — donne du poids, signale le "document officiel" */
+    .signal-panel::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 3px;
+        background: linear-gradient(
+            90deg,
+            var(--color-alert) 0%,
+            var(--color-alert) 18%,
+            var(--color-signal-amber) 18%,
+            var(--color-signal-amber) 38%,
+            var(--color-signal-teal) 38%,
+            var(--color-signal-teal) 100%
+        );
+        opacity: 0.75;
+    }
+    /* Motif "carto" très discret en arrière-plan à droite */
+    .signal-panel::after {
+        content: "";
+        position: absolute;
+        top: 0; bottom: 0; right: 0;
+        width: 40%;
+        background-image: radial-gradient(circle at 1px 1px, rgba(10, 37, 64, 0.055) 1px, transparent 0);
+        background-size: 14px 14px;
+        mask-image: linear-gradient(270deg, rgba(0,0,0,0.9) 0%, transparent 100%);
+        -webkit-mask-image: linear-gradient(270deg, rgba(0,0,0,0.9) 0%, transparent 100%);
+        pointer-events: none;
+    }
+    .signal-panel__header {
+        @apply flex items-center justify-between gap-4 px-6 md:px-7 pt-6 pb-4 border-b border-mist relative;
+        z-index: 1;
+    }
+    .signal-panel__label {
+        @apply flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.22em] text-navy;
+    }
+    .signal-panel__live {
+        @apply inline-block w-1.5 h-1.5 rounded-full bg-alert;
+        box-shadow: 0 0 0 0 rgba(184, 61, 61, 0.5);
+        animation: pulse-alert 2s infinite;
+    }
+    .signal-panel__meta {
+        @apply font-mono text-[10px] uppercase tracking-[0.18em] text-fog tabular-nums flex items-center gap-3;
+    }
+    .signal-panel__items {
+        @apply relative;
+        z-index: 1;
+    }
+    .signal-panel__item {
+        @apply flex items-start gap-5 px-6 md:px-7 py-5 border-t border-mist first:border-t-0 no-underline transition;
+    }
+    .signal-panel__item:hover {
+        @apply bg-bone/60;
+    }
+    .signal-panel__sev {
+        @apply font-mono text-[10px] uppercase tracking-[0.14em] tabular-nums px-2 py-0.5 rounded-full border flex-shrink-0 mt-0.5 whitespace-nowrap;
+    }
+    .signal-panel__sev--1 {
+        @apply border-alert/40 text-alert bg-alert/5;
+    }
+    .signal-panel__sev--2 {
+        color: var(--color-signal-amber);
+        border-color: rgba(184, 117, 46, 0.35);
+        background: rgba(184, 117, 46, 0.06);
+    }
+    .signal-panel__sev--3 {
+        color: var(--color-signal-teal);
+        border-color: rgba(30, 122, 140, 0.3);
+        background: rgba(30, 122, 140, 0.05);
+    }
+    .signal-panel__item-body {
+        @apply flex-1 min-w-0;
+    }
+    .signal-panel__kind {
+        @apply font-mono text-[10px] uppercase tracking-[0.18em] text-fog mb-1.5;
+    }
+    .signal-panel__title {
+        @apply text-ink font-semibold leading-snug text-balance;
+        transition: color 180ms ease;
+    }
+    .signal-panel__item:hover .signal-panel__title {
+        @apply text-navy;
+    }
+    .signal-panel__arrow {
+        @apply flex-shrink-0 text-fog mt-1 transition;
+    }
+    .signal-panel__item:hover .signal-panel__arrow {
+        @apply text-navy;
+        transform: translateX(3px);
+    }
+    .signal-panel__footer {
+        @apply flex items-center justify-between gap-4 px-6 md:px-7 py-4 border-t border-mist bg-bone/50 relative;
+        z-index: 1;
+    }
+    .signal-panel__footer-note {
+        @apply font-mono text-[10px] uppercase tracking-[0.18em] text-fog;
+    }
+
+    /* ---- Variante compacte : sidebar à droite de La Une ---- */
+    .signal-panel--compact {
+        @apply h-full flex flex-col;
+    }
+    .signal-panel--compact::after { display: none; } /* pas de dot-grid en mode étroit */
+    .signal-panel--compact .signal-panel__header {
+        @apply px-5 pt-5 pb-3 flex-col items-start gap-1.5;
+    }
+    .signal-panel--compact .signal-panel__label {
+        @apply text-[10px] tracking-[0.2em];
+    }
+    .signal-panel--compact .signal-panel__meta {
+        @apply text-[9px] tracking-[0.16em];
+    }
+    .signal-panel--compact .signal-panel__items {
+        @apply flex-1;
+    }
+    .signal-panel--compact .signal-panel__item {
+        @apply px-5 py-4 gap-3 items-start;
+    }
+    .signal-panel--compact .signal-panel__sev {
+        @apply text-[9px] tracking-[0.12em] px-1.5 py-0.5;
+    }
+    .signal-panel--compact .signal-panel__kind {
+        @apply text-[9px] tracking-[0.15em] mb-1;
+    }
+    .signal-panel--compact .signal-panel__title {
+        @apply text-sm leading-snug line-clamp-2;
+    }
+    .signal-panel--compact .signal-panel__arrow {
+        @apply w-4 h-4;
+    }
+    .signal-panel--compact .signal-panel__footer {
+        @apply px-5 py-3 flex-col items-start gap-2;
+    }
+    .signal-panel--compact .signal-panel__footer-note {
+        @apply text-[9px] tracking-[0.14em];
+    }
+
+    /* =====================================================
+       ÉPISODE CARD — variante compacte pour le scroll-row podcast.
+       ===================================================== */
+    .episode-card {
+        @apply relative flex flex-col h-full bg-paper border border-mist rounded-2xl p-6 no-underline overflow-hidden;
+        transition: border-color 180ms ease, transform 220ms ease;
+    }
+    .episode-card::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 2px;
+        background: var(--color-navy);
+        opacity: 0.15;
+        transition: opacity 220ms ease;
+    }
+    .episode-card:hover {
+        @apply border-navy/30;
+        transform: translateY(-2px);
+    }
+    .episode-card:hover::before {
+        opacity: 0.85;
+    }
+    .episode-card__head {
+        @apply flex items-center gap-4 mb-5;
+    }
+    .episode-card__play {
+        @apply w-12 h-12 rounded-full bg-navy text-white flex items-center justify-center flex-shrink-0 transition;
+        box-shadow: 0 1px 2px rgba(10, 37, 64, 0.15), 0 4px 12px rgba(10, 37, 64, 0.15);
+    }
+    .episode-card:hover .episode-card__play {
+        transform: scale(1.05);
+    }
+    .episode-card__number {
+        @apply font-mono text-[11px] uppercase tracking-[0.2em] text-fog tabular-nums mb-0.5;
+    }
+    .episode-card__season {
+        @apply font-mono text-[10px] uppercase tracking-[0.18em] text-navy;
+    }
+    .episode-card__title {
+        @apply text-ink font-semibold text-lg leading-snug text-balance line-clamp-2 mb-3;
+        min-height: calc(1.4em * 2);
+        transition: color 180ms ease;
+    }
+    .episode-card:hover .episode-card__title {
+        @apply text-navy;
+    }
+    .episode-card__excerpt {
+        @apply text-fog text-sm leading-relaxed line-clamp-3 flex-grow mb-5;
+    }
+    .episode-card__meta {
+        @apply flex items-center justify-between pt-4 border-t border-mist font-mono text-[10px] uppercase tracking-[0.14em] text-fog tabular-nums;
+        margin-top: auto;
+    }
+
+    /* ---- Rangée d'épisode (podcast index, sidebar home) ---- */
+    .episode-row {
+        @apply border-t border-mist first:border-0;
+    }
+    .episode-row__link {
+        @apply flex items-start gap-5 py-5 no-underline relative;
+    }
+    .episode-row__number {
+        @apply font-mono text-[11px] text-fog tracking-[0.1em] tabular-nums mt-1.5 flex-shrink-0 w-6;
+    }
+    .episode-row__play {
+        @apply flex-shrink-0 w-10 h-10 rounded-full border border-mist bg-paper flex items-center justify-center text-navy transition-all;
+    }
+    .episode-row__link:hover .episode-row__play {
+        @apply bg-navy text-white border-navy;
+        transform: scale(1.04);
+    }
+    .episode-row__link:hover h3 {
+        @apply text-navy;
+    }
+    .episode-row__link h3 {
+        transition: color 180ms ease;
+    }
+
+    /* Section spacing — généreux à la Stripe : la typo remplit, le blanc respire */
+    .section { @apply py-14 md:py-24 lg:py-28; }
+
+    /* Hero Stripe-style — pt généreux qui laisse le titre occuper tout l'espace */
+    .hero-xl { @apply pt-16 md:pt-36 pb-12 md:pb-24 relative overflow-hidden; }
+
+    /* Décor hero — orbe navy diffuse + dot grid discret, texture Stripe-blog.
+       S'applique à n'importe quelle section via .has-decor. */
+    .has-decor {
+        position: relative;
+        overflow: hidden;
+        isolation: isolate;
+    }
+    .has-decor::before {
+        content: "";
+        position: absolute;
+        top: -20%;
+        right: -10%;
+        width: 55%;
+        height: 120%;
+        background: radial-gradient(ellipse at center, rgba(10, 37, 64, 0.06) 0%, transparent 60%);
+        pointer-events: none;
+        z-index: -1;
+    }
+    .has-decor::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(circle at 1px 1px, rgba(10, 37, 64, 0.06) 1px, transparent 0);
+        background-size: 24px 24px;
+        background-position: 0 0;
+        mask-image: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, transparent 80%);
+        -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, transparent 80%);
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    /* Section bone — soft-frame alterné, Stripe-blog bands */
+    .section--bone {
+        @apply bg-bone border-t border-b border-mist;
+    }
+    .section--bone-top {
+        @apply bg-bone border-t border-mist;
+    }
+
+    /* Ligne de séparation texturée — tiret monospace + hairline */
+    .hr-editorial {
+        @apply flex items-center gap-4 text-fog font-mono text-[10px] uppercase tracking-[0.2em] my-12;
+    }
+    .hr-editorial::before,
+    .hr-editorial::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--color-mist);
+    }
+
+    /* Micro-label éditorial, discret — Stripe/Apple style */
+    .eyebrow {
+        @apply inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.16em] text-fog mb-6;
+    }
+    .eyebrow::before {
+        content: "";
+        display: inline-block;
+        width: 18px;
+        height: 1px;
+        background: var(--color-navy);
+        opacity: 0.35;
+    }
+
+    /* Status pill — monospace, live indicator (alert, en ligne, etc.) */
+    .status-pill {
+        @apply inline-flex items-center gap-2 px-2.5 py-1 rounded-full border border-mist bg-paper font-mono text-[10px] uppercase tracking-[0.14em] text-fog;
+    }
+    .status-pill__dot {
+        @apply inline-block w-1.5 h-1.5 rounded-full bg-ok flex-shrink-0;
+    }
+    .status-pill--alert { @apply border-alert/30 text-alert; }
+    .status-pill--alert .status-pill__dot { @apply bg-alert; }
+
+    /* Règle de section : deux colonnes asymétriques "label à gauche / contenu massif à droite".
+       Pattern Stripe/Apple sur les pages de contenu. */
+    .split-section {
+        @apply grid lg:grid-cols-12 gap-10 lg:gap-16 items-start;
+    }
+    .split-section__label { @apply lg:col-span-4; }
+    .split-section__body  { @apply lg:col-span-8 max-w-3xl; }
+
+    /* ---- Prose éditoriale enrichie ---- */
+    .prose-privaris {
+        @apply prose prose-slate max-w-none;
+    }
+    .prose-privaris a { @apply text-navy font-medium; }
+    .prose-privaris h2, .prose-privaris h3 { @apply text-navy; }
+
+    /* Premier paragraphe : lead plus présent, ton éditorial d'ouverture */
+    .prose-privaris > p:first-of-type {
+        @apply text-xl leading-relaxed text-ink/85 mb-8;
+        font-weight: 450;
+    }
+
+    /* Pull-quote : serif, navy, hors-marge pour les écrans larges */
+    .prose-privaris blockquote {
+        @apply not-italic font-serif text-2xl leading-snug text-navy border-l-2 border-navy pl-6 my-10;
+    }
+    .prose-privaris blockquote p { @apply m-0; }
+    .prose-privaris blockquote::before,
+    .prose-privaris blockquote::after { content: none; }
+
+    /* Code inline plus discret */
+    .prose-privaris code {
+        @apply bg-bone text-navy px-1.5 py-0.5 rounded text-[0.9em] font-normal;
+    }
+    .prose-privaris code::before,
+    .prose-privaris code::after { content: none; }
+
+    /* Liens dans la prose : underline bas animé (signature éditoriale) */
+    .prose-privaris a {
+        background: linear-gradient(currentColor, currentColor) no-repeat left 100% / 100% 1px;
+        transition: background-size 220ms ease;
+    }
+    .prose-privaris a:hover {
+        background-size: 100% 2px;
+    }
+
+    /* Hr : séparateur fin centré plutôt qu'un trait brutal */
+    .prose-privaris hr {
+        @apply border-0 my-12 h-px bg-mist mx-auto;
+        width: 6rem;
+    }
+
+    /* Newsletter form */
+    .newsletter-form input[type="email"] {
+        @apply flex-1 px-4 py-3 rounded-full border border-mist bg-paper focus:border-navy focus:outline-none transition;
+    }
+
+    /* Divider */
+    .divider { @apply border-t border-mist my-16; }
+
+    /* =====================================================
+       SCROLL-ROW — rail horizontal snap + progress + flèches.
+       Cards à taille fixe, snap sur la gauche.
+       Le rail déborde légèrement (bleed de 1.5rem) pour l'effet peek.
+       ===================================================== */
+    .scroll-row {
+        position: relative;
+    }
+    .scroll-row__track {
+        display: flex;
+        gap: 1.25rem;
+        overflow-x: auto;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+        /* Bleed : le rail dépasse du container pour l'effet "carte peek" à la Stripe.
+           Sur mobile on aligne le bleed sur le padding du container (1.25rem). */
+        margin-inline: -1.25rem;
+        padding-inline: 1.25rem;
+        padding-block: 0.25rem 1rem;
+    }
+    @media (min-width: 768px) {
+        .scroll-row__track {
+            gap: 1.75rem;
+            margin-inline: -1.5rem;
+            padding-inline: 1.5rem;
+        }
+    }
+    .scroll-row__track::-webkit-scrollbar { display: none; }
+
+    /* Chaque item : largeur fixe + snap-start.
+       Sur desktop, ~3 cartes visibles dans le container-wide (1280px).
+       Sur mobile, 1 carte + peek de la suivante. */
+    .scroll-row__item {
+        flex: 0 0 auto;
+        scroll-snap-align: start;
+        width: 360px;
+    }
+    @media (min-width: 1280px) {
+        .scroll-row__item { width: 380px; }
+    }
+    @media (max-width: 900px) {
+        .scroll-row__item {
+            width: 78%;
+            min-width: 260px;
+            max-width: 340px;
+        }
+    }
+
+    /* Variant "narrow" : items plus étroits (utilisé pour podcasts) */
+    .scroll-row--narrow .scroll-row__item { width: 280px; }
+    @media (min-width: 1280px) {
+        .scroll-row--narrow .scroll-row__item { width: 300px; }
+    }
+    @media (max-width: 900px) {
+        .scroll-row--narrow .scroll-row__item {
+            width: 72%;
+            min-width: 240px;
+            max-width: 300px;
+        }
+    }
+
+    /* Barre de contrôle : titre + progress-bar + flèches */
+    .scroll-row__controls {
+        @apply flex items-end justify-between gap-6 mb-8;
+    }
+    .scroll-row__nav {
+        @apply flex items-center gap-2 flex-shrink-0;
+    }
+    .scroll-row__arrow {
+        @apply w-10 h-10 rounded-full border border-mist bg-paper text-navy flex items-center justify-center transition;
+    }
+    .scroll-row__arrow:hover:not(:disabled) {
+        @apply border-navy/40 bg-bone;
+    }
+    .scroll-row__arrow:disabled {
+        @apply opacity-30 cursor-not-allowed;
+    }
+    .scroll-row__progress {
+        @apply relative h-px bg-mist overflow-hidden flex-1 max-w-[160px] mx-4 hidden md:block;
+    }
+    .scroll-row__progress-bar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 33%;
+        background: var(--color-navy);
+        transition: left 200ms ease;
+    }
+
+    /* =====================================================
+       ABOUT & CONTACT — pages About/Contact utilisent intégralement
+       le vocabulaire du home (engagement-card, signal-panel,
+       status-pill, has-decor, text-statement) + du style inline
+       dans les templates pour les détails spécifiques (stat rows
+       du signal-panel, cartes Charte On fait / On ne fait pas,
+       FAQ numérotée, form wrappé en carte blanche).
+       Pas de classes custom supplémentaires nécessaires ici.
+       ===================================================== */
+
+    /* =====================================================
+       BACK-TO-TOP — bouton flottant discret, coin inférieur droit.
+       Apparaît quand l'utilisateur a scrollé. Respecte reduced-motion.
+       ===================================================== */
+    .back-to-top {
+        position: fixed;
+        right: 1rem;
+        /* iOS safe-area + fallback */
+        bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+        z-index: 40;
+        width: 44px;
+        height: 44px;
+        border-radius: 9999px;
+        background: var(--color-navy);
+        color: var(--color-paper);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 1px 2px rgba(10, 37, 64, 0.12), 0 6px 20px rgba(10, 37, 64, 0.22);
+        transition: opacity 260ms ease, transform 260ms ease, background 180ms ease;
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .back-to-top:hover {
+        background: var(--color-navy-600, #071d33);
+    }
+    .back-to-top:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(10, 37, 64, 0.25), 0 1px 2px rgba(10, 37, 64, 0.12), 0 6px 20px rgba(10, 37, 64, 0.22);
+    }
+    .back-to-top.is-hidden {
+        opacity: 0;
+        transform: translateY(10px);
+        pointer-events: none;
+    }
+    @media (min-width: 768px) {
+        .back-to-top {
+            right: 1.75rem;
+            bottom: calc(1.75rem + env(safe-area-inset-bottom, 0px));
+            width: 48px;
+            height: 48px;
+        }
+    }
+
+    /* =====================================================
+       REVEAL — fade + slide léger à l'entrée dans le viewport.
+       Appliqué sur les cards, sections, éléments éditoriaux.
+       ===================================================== */
+    .reveal {
+        opacity: 0;
+        transform: translateY(18px);
+        transition: opacity 620ms cubic-bezier(0.22, 1, 0.36, 1),
+                    transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
+        will-change: opacity, transform;
+    }
+    .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* =====================================================
+       COPY-LINK — bouton de partage (copier le lien courant).
+       Même allure que les autres share__btn : discret, icône + label.
+       ===================================================== */
+    .copy-link-btn {
+        position: relative;
+        transition: background 180ms ease, color 180ms ease, border-color 180ms ease;
+    }
+    .copy-link-btn.is-copied {
+        background: var(--color-navy);
+        color: var(--color-paper);
+        border-color: var(--color-navy);
+    }
+    .copy-link-btn.is-copied svg {
+        opacity: 0;
+    }
+}
+
+/* ---------------------------------------------------------
+   Utilities
+   --------------------------------------------------------- */
+@layer utilities {
+    .text-balance { text-wrap: balance; }
+    .text-pretty  { text-wrap: pretty; }
+}

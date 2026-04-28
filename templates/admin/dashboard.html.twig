@@ -1,0 +1,252 @@
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}Tableau de bord{% endblock %}
+
+{% block main %}
+<style>
+    /* =========================================================
+       Dashboard Privaris — éditorial, scannable, actionnable.
+       ========================================================= */
+    .pv-dash { color: #0E1621; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    .pv-dash h1 {
+        font-size: 1.75rem; font-weight: 600; color: #0A2540;
+        margin: 0 0 0.25rem; letter-spacing: -0.015em;
+    }
+    .pv-dash .subtitle {
+        color: #6B7685; font-size: 0.95rem; margin: 0 0 1.75rem;
+    }
+    .pv-dash h2 {
+        font-size: 0.95rem; font-weight: 600; color: #0A2540;
+        margin: 0; letter-spacing: -0.01em;
+    }
+    .pv-dash .eyebrow {
+        font-family: ui-monospace, "SF Mono", Menlo, monospace;
+        font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase;
+        color: #6B7685; margin: 0 0 0.4rem;
+    }
+
+    /* Alerte en cours : bannière navy foncée, éditoriale */
+    .pv-alert {
+        display: flex; align-items: center; gap: 1rem;
+        padding: 0.9rem 1.25rem;
+        background: linear-gradient(90deg, #B83D3D 0%, #7B3D6A 100%);
+        border-radius: 12px; margin-bottom: 1.5rem;
+        color: #fff;
+    }
+    .pv-alert .dot {
+        width: 8px; height: 8px; border-radius: 50%;
+        background: #fff; animation: pv-pulse 1.6s infinite;
+        flex-shrink: 0;
+    }
+    @keyframes pv-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+    .pv-alert .body { flex: 1; min-width: 0; }
+    .pv-alert .kicker {
+        font-family: ui-monospace, "SF Mono", Menlo, monospace;
+        font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+        opacity: 0.85; margin: 0 0 0.15rem;
+    }
+    .pv-alert .title {
+        font-weight: 600; margin: 0; font-size: 1rem; line-height: 1.35;
+        overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+    .pv-alert .action {
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        color: #fff; text-decoration: none;
+        padding: 0.4rem 0.9rem; border-radius: 999px;
+        font-size: 0.8rem; font-weight: 500;
+        transition: background 160ms ease;
+        flex-shrink: 0;
+    }
+    .pv-alert .action:hover { background: rgba(255, 255, 255, 0.28); color: #fff; }
+
+    /* Stats grid */
+    .pv-stats {
+        display: grid; gap: 0.75rem;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        margin-bottom: 1.75rem;
+    }
+    @media (min-width: 768px) { .pv-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+    .pv-card {
+        background: #fff;
+        border: 1px solid #EDEFF2;
+        border-radius: 14px;
+        padding: 1.1rem 1.15rem 1rem;
+        box-shadow: 0 1px 2px rgba(14, 22, 33, 0.03);
+        transition: border-color 160ms ease;
+    }
+    .pv-card:hover { border-color: #A6B9CE; }
+
+    .pv-card .label {
+        font-family: ui-monospace, "SF Mono", Menlo, monospace;
+        font-size: 0.66rem; letter-spacing: 0.16em; text-transform: uppercase;
+        color: #6B7685; margin: 0 0 0.5rem;
+    }
+    .pv-card .value {
+        font-size: 1.9rem; font-weight: 600; color: #0E1621;
+        margin: 0; line-height: 1.05; letter-spacing: -0.02em;
+        font-variant-numeric: tabular-nums;
+    }
+    .pv-card .hint {
+        margin: 0.4rem 0 0;
+        font-size: 0.75rem; color: #6B7685;
+    }
+    .pv-card .hint.warn { color: #B8752E; font-weight: 500; }
+
+    /* Quick actions */
+    .pv-actions {
+        display: flex; flex-wrap: wrap; gap: 0.6rem;
+        margin-bottom: 1.75rem;
+    }
+    .pv-actions a {
+        display: inline-flex; align-items: center; gap: 0.5rem;
+        padding: 0.55rem 1rem;
+        border-radius: 999px;
+        background: #0A2540; color: #fff; text-decoration: none;
+        font-size: 0.85rem; font-weight: 500;
+        transition: background 160ms ease, transform 160ms ease;
+    }
+    .pv-actions a:hover { background: #081E33; color: #fff; transform: translateY(-1px); }
+    .pv-actions a.secondary {
+        background: #fff; color: #0A2540; border: 1px solid #EDEFF2;
+    }
+    .pv-actions a.secondary:hover { border-color: #A6B9CE; background: #F7F8FA; }
+
+    /* Columns lists */
+    .pv-cols {
+        display: grid; gap: 1.25rem;
+        grid-template-columns: 1fr;
+    }
+    @media (min-width: 900px) { .pv-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+    .pv-list-head {
+        display: flex; align-items: center; justify-content: space-between;
+        margin-bottom: 0.9rem;
+    }
+    .pv-list-head .link-all {
+        font-size: 0.8rem; color: #0A2540; text-decoration: none;
+        font-family: ui-monospace, "SF Mono", Menlo, monospace;
+        letter-spacing: 0.08em;
+    }
+    .pv-list-head .link-all:hover { text-decoration: underline; }
+
+    .pv-list { list-style: none; padding: 0; margin: 0; }
+    .pv-list li {
+        display: flex; align-items: center; justify-content: space-between;
+        gap: 0.75rem; padding: 0.6rem 0;
+        border-bottom: 1px solid #F3F4F7;
+    }
+    .pv-list li:last-child { border-bottom: 0; padding-bottom: 0; }
+    .pv-list li a.title {
+        color: #0E1621; text-decoration: none;
+        overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+        font-size: 0.9rem; flex: 1; min-width: 0;
+    }
+    .pv-list li a.title:hover { color: #0A2540; text-decoration: underline; }
+
+    .pv-badge {
+        font-family: ui-monospace, "SF Mono", Menlo, monospace;
+        font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
+        padding: 0.2rem 0.55rem; border-radius: 999px;
+        flex-shrink: 0;
+    }
+    .pv-badge.draft     { background: #F3F4F7; color: #6B7685; }
+    .pv-badge.scheduled { background: #FDF1E3; color: #B8752E; }
+    .pv-badge.published { background: #E6F3EC; color: #2F7D4F; }
+    .pv-badge.archived  { background: #F3F4F7; color: #A6B9CE; }
+
+    .pv-empty { color: #6B7685; font-size: 0.88rem; padding: 0.5rem 0; font-style: italic; }
+</style>
+
+<div class="pv-dash">
+    <h1>Privaris · Console éditoriale</h1>
+    <p class="subtitle">Tout ce qui se passe dans le journal et le podcast, en un coup d'œil.</p>
+
+    {% if activeAlert %}
+        <a href="{{ urlEditAlert }}" class="pv-alert" style="text-decoration: none;">
+            <span class="dot" aria-hidden="true"></span>
+            <div class="body">
+                <p class="kicker">Alerte en cours · Épinglée en home</p>
+                <p class="title">{{ activeAlert.title }}</p>
+            </div>
+            <span class="action">Modifier</span>
+        </a>
+    {% endif %}
+
+    {# ===== Actions rapides ===== #}
+    <div class="pv-actions">
+        <a href="{{ urlArticle }}">+ Nouvel article</a>
+        <a href="{{ urlEpisode }}">+ Nouvel épisode</a>
+        <a href="/" class="secondary" target="_blank" rel="noopener">Voir le site</a>
+    </div>
+
+    {# ===== Stats ===== #}
+    <div class="pv-stats">
+        <div class="pv-card">
+            <p class="label">Articles publiés</p>
+            <p class="value">{{ totals.published }}</p>
+            <p class="hint">sur {{ totals.articles }} au total</p>
+        </div>
+        <div class="pv-card">
+            <p class="label">Brouillons</p>
+            <p class="value">{{ totals.drafts }}</p>
+            {% if totals.scheduled > 0 %}
+                <p class="hint warn">{{ totals.scheduled }} programmé{{ totals.scheduled > 1 ? 's' : '' }}</p>
+            {% else %}
+                <p class="hint">Aucun article programmé</p>
+            {% endif %}
+        </div>
+        <div class="pv-card">
+            <p class="label">Épisodes podcast</p>
+            <p class="value">{{ totals.episodesPub }}</p>
+            <p class="hint">{{ totals.episodes - totals.episodesPub }} en préparation</p>
+        </div>
+        <div class="pv-card">
+            <p class="label">Abonnés confirmés</p>
+            <p class="value">{{ totals.subscribers }}</p>
+            <p class="hint">Newsletter active</p>
+        </div>
+    </div>
+
+    {# ===== Dernières activités ===== #}
+    <div class="pv-cols">
+        <div class="pv-card">
+            <div class="pv-list-head">
+                <h2>Derniers articles</h2>
+                <a href="{{ urlArticleCrud }}" class="link-all">VOIR TOUT →</a>
+            </div>
+            <ul class="pv-list">
+                {% for a in latestArticles %}
+                    <li>
+                        <a class="title" href="{{ articleEditUrls[a.id] }}">{{ a.title }}</a>
+                        <span class="pv-badge {{ a.status }}">{{ a.status }}</span>
+                    </li>
+                {% else %}
+                    <li class="pv-empty">Aucun article pour l'instant.</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <div class="pv-card">
+            <div class="pv-list-head">
+                <h2>Derniers épisodes</h2>
+                <a href="{{ urlEpisodeCrud }}" class="link-all">VOIR TOUT →</a>
+            </div>
+            <ul class="pv-list">
+                {% for e in latestEpisodes %}
+                    <li>
+                        <a class="title" href="{{ episodeEditUrls[e.id] }}">
+                            <span style="color: #6B7685; font-family: ui-monospace, monospace; font-size: 0.78rem; margin-right: 0.35rem;">{{ e.season }}·E{{ '%02d'|format(e.number) }}</span>
+                            {{ e.title }}
+                        </a>
+                        <span class="pv-badge {{ e.status }}">{{ e.status }}</span>
+                    </li>
+                {% else %}
+                    <li class="pv-empty">Aucun épisode pour l'instant.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

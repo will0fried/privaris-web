@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Podcast Privaris · Trois minutes avec Arsène, chaque mardi{% endblock %}
+{% block description %}Trois minutes chaque mardi : une arnaque démontée, un geste à garder. Apple Podcasts, Spotify, Deezer, RSS. Sans jargon, sans alarmisme.{% endblock %}
+
+{% block head_extra %}
+    {# JSON-LD PodcastSeries — décrit la série pour Google et les agrégateurs #}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "PodcastSeries",
+        "name": "Privaris",
+        "url": "{{ url('app_podcast_index') }}",
+        "description": "Un épisode court chaque semaine pour parler cybersécurité sans jargon ni alarmisme. Pour vous, vos proches et votre famille.",
+        "webFeed": "{{ url('app_podcast_feed') }}",
+        "inLanguage": "fr-FR",
+        "author": { "@type": "Person", "name": "Arsène Cipher" },
+        "publisher": { "@type": "Organization", "name": "Privaris" }
+    }
+    </script>
+{% endblock %}
+
+{% block body %}
+    {# ========= HERO — titre énorme, liens d'abonnement sobres ========= #}
+    <section class="hero-xl has-decor">
+        <div class="container-wide">
+            <p class="eyebrow animate-fade-in">Mardi, 7h02, dans votre casque</p>
+            <h1 class="text-hero text-balance max-w-5xl animate-slide-up">
+                Le temps d'un <span class="text-navy">café</span>.<br class="hidden md:block"> Un piège <span class="text-navy">en moins</span>.
+            </h1>
+            <p class="text-lg md:text-xl text-fog leading-relaxed max-w-2xl mt-10">
+                Trois minutes chaque mardi matin avec Arsène Cipher. Une
+                arnaque du moment, démontée à voix haute. Un geste à garder.
+                La cyber comme on en parle entre proches, sans jargon, sans
+                alarmisme.
+            </p>
+
+            <div class="flex flex-wrap items-center gap-x-6 gap-y-3 mt-12 text-sm">
+                <a href="{{ url('app_podcast_feed') }}" class="text-navy font-medium no-underline hover:opacity-70">RSS →</a>
+                <a href="#" class="text-fog no-underline hover:text-navy">Apple Podcasts</a>
+                <a href="#" class="text-fog no-underline hover:text-navy">Spotify</a>
+                <a href="#" class="text-fog no-underline hover:text-navy">Deezer</a>
+            </div>
+        </div>
+    </section>
+
+    {# ========= LISTE — label gauche / épisodes droite ========= #}
+    <section class="py-20 md:py-28 border-t border-mist">
+        <div class="container-wide">
+            <div class="split-section">
+                <div class="split-section__label">
+                    <p class="eyebrow">Les épisodes</p>
+                    <p class="text-sm text-fog leading-relaxed max-w-xs">
+                        Nouveau chaque mardi matin. Trois à quatre minutes,
+                        un piège précis, zéro remplissage. À écouter dans
+                        la file du café, pas dans la salle d'attente.
+                    </p>
+                </div>
+                <div class="split-section__body">
+                    {% if episodes|length > 0 %}
+                        {% for episode in episodes %}
+                            {% include 'components/_episode_row.html.twig' with {episode: episode} only %}
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-fog">Le premier épisode arrive bientôt.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% include 'components/_newsletter.html.twig' with {source: 'podcast'} only %}
+{% endblock %}

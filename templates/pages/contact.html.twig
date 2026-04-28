@@ -1,0 +1,337 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact · Écrire à Privaris{% endblock %}
+{% block description %}Un SMS louche, une question, un signalement sécurité. On lit chaque message, on répond sous 48h. Pas de bot, pas de ticketing.{% endblock %}
+
+{% block body %}
+    {# ========= HERO compact (même langage que la home) ========= #}
+    <section class="pt-14 md:pt-20 pb-10 md:pb-14 has-decor">
+        <div class="container-wide">
+            <div class="flex items-end justify-between gap-10 flex-wrap">
+                <div class="max-w-4xl">
+                    <p class="eyebrow animate-fade-in">Écrire à Privaris</p>
+                    <h1 class="text-[clamp(2.25rem,5.5vw,5rem)] font-semibold leading-[1.08] md:leading-[1.02] tracking-[-0.02em] md:tracking-[-0.03em] text-ink text-balance animate-slide-up">
+                        Un message <span class="text-navy">louche</span> ?<br class="hidden md:block"> On le <span class="text-navy">regarde</span> avec vous.
+                    </h1>
+                    <p class="text-lg md:text-xl text-fog leading-relaxed max-w-2xl mt-8">
+                        Un SMS piégé, un compte qui a basculé, une question pour
+                        un proche, une faille repérée sur le site. Tout arrive
+                        dans la même boîte. On lit, on répond, et parfois ça
+                        devient l'article de la semaine suivante.
+                    </p>
+                </div>
+                <div class="flex items-center gap-3 text-sm">
+                    <span class="status-pill">
+                        <span class="status-pill__dot" aria-hidden="true"></span>
+                        Réponse · &lt; 48 h
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {# =====================================================
+       CANAUX (8 cols) + PERMANENCE (4 cols) — grille 8/4.
+       Les 3 canaux sont des engagement-cards (même langage que
+       le manifeste du home). La sidebar est un signal-panel.
+       ===================================================== #}
+    <section class="pb-14 md:pb-24 border-t border-mist pt-10 md:pt-16">
+        <div class="container-wide">
+            <div class="grid lg:grid-cols-12 gap-8 md:gap-10 lg:gap-14 items-start">
+
+                {# ---- CANAUX (8 cols) ---- #}
+                <div class="lg:col-span-8">
+                    <p class="eyebrow mb-6">Trois portes d'entrée</p>
+                    <p class="text-statement text-balance mb-12">
+                        Une adresse par sujet.
+                        <span class="text-fog">Un humain derrière chacune.</span>
+                    </p>
+
+                    <div class="flex flex-col gap-5">
+                        <a href="mailto:redaction@privaris.fr" class="engagement-card group no-underline reveal" data-controller="reveal" data-reveal-delay-value="0">
+                            <div class="flex items-baseline justify-between gap-6 flex-wrap">
+                                <p class="engagement-card__code">01 · ÉDITORIAL</p>
+                                <span class="font-mono text-xs tabular-nums text-navy group-hover:underline">redaction@privaris.fr</span>
+                            </div>
+                            <h3 class="text-xl font-semibold text-ink mb-3 mt-4 group-hover:text-navy transition-colors">
+                                Un SMS, un mail, une question, une erreur à nous signaler
+                            </h3>
+                            <p class="text-fog leading-relaxed max-w-2xl">
+                                Vous avez reçu un SMS, un email ou un appel qui sent l'arnaque&nbsp;? Transférez-le ici. On regarde, on le démonte, et parfois ça devient un article. Les erreurs repérées dans nos textes arrivent aussi par là.
+                            </p>
+                            <p class="engagement-card__tag">
+                                <span class="engagement-card__tag-dot" aria-hidden="true"></span>
+                                RÉDACTION · PUBLIC
+                            </p>
+                        </a>
+
+                        <a href="mailto:presse@privaris.fr" class="engagement-card group no-underline reveal" data-controller="reveal" data-reveal-delay-value="90">
+                            <div class="flex items-baseline justify-between gap-6 flex-wrap">
+                                <p class="engagement-card__code">02 · PRESSE &amp; PARTENARIATS</p>
+                                <span class="font-mono text-xs tabular-nums text-navy group-hover:underline">presse@privaris.fr</span>
+                            </div>
+                            <h3 class="text-xl font-semibold text-ink mb-3 mt-4 group-hover:text-navy transition-colors">
+                                Interview, intervention, atelier, collaboration
+                            </h3>
+                            <p class="text-fog leading-relaxed max-w-2xl">
+                                Vous êtes journaliste, chargé d'événement ou
+                                animateur d'atelier ? Précisez le cadre et le
+                                public dès le premier message. Privaris ne fait
+                                pas de contenu sponsorisé, ça ne bougera pas.
+                            </p>
+                            <p class="engagement-card__tag">
+                                <span class="engagement-card__tag-dot" aria-hidden="true"></span>
+                                PRESSE · ÉVÉNEMENTS
+                            </p>
+                        </a>
+
+                        <a href="mailto:security@privaris.fr" class="engagement-card group no-underline reveal" data-controller="reveal" data-reveal-delay-value="180">
+                            <div class="flex items-baseline justify-between gap-6 flex-wrap">
+                                <p class="engagement-card__code">
+                                    03 · SIGNALEMENT SÉCURITÉ
+                                    <span class="signal-panel__sev signal-panel__sev--1 ml-2">SEV</span>
+                                </p>
+                                <span class="font-mono text-xs tabular-nums text-navy group-hover:underline">security@privaris.fr</span>
+                            </div>
+                            <h3 class="text-xl font-semibold text-ink mb-3 mt-4 group-hover:text-navy transition-colors">
+                                Faille, vulnérabilité, incident sur privaris.fr
+                            </h3>
+                            <p class="text-fog leading-relaxed max-w-2xl">
+                                Vous avez trouvé une brèche sur le site ou dans
+                                un contenu publié ? On prend ça au sérieux.
+                                Écrivez d'abord en clair, la clé PGP vous sera
+                                renvoyée pour les détails sensibles. Pas de bug
+                                bounty, mais une vraie reconnaissance nominative
+                                si vous la souhaitez.
+                            </p>
+                            <p class="engagement-card__tag">
+                                <span class="engagement-card__tag-dot" aria-hidden="true"></span>
+                                RESPONSIBLE DISCLOSURE · PGP
+                            </p>
+                        </a>
+                    </div>
+                </div>
+
+                {# ---- PERMANENCE (4 cols sticky) ---- #}
+                <aside class="lg:col-span-4 lg:sticky lg:top-24">
+                    <div class="signal-panel signal-panel--compact">
+                        <div class="signal-panel__header">
+                            <p class="signal-panel__label">
+                                <span class="signal-panel__live" aria-hidden="true"></span>
+                                Le bureau d'Arsène
+                            </p>
+                            <p class="signal-panel__meta">
+                                <time datetime="{{ "now"|date('c') }}">
+                                    {{ "now"|format_datetime(pattern='EEEE · HH:mm', locale='fr') }}
+                                </time>
+                            </p>
+                        </div>
+
+                        <div class="signal-panel__items">
+                            <div class="flex items-center justify-between gap-4 border-t border-mist" style="padding:0.875rem 1.5rem;">
+                                <p class="font-mono uppercase text-fog" style="font-size:10px;letter-spacing:0.18em;margin:0;">Temps de réponse</p>
+                                <p class="font-semibold text-ink tabular-nums" style="margin:0;font-size:0.95rem;letter-spacing:-0.005em;">&lt; 48&nbsp;h</p>
+                            </div>
+                            <div class="flex items-center justify-between gap-4 border-t border-mist" style="padding:0.875rem 1.5rem;">
+                                <p class="font-mono uppercase text-fog" style="font-size:10px;letter-spacing:0.18em;margin:0;">Horaires</p>
+                                <p class="font-semibold text-ink" style="margin:0;font-size:0.95rem;letter-spacing:-0.005em;">lun&nbsp;→&nbsp;ven</p>
+                            </div>
+                            <div class="flex items-center justify-between gap-4 border-t border-mist" style="padding:0.875rem 1.5rem;">
+                                <p class="font-mono uppercase text-fog" style="font-size:10px;letter-spacing:0.18em;margin:0;">Fuseau</p>
+                                <p class="font-semibold text-ink" style="margin:0;font-size:0.95rem;letter-spacing:-0.005em;">Europe&nbsp;/&nbsp;Paris</p>
+                            </div>
+                            <div class="flex items-center justify-between gap-4 border-t border-mist" style="padding:0.875rem 1.5rem;">
+                                <p class="font-mono uppercase text-fog" style="font-size:10px;letter-spacing:0.18em;margin:0;">Langues</p>
+                                <p class="font-semibold" style="margin:0;font-size:0.95rem;letter-spacing:-0.005em;color:var(--color-ok);">fr&nbsp;·&nbsp;en</p>
+                            </div>
+                        </div>
+
+                        <div class="signal-panel__footer">
+                            <p class="signal-panel__footer-note">
+                                Pas de bot · pas de ticketing
+                            </p>
+                            <a href="#form" class="btn-link text-xs">
+                                Aller au formulaire
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </aside>
+
+            </div>
+        </div>
+    </section>
+
+    {# =========  FAQ — questions courantes, numérotées ========= #}
+    <section class="section border-t border-mist bg-bone">
+        <div class="container-wide">
+            <div class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+
+                {# ---- Label (4 cols) ---- #}
+                <div class="lg:col-span-4">
+                    <p class="eyebrow mb-5">Avant d'écrire</p>
+                    <p class="text-statement text-balance mb-5">
+                        La réponse est<br>
+                        peut-être <span class="text-fog">déjà là</span>.
+                    </p>
+                    <p class="text-base text-fog leading-relaxed max-w-sm mb-8">
+                        Quatre questions qu'on nous pose en boucle. Le reste, écrivez-nous.
+                    </p>
+                    <div class="flex items-center gap-3 pt-6 border-t border-mist max-w-sm">
+                        <span class="inline-block" style="width:2rem;height:1px;background:rgba(28,58,102,0.4);" aria-hidden="true"></span>
+                        <span class="font-mono uppercase text-fog" style="font-size:11px;letter-spacing:0.18em;">
+                            FAQ · éditoriale
+                        </span>
+                    </div>
+                </div>
+
+                {# ---- Liste FAQ (8 cols) ---- #}
+                <div class="lg:col-span-8">
+                    <div class="rounded-2xl border border-mist bg-paper overflow-hidden" style="box-shadow:0 1px 0 rgba(10,18,33,0.02);">
+                        <dl style="margin:0;">
+                            <div class="border-b border-mist" style="padding:1.5rem 1.75rem;">
+                                <div class="flex items-start gap-5">
+                                    <span class="font-mono tabular-nums text-fog flex-shrink-0" style="font-size:11px;letter-spacing:0.15em;margin-top:0.25rem;">01</span>
+                                    <div style="flex:1;">
+                                        <dt class="text-ink font-semibold mb-2" style="font-size:1.0625rem;letter-spacing:-0.01em;">Combien de temps avant une réponse&nbsp;?</dt>
+                                        <dd class="text-fog leading-relaxed" style="margin:0;max-width:60ch;">
+                                            48 heures ouvrées maximum. On ne répond pas le week-end,
+                                            mais on répond toujours, même pour dire que ce n'est pas notre angle.
+                                        </dd>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border-b border-mist" style="padding:1.5rem 1.75rem;">
+                                <div class="flex items-start gap-5">
+                                    <span class="font-mono tabular-nums text-fog flex-shrink-0" style="font-size:11px;letter-spacing:0.15em;margin-top:0.25rem;">02</span>
+                                    <div style="flex:1;">
+                                        <dt class="text-ink font-semibold mb-2" style="font-size:1.0625rem;letter-spacing:-0.01em;">Vous acceptez les contenus sponsorisés&nbsp;?</dt>
+                                        <dd class="text-fog leading-relaxed" style="margin:0;max-width:60ch;">
+                                            Non. Aucun contenu sponsorisé, ni natif, ni déguisé.
+                                            Le lecteur est notre seul client, c'est ce qui garde la plume libre.
+                                        </dd>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border-b border-mist" style="padding:1.5rem 1.75rem;">
+                                <div class="flex items-start gap-5">
+                                    <span class="font-mono tabular-nums text-fog flex-shrink-0" style="font-size:11px;letter-spacing:0.15em;margin-top:0.25rem;">03</span>
+                                    <div style="flex:1;">
+                                        <dt class="text-ink font-semibold mb-2" style="font-size:1.0625rem;letter-spacing:-0.01em;">Comment me désabonner de la newsletter&nbsp;?</dt>
+                                        <dd class="text-fog leading-relaxed" style="margin:0;max-width:60ch;">
+                                            Un lien de désabonnement figure en bas de chaque email.
+                                            Un clic suffit, pas de formulaire à remplir.
+                                        </dd>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="padding:1.5rem 1.75rem;">
+                                <div class="flex items-start gap-5">
+                                    <span class="font-mono tabular-nums text-fog flex-shrink-0" style="font-size:11px;letter-spacing:0.15em;margin-top:0.25rem;">04</span>
+                                    <div style="flex:1;">
+                                        <dt class="text-ink font-semibold mb-2" style="font-size:1.0625rem;letter-spacing:-0.01em;">Vous intervenez en conférence ou formation&nbsp;?</dt>
+                                        <dd class="text-fog leading-relaxed" style="margin:0;max-width:60ch;">
+                                            Oui, ponctuellement. Écrivez à
+                                            <a href="mailto:presse@privaris.fr" class="text-navy font-medium">presse@privaris.fr</a>
+                                            en précisant le cadre, le public et le format.
+                                        </dd>
+                                    </div>
+                                </div>
+                            </div>
+                        </dl>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    {# ========= FORMULAIRE — conservé, ancre #form ========= #}
+    <section id="form" class="section border-t border-mist">
+        <div class="container-wide">
+            <div class="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+
+                {# ---- Label (4 cols) ---- #}
+                <div class="lg:col-span-4">
+                    <p class="eyebrow mb-5">Le formulaire</p>
+                    <p class="text-statement text-balance mb-5">
+                        Si aucune adresse<br>
+                        ne vous parle.
+                    </p>
+                    <p class="text-base text-fog leading-relaxed max-w-sm mb-8">
+                        Ce formulaire arrive directement dans notre boîte. On
+                        lit, on oriente, on répond. Pas d'assistant virtuel,
+                        pas de réponse générée. Juste un humain.
+                    </p>
+                    <div class="flex items-center gap-3 pt-6 border-t border-mist max-w-sm">
+                        <span class="inline-block rounded-full flex-shrink-0" style="width:6px;height:6px;background:var(--color-ok);" aria-hidden="true"></span>
+                        <div>
+                            <p class="font-semibold text-ink" style="margin:0;font-size:0.875rem;">Réponse sous 48 heures</p>
+                            <p class="text-fog" style="margin:0;font-size:0.8125rem;">Jours ouvrés · pas de ticketing</p>
+                        </div>
+                    </div>
+                </div>
+
+                {# ---- Formulaire (8 cols, carte blanche) ---- #}
+                <div class="lg:col-span-8">
+                    <div class="rounded-2xl border border-mist bg-paper" style="padding:2rem 2rem;box-shadow:0 1px 0 rgba(10,18,33,0.02);">
+                        {% for msg in app.flashes('success') %}
+                            <div class="bg-ok/10 border border-ok/20 text-ok rounded-xl p-4 mb-8 text-sm">{{ msg }}</div>
+                        {% endfor %}
+                        {% for msg in app.flashes('error') %}
+                            <div class="alert-block mb-8 text-sm">{{ msg }}</div>
+                        {% endfor %}
+
+                        {{ form_start(form, {attr: {class: 'space-y-8'}}) }}
+                            <div class="grid md:grid-cols-2 gap-8">
+                                <div>
+                                    {{ form_label(form.name, null, {label_attr: {class: 'block font-mono uppercase text-fog', style: 'font-size:10px;letter-spacing:0.18em;margin-bottom:0.5rem;'}}) }}
+                                    {{ form_widget(form.name, {attr: {class: 'w-full border-0 border-b border-mist focus:border-navy focus:outline-none transition bg-transparent text-base', style: 'padding:0.5rem 0;'}}) }}
+                                    {{ form_errors(form.name) }}
+                                </div>
+
+                                <div>
+                                    {{ form_label(form.email, null, {label_attr: {class: 'block font-mono uppercase text-fog', style: 'font-size:10px;letter-spacing:0.18em;margin-bottom:0.5rem;'}}) }}
+                                    {{ form_widget(form.email, {attr: {class: 'w-full border-0 border-b border-mist focus:border-navy focus:outline-none transition bg-transparent text-base', style: 'padding:0.5rem 0;', autocomplete: 'email'}}) }}
+                                    {{ form_errors(form.email) }}
+                                </div>
+                            </div>
+
+                            <div>
+                                {{ form_label(form.subject, null, {label_attr: {class: 'block font-mono uppercase text-fog', style: 'font-size:10px;letter-spacing:0.18em;margin-bottom:0.5rem;'}}) }}
+                                {{ form_widget(form.subject, {attr: {class: 'w-full border-0 border-b border-mist focus:border-navy focus:outline-none transition bg-transparent text-base', style: 'padding:0.5rem 0;'}}) }}
+                                {{ form_errors(form.subject) }}
+                            </div>
+
+                            <div>
+                                {{ form_label(form.message, null, {label_attr: {class: 'block font-mono uppercase text-fog', style: 'font-size:10px;letter-spacing:0.18em;margin-bottom:0.5rem;'}}) }}
+                                {{ form_widget(form.message, {attr: {class: 'w-full border-0 border-b border-mist focus:border-navy focus:outline-none transition bg-transparent text-base resize-none', style: 'padding:0.5rem 0;', rows: 5}}) }}
+                                {{ form_errors(form.message) }}
+                            </div>
+
+                            {{ form_row(form.website) }}
+
+                            <div class="flex items-start gap-3 pt-4 border-t border-mist" style="padding-top:1.25rem;">
+                                {{ form_widget(form.consent, {attr: {class: 'mt-1 accent-navy flex-shrink-0'}}) }}
+                                {{ form_label(form.consent, null, {label_attr: {class: 'text-sm text-fog leading-relaxed'}}) }}
+                            </div>
+                            {{ form_errors(form.consent) }}
+
+                            <div class="flex items-center justify-between gap-6 flex-wrap pt-2">
+                                <button type="submit" class="btn-primary">
+                                    Envoyer le message
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                                </button>
+                                <p class="text-xs text-fog" style="max-width:28ch;">
+                                    En envoyant, vous acceptez
+                                    <a href="{{ path('app_privacy') }}" class="text-navy">notre politique de confidentialité</a>.
+                                </p>
+                            </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+{% endblock %}

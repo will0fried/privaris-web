@@ -1,0 +1,53 @@
+{# @var article \App\Entity\Article
+   @param variant : 'compact' (default) | 'large' — large = covers + titres plus imposants #}
+{% set variant = variant|default('compact') %}
+{% set is_large = (variant == 'large') %}
+
+<article class="h-full flex flex-col">
+    <a href="{{ path('app_blog_show', {slug: article.slug}) }}"
+       class="article-card group {% if is_large %}article-card--large{% endif %}">
+
+        <div class="article-card__cover">
+            {% if article.coverImageUrl %}
+                <img src="{{ article.coverImageUrl|media_url('articles') }}"
+                     alt="{{ article.coverImageAlt ?: article.title }}"
+                     loading="lazy" decoding="async">
+            {% else %}
+                {% include 'components/_cover_placeholder.html.twig' with {seed: article.id|default(1), large: is_large} only %}
+            {% endif %}
+        </div>
+
+        {# Kicker : catégorie · date — monospace, Stripe-blog pattern #}
+        <div class="article-card__meta-top">
+            {% if article.category %}
+                <span class="article-kicker">{{ article.category.name }}</span>
+                <span class="text-mist" aria-hidden="true">·</span>
+            {% endif %}
+            <time datetime="{{ article.publishedAt|date('c') }}" class="font-mono text-[11px] uppercase tracking-[0.14em] text-fog">
+                {{ article.publishedAt|format_datetime(pattern='d MMM yyyy', locale='fr') }}
+            </time>
+        </div>
+
+        <h3 class="article-card__title">{{ article.title }}</h3>
+        <p class="article-card__excerpt">{{ article.excerpt }}</p>
+
+        {# Byline bas — auteur + temps de lecture #}
+        <div class="article-card__byline">
+            {% if article.author %}
+                <div class="flex items-center gap-2">
+                    {% if article.author.avatarUrl %}
+                        <img src="{{ article.author.avatarUrl|media_url('avatars') }}" alt="" class="w-6 h-6 rounded-full" loading="lazy" decoding="async">
+                    {% else %}
+                        <div class="w-6 h-6 rounded-full bg-navy/10 flex items-center justify-center text-navy text-[10px] font-semibold">
+                            {{ (article.author.displayName ?: article.author.email)|first|upper }}
+                        </div>
+                    {% endif %}
+                    <span class="text-ink text-sm font-medium">{{ article.author.displayName ?: article.author.email }}</span>
+                </div>
+            {% else %}
+                <span class="text-sm text-fog">Rédaction</span>
+            {% endif %}
+            <span class="font-mono text-[10px] uppercase tracking-[0.14em] text-fog tabular-nums">{{ article.readingMinutes }} MIN</span>
+        </div>
+    </a>
+</article>

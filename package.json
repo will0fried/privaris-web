@@ -1,0 +1,8 @@
+{
+    "name": "privaris-web",
+    "private": true,
+    "description": "Dépendances dev pour Tailwind (plugin typography). Le bundle tailwind-cli est géré par symfonycasts/tailwind-bundle.",
+    "devDependencies": {
+        "@tailwindcss/typography": "^0.5.13"
+    }
+}

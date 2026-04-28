@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale|default('fr') }}">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+		<meta name="theme-color" content="{{ brand_navy }}">
+
+		<title>
+			{% block title %}Privaris · Cybersécurité au quotidien, expliquée sans jargon
+			{% endblock %}
+		</title>
+		<meta name="description" content="{% block description %}Privaris, le média indépendant qui explique la cybersécurité aux particuliers : arnaques, mots de passe, Wi-Fi, enfants. Sans jargon, sans alarmisme, sans pub.{% endblock %}">
+
+		{# Robots — par défaut index,follow. Les pages privées / admin peuvent surcharger. #}
+		<meta name="robots" content="{% block robots %}index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1{% endblock %}">
+
+		{# URL canonique — évite le contenu dupliqué (query strings, trailing slashes, etc). #}
+		<link rel="canonical" href="{% block canonical %}{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|default({})) }}{% endblock %}">
+
+		<link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
+		<link rel="alternate icon" href="{{ asset('favicon.ico') }}">
+		<link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
+
+		{# Preconnect aux fontes Google — accélère le premier rendu typographique #}
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+
+		<link
+		rel="alternate" type="application/rss+xml" title="Privaris · Podcast" href="{{ url('app_podcast_feed') }}">
+
+		{# Open Graph / Twitter #}
+		<meta property="og:site_name" content="Privaris">
+		<meta property="og:locale" content="fr_FR">
+		<meta property="og:type" content="{% block og_type %}website{% endblock %}">
+		<meta property="og:title" content="{% block og_title %}{{ block('title') }}{% endblock %}">
+		<meta property="og:description" content="{% block og_description %}{{ block('description') }}{% endblock %}">
+		<meta property="og:url" content="{{ app.request.uri }}">
+		{% block og_image %}<meta property="og:image" content="{{ absolute_url(asset('images/og-default.png')) }}">
+		{% endblock %}
+		<meta name="twitter:card" content="summary_large_image">
+		<meta name="twitter:site" content="@privaris_fr">
+
+		{# JSON-LD Organization + WebSite : présents sur toutes les pages (schema.org) #}
+		<script type="application/ld+json">
+		{
+			"@context": "https://schema.org",
+			"@graph": [
+				{
+					"@type": "Organization",
+					"@id": "{{ absolute_url('/') }}#organization",
+					"name": "Privaris",
+					"url": "{{ absolute_url('/') }}",
+					"logo": "{{ absolute_url(asset('images/logo.svg')) }}",
+					"description": "Média indépendant français qui rend la cybersécurité accessible à tout le monde : particuliers, parents, aidants. Sans publicité, sans traceurs, sans jargon.",
+					"sameAs": []
+				},
+				{
+					"@type": "WebSite",
+					"@id": "{{ absolute_url('/') }}#website",
+					"url": "{{ absolute_url('/') }}",
+					"name": "Privaris",
+					"inLanguage": "fr-FR",
+					"publisher": { "@id": "{{ absolute_url('/') }}#organization" },
+					"potentialAction": {
+						"@type": "SearchAction",
+						"target": "{{ absolute_url('/articles') }}?q={search_term_string}",
+						"query-input": "required name=search_term_string"
+					}
+				}
+			]
+		}
+		</script>
+
+		{% block head_extra %}{% endblock %}
+		{% block stylesheets %}{% endblock %}
+		{% block javascripts %}
+			{% block importmap %}
+				{{ importmap('app') }}
+			{% endblock %}
+		{% endblock %}
+	</head>
+	<body class="min-h-screen flex flex-col antialiased">
+		{# Skip link — accessibilité clavier #}
+		<a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:bg-navy focus:text-paper focus:px-4 focus:py-2 focus:rounded-md focus:shadow-lg">Aller au contenu</a>
+
+		{% include 'components/_nav.html.twig' %}
+
+		<main id="main" class="flex-1" tabindex="-1">{% block body %}{% endblock %}
+		</main>
+
+			{% include 'components/_footer.html.twig' %}
+
+			{# Back-to-top flottant — apparaît après ~60% d'écran scrollé #}
+			<button type="button"
+					class="back-to-top is-hidden"
+					data-controller="back-to-top"
+					data-action="click->back-to-top#scrollToTop"
+					aria-label="Revenir en haut de la page">
+				<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+					<path d="M12 19V5"/>
+					<path d="m5 12 7-7 7 7"/>
+				</svg>
+			</button>
+
+			{# Stimulus turbo lifecycle events — animations simples #}
+			{% block after_footer %}{% endblock %}
+		</body>
+	</html>

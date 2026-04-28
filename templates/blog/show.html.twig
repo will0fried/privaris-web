@@ -1,0 +1,244 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ article.seoTitle ?: article.title }} · Privaris{% endblock %}
+{% block description %}{{ article.seoDescription ?: article.excerpt }}{% endblock %}
+{% block og_type %}article{% endblock %}
+{% block og_image %}{% if article.coverImageUrl %}<meta property="og:image" content="{{ absolute_url(article.coverImageUrl|media_url('articles')) }}">{% else %}{{ parent() }}{% endif %}{% endblock %}
+
+{% block head_extra %}
+    {# Open Graph article — enrichi pour les partages sociaux #}
+    <meta property="article:published_time" content="{{ article.publishedAt|date('c') }}">
+    {% if article.updatedAt %}<meta property="article:modified_time" content="{{ article.updatedAt|date('c') }}">{% endif %}
+    {% if article.author %}<meta property="article:author" content="{{ article.author.displayName ?: article.author.email }}">{% endif %}
+    {% if article.category %}<meta property="article:section" content="{{ article.category.name }}">{% endif %}
+    {% for tag in article.tags %}<meta property="article:tag" content="{{ tag.name }}">{% endfor %}
+
+    {# JSON-LD Article + BreadcrumbList — structured data Google #}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "NewsArticle",
+        "mainEntityOfPage": { "@type": "WebPage", "@id": "{{ url('app_blog_show', {slug: article.slug}) }}" },
+        "headline": {{ article.title|json_encode|raw }},
+        "description": {{ (article.seoDescription ?: article.excerpt)|json_encode|raw }},
+        "datePublished": "{{ article.publishedAt|date('c') }}",
+        {% if article.updatedAt %}"dateModified": "{{ article.updatedAt|date('c') }}",{% endif %}
+        "author": {
+            "@type": "Person",
+            "name": {{ (article.author.displayName ?: 'Rédaction Privaris')|json_encode|raw }}
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Privaris",
+            "logo": { "@type": "ImageObject", "url": "{{ absolute_url(asset('images/logo.svg')) }}" }
+        },
+        "inLanguage": "fr-FR"
+        {% if article.category %},"articleSection": {{ article.category.name|json_encode|raw }}{% endif %}
+        {% if article.tags|length > 0 %},"keywords": {{ article.tags|map(t => t.name)|join(', ')|json_encode|raw }}{% endif %}
+        {% if article.coverImageUrl %},"image": "{{ absolute_url(article.coverImageUrl|media_url('articles')) }}"{% endif %}
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "{{ absolute_url('/') }}" },
+            { "@type": "ListItem", "position": 2, "name": "Articles", "item": "{{ url('app_blog_index') }}" }
+            {% if article.category %},{ "@type": "ListItem", "position": 3, "name": {{ article.category.name|json_encode|raw }}, "item": "{{ url('app_blog_category', {slug: article.category.slug}) }}" },
+            { "@type": "ListItem", "position": 4, "name": {{ article.title|json_encode|raw }}, "item": "{{ url('app_blog_show', {slug: article.slug}) }}" }
+            {% else %},{ "@type": "ListItem", "position": 3, "name": {{ article.title|json_encode|raw }}, "item": "{{ url('app_blog_show', {slug: article.slug}) }}" }
+            {% endif %}
+        ]
+    }
+    </script>
+{% endblock %}
+
+{% block body %}
+    <article data-controller="reading-progress">
+        {# ========= BARRE DE PROGRESSION DE LECTURE ========= #}
+        <div class="fixed left-0 top-16 right-0 h-0.5 bg-transparent z-30 pointer-events-none">
+            <div data-reading-progress-target="bar"
+                 class="h-full bg-navy transition-[width] duration-100 ease-out"
+                 style="width: 0%"></div>
+        </div>
+
+        {# ========= HEADER ARTICLE ========= #}
+        <header class="pt-16 md:pt-24 pb-10">
+            <div class="container-wide">
+                <div class="max-w-prose-narrow">
+                    {# Kicker : catégorie · date, en eyebrow signature #}
+                    <p class="eyebrow mb-6">
+                        {% if article.category %}
+                            <a href="{{ path('app_blog_category', {slug: article.category.slug}) }}" class="text-navy no-underline">{{ article.category.name }}</a>
+                        {% else %}
+                            Article
+                        {% endif %}
+                    </p>
+
+                    <h1 class="text-h1 text-balance mb-6 animate-slide-up">{{ article.title }}</h1>
+                    <p class="text-fog text-xl leading-relaxed mb-8">{{ article.excerpt }}</p>
+
+                    {# Strip métadonnées : auteur · date · temps · maj — ligne monospace éditoriale #}
+                    <div class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm pt-6 border-t border-mist">
+                        {% if article.author %}
+                            <div class="flex items-center gap-2.5">
+                                {% if article.author.avatarUrl %}
+                                    <img src="{{ article.author.avatarUrl|media_url('avatars') }}" alt="" class="w-7 h-7 rounded-full" loading="lazy" decoding="async">
+                                {% else %}
+                                    <div class="w-7 h-7 rounded-full bg-navy/10 flex items-center justify-center text-navy text-xs font-semibold">
+                                        {{ (article.author.displayName ?: article.author.email)|first|upper }}
+                                    </div>
+                                {% endif %}
+                                <span class="text-ink font-medium">{{ article.author.displayName ?: article.author.email }}</span>
+                            </div>
+                            <span class="text-mist" aria-hidden="true">·</span>
+                        {% endif %}
+                        <time datetime="{{ article.publishedAt|date('c') }}" class="text-fog">{{ article.publishedAt|format_datetime(pattern='d MMMM yyyy', locale='fr') }}</time>
+                        <span class="text-mist" aria-hidden="true">·</span>
+                        <span class="text-fog font-mono text-xs tabular-nums">{{ article.readingMinutes }} MIN</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        {# ========= COVER IMAGE ========= #}
+        <div class="container-wide mb-12 md:mb-16">
+            <div class="aspect-[16/8] rounded-2xl overflow-hidden bg-bone">
+                {% if article.coverImageUrl %}
+                    <img src="{{ article.coverImageUrl|media_url('articles') }}" alt="{{ article.coverImageAlt ?: '' }}" class="w-full h-full object-cover" fetchpriority="high" decoding="async">
+                {% else %}
+                    {% include 'components/_cover_placeholder.html.twig' with {seed: article.id|default(1), large: true} only %}
+                {% endif %}
+            </div>
+        </div>
+
+        {# ========= CORPS + ASIDE ========= #}
+        <div class="container-wide pb-16">
+            <div class="grid lg:grid-cols-3 gap-10 lg:gap-14 items-start">
+
+                {# --- Colonne lecture --- #}
+                <div class="lg:col-span-2 max-w-prose-narrow">
+                    <div class="prose-privaris">
+                        {# Le contenu est stocké en HTML rédigé dans l'admin (confiance rédaction). #}
+                        {{ article.content|raw }}
+                    </div>
+
+                    {% if article.tags|length > 0 %}
+                    <div class="flex flex-wrap gap-2 mt-12 pt-8 border-t border-mist">
+                        {% for tag in article.tags %}
+                            <a href="{{ path('app_blog_tag', {slug: tag.slug}) }}" class="text-sm px-3 py-1.5 rounded-full border border-mist text-fog no-underline hover:border-navy hover:text-navy">#{{ tag.name }}</a>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                {# --- Aside : auteur, partage, épisode lié --- #}
+                <aside class="lg:col-span-1 lg:pl-8 lg:border-l border-mist lg:sticky lg:top-24 space-y-8"
+                       aria-label="À propos de cet article">
+
+                    {# Auteur #}
+                    {% if article.author %}
+                    <div>
+                        <p class="text-xs uppercase tracking-[0.2em] text-fog mb-3">Auteur</p>
+                        <div class="flex items-center gap-3">
+                            {% if article.author.avatarUrl %}
+                                <img src="{{ article.author.avatarUrl|media_url('avatars') }}" alt="" class="w-10 h-10 rounded-full" loading="lazy" decoding="async">
+                            {% else %}
+                                <div class="w-10 h-10 rounded-full bg-navy/10 flex items-center justify-center text-navy font-semibold">
+                                    {{ (article.author.displayName ?: article.author.email)|first|upper }}
+                                </div>
+                            {% endif %}
+                            <div>
+                                <p class="font-medium text-ink text-sm">{{ article.author.displayName ?: article.author.email }}</p>
+                                <p class="text-xs text-fog">Rédaction Privaris</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {# Partager #}
+                    <div>
+                        <p class="text-xs uppercase tracking-[0.2em] text-fog mb-3">Partager</p>
+                        <div class="flex flex-wrap gap-2">
+                            <a href="https://twitter.com/intent/tweet?url={{ url('app_blog_show', {slug: article.slug})|url_encode }}&text={{ article.title|url_encode }}"
+                               target="_blank" rel="noopener"
+                               class="text-xs px-3 py-1.5 rounded-full border border-mist text-fog no-underline hover:border-navy hover:text-navy">
+                                X / Twitter
+                            </a>
+                            <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ url('app_blog_show', {slug: article.slug})|url_encode }}"
+                               target="_blank" rel="noopener"
+                               class="text-xs px-3 py-1.5 rounded-full border border-mist text-fog no-underline hover:border-navy hover:text-navy">
+                                LinkedIn
+                            </a>
+                            <a href="mailto:?subject={{ article.title|url_encode }}&body={{ url('app_blog_show', {slug: article.slug})|url_encode }}"
+                               class="text-xs px-3 py-1.5 rounded-full border border-mist text-fog no-underline hover:border-navy hover:text-navy">
+                                Email
+                            </a>
+                            <button type="button"
+                                    class="copy-link-btn text-xs px-3 py-1.5 rounded-full border border-mist text-fog hover:border-navy hover:text-navy inline-flex items-center gap-1.5"
+                                    data-controller="copy-link"
+                                    data-copy-link-url-value="{{ url('app_blog_show', {slug: article.slug}) }}"
+                                    data-copy-link-label-value="Copier le lien"
+                                    data-copy-link-success-label-value="✓ Copié"
+                                    data-action="click->copy-link#copy"
+                                    aria-label="Copier le lien de l'article">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                                </svg>
+                                <span data-copy-link-target="label">Copier le lien</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    {# Épisode associé #}
+                    {% if article.relatedEpisode and article.relatedEpisode.isPublished %}
+                    <div>
+                        <p class="text-xs uppercase tracking-[0.2em] text-fog mb-3">Écouter aussi</p>
+                        <a href="{{ path('app_podcast_show', {slug: article.relatedEpisode.slug}) }}"
+                           class="card-link block no-underline">
+                            <div class="flex items-start gap-3">
+                                <div class="w-10 h-10 rounded-full bg-navy text-white flex items-center justify-center flex-shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-[10px] uppercase tracking-[0.18em] font-semibold text-navy mb-0.5">Podcast</p>
+                                    <p class="font-semibold text-ink text-sm leading-snug">{{ article.relatedEpisode.title }}</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    {% endif %}
+
+                    {# Newsletter mini-CTA #}
+                    <div class="card-link">
+                        <p class="text-xs uppercase tracking-[0.2em] text-fog mb-2">Newsletter</p>
+                        <p class="text-sm text-ink leading-snug mb-3">Une veille cyber claire chaque semaine.</p>
+                        <a href="#newsletter" class="btn-link text-xs">
+                            S'abonner
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                        </a>
+                    </div>
+
+                </aside>
+            </div>
+        </div>
+    </article>
+
+    {% if related|length > 0 %}
+    <section class="section border-t border-mist">
+        <div class="container-wide">
+            <h2 class="text-h2 mb-10">À lire aussi</h2>
+            <div class="grid gap-10 lg:gap-12 md:grid-cols-3">
+                {% for r in related|filter(r => r.id != article.id) %}
+                    {% include 'components/_article_card.html.twig' with {article: r} only %}
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    {% endif %}
+
+    {% include 'components/_newsletter.html.twig' with {source: 'article'} only %}
+{% endblock %}

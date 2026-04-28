@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Désinscription · Privaris{% endblock %}
+
+{% block body %}
+    <section class="section">
+        <div class="container-narrow text-center">
+            <h1 class="text-h1 mb-4">Désinscription prise en compte</h1>
+            <p class="text-fog text-lg leading-relaxed mb-10">
+                Nous ne vous enverrons plus d'email. Merci pour le temps passé avec Privaris.
+                Vous restez évidemment le ou la bienvenu·e quand vous le souhaitez.
+            </p>
+            <a href="{{ path('app_home') }}" class="btn-primary">Retour à l'accueil</a>
+        </div>
+    </section>
+{% endblock %}
