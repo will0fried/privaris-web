@@ -26,13 +26,25 @@
             </a>
             <a href="{{ path('app_podcast_index') }}"
                class="nav-link {{ route starts with 'app_podcast' ? 'is-active' : '' }}">Podcast</a>
+            <a href="{{ path('app_sos_index') }}"
+               class="nav-link {{ route starts with 'app_sos' ? 'is-active' : '' }}">SOS</a>
             <a href="{{ path('app_about') }}"
                class="nav-link {{ route == 'app_about' ? 'is-active' : '' }}">À propos</a>
             <a href="{{ path('app_contact') }}"
                class="nav-link {{ route == 'app_contact' ? 'is-active' : '' }}">Contact</a>
         </nav>
 
-        <a href="#newsletter" class="hidden md:inline-flex btn-primary">S'abonner</a>
+        <div class="hidden md:flex items-center gap-3">
+            <a href="{{ path('app_search') }}"
+               class="nav-link {{ route == 'app_search' ? 'is-active' : '' }}"
+               aria-label="Rechercher" title="Rechercher">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="11" cy="11" r="7"/>
+                    <path d="m20 20-3.5-3.5"/>
+                </svg>
+            </a>
+            <a href="#newsletter" class="btn-primary">S'abonner</a>
+        </div>
 
         <button class="mobile-menu-btn md:hidden" data-controller="mobile-menu" data-action="click->mobile-menu#toggle" aria-label="Menu">
             <svg class="mobile-menu-btn__icon mobile-menu-btn__icon--open" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
@@ -55,8 +67,10 @@
                 {% if has_alert %}<span class="nav-alert-dot" aria-label="Alerte en cours"></span>{% endif %}
             </a>
             <a href="{{ path('app_podcast_index') }}" class="mobile-menu-panel__link {{ route starts with 'app_podcast' ? 'is-active' : '' }}">Podcast</a>
+            <a href="{{ path('app_sos_index') }}"     class="mobile-menu-panel__link {{ route starts with 'app_sos' ? 'is-active' : '' }}">SOS</a>
             <a href="{{ path('app_about') }}"         class="mobile-menu-panel__link {{ route == 'app_about' ? 'is-active' : '' }}">À propos</a>
             <a href="{{ path('app_contact') }}"       class="mobile-menu-panel__link {{ route == 'app_contact' ? 'is-active' : '' }}">Contact</a>
+            <a href="{{ path('app_search') }}"        class="mobile-menu-panel__link {{ route == 'app_search' ? 'is-active' : '' }}">Rechercher</a>
             <a href="#newsletter" class="btn-primary mobile-menu-panel__cta">S'abonner</a>
         </nav>
     </div>

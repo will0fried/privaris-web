@@ -1178,6 +1178,135 @@
     .copy-link-btn.is-copied svg {
         opacity: 0;
     }
+
+    /* =====================================================
+       SOS — pages d'urgence (cartes scénarios + étapes).
+       Vocabulaire visuel cohérent avec engagement-card et
+       signal-panel : navy, mist, mono pour l'eyebrow.
+       ===================================================== */
+    .sos-card {
+        @apply relative bg-paper border border-mist rounded-2xl p-7 md:p-8 flex flex-col h-full no-underline;
+        transition: border-color 180ms ease, transform 220ms ease, box-shadow 220ms ease;
+    }
+    .sos-card:hover {
+        @apply border-navy/30;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(14, 22, 33, 0.04);
+    }
+    .sos-card__badge {
+        @apply inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.16em] px-2.5 py-1 rounded-full;
+    }
+    .sos-card__badge--critical {
+        background: rgba(184, 61, 61, 0.08);
+        color: var(--color-alert, #b83d3d);
+    }
+    .sos-card__badge--urgent {
+        background: rgba(212, 130, 32, 0.10);
+        color: #a65a14;
+    }
+    .sos-card__badge--serious {
+        background: rgba(10, 37, 64, 0.06);
+        color: var(--color-navy);
+    }
+
+    /* Bucket = un des 3 temps (10 min / 24h / La suite) */
+    .sos-bucket {
+        @apply relative pl-0 md:pl-12;
+    }
+    .sos-bucket__header {
+        @apply flex items-start gap-4 md:gap-6 mb-6 md:mb-8;
+    }
+    .sos-bucket__index {
+        @apply inline-flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full bg-navy text-paper font-semibold text-lg flex-shrink-0;
+    }
+    .sos-bucket__steps {
+        @apply space-y-5 list-none p-0 md:pl-16;
+    }
+
+    .sos-step {
+        @apply relative pl-6 border-l-2 border-mist py-1;
+    }
+    .sos-step::before {
+        content: "";
+        position: absolute;
+        left: -5px;
+        top: 0.7rem;
+        width: 8px;
+        height: 8px;
+        border-radius: 9999px;
+        background: var(--color-navy);
+        opacity: 0.85;
+    }
+    .sos-step__title {
+        @apply font-semibold text-ink leading-snug;
+    }
+    .sos-step__detail {
+        @apply text-fog leading-relaxed mt-1.5;
+    }
+
+    /* =====================================================
+       SHARE — boutons de partage social, vocabulaire monochrome.
+       Pas de couleur de marque tiers : on assume une UI sobre,
+       cohérente avec le positionnement vie privée.
+       ===================================================== */
+    .share-block { /* conteneur — fournit l'espace bas et l'aria */ }
+    .share-btn {
+        @apply inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border border-mist text-fog no-underline transition;
+        background: transparent;
+        cursor: pointer;
+    }
+    .share-btn:hover {
+        @apply border-navy text-navy;
+    }
+    .share-btn:focus-visible {
+        outline: none;
+        @apply border-navy text-navy;
+        box-shadow: 0 0 0 3px rgba(10, 37, 64, 0.15);
+    }
+    /* Bouton natif (Web Share API) — caché tant que Stimulus n'a pas confirmé
+       le support. Évite le flash sur desktop / navigateurs anciens. */
+    .share-btn--native.is-hidden {
+        display: none;
+    }
+    .share-btn--native {
+        @apply text-navy border-navy;
+        background: rgba(10, 37, 64, 0.04);
+    }
+    .share-btn--native:hover {
+        background: rgba(10, 37, 64, 0.08);
+    }
+    /* Quand .copy-link-btn est aussi .share-btn, on garde l'effet "is-copied"
+       du contrôleur copy-link : l'opacité du SVG passe à 0 et le bouton vire navy. */
+    .share-btn.copy-link-btn.is-copied {
+        background: var(--color-navy);
+        color: var(--color-paper);
+        border-color: var(--color-navy);
+    }
+    .share-btn.copy-link-btn.is-copied svg {
+        opacity: 0;
+    }
+
+    /* SOS teaser sur la home — bandeau pleine largeur juste après le hero. */
+    .sos-teaser {
+        @apply relative overflow-hidden rounded-2xl bg-navy text-paper p-7 md:p-9 flex flex-col md:flex-row md:items-center gap-6 md:gap-10 no-underline;
+    }
+    .sos-teaser:hover {
+        background: #0d2f51;
+    }
+    .sos-teaser__icon {
+        @apply flex-shrink-0 inline-flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full;
+        background: rgba(255, 255, 255, 0.10);
+    }
+    .sos-teaser__label {
+        @apply font-mono text-[11px] uppercase tracking-[0.22em] mb-2;
+        color: rgba(255, 255, 255, 0.65);
+    }
+    .sos-teaser__title {
+        @apply text-xl md:text-2xl font-semibold leading-tight tracking-tight;
+    }
+    .sos-teaser__cta {
+        @apply inline-flex items-center gap-2 font-medium text-sm md:ml-auto flex-shrink-0;
+    }
 }
 
 /* ---------------------------------------------------------

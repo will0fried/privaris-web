@@ -1,0 +1,200 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ scenario.title }} · SOS · Privaris{% endblock %}
+{% block description %}{{ scenario.summary }}{% endblock %}
+
+{% block head_extra %}
+    {# JSON-LD HowTo — structure de guide pas-à-pas, parfaite pour Google #}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": {{ scenario.title|json_encode|raw }},
+        "description": {{ scenario.summary|json_encode|raw }},
+        "inLanguage": "fr-FR",
+        "totalTime": "PT24H",
+        "step": [
+            {% for bucket in scenario.steps %}
+                {% for action in bucket.actions %}
+                    {
+                        "@type": "HowToStep",
+                        "name": {{ action.title|json_encode|raw }},
+                        "text": {{ (action.detail ?? action.title)|json_encode|raw }}
+                    }{{ not loop.last ? ',' }}
+                {% endfor %}
+                {{ not loop.last ? ',' }}
+            {% endfor %}
+        ]
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "{{ absolute_url('/') }}" },
+            { "@type": "ListItem", "position": 2, "name": "SOS",     "item": "{{ url('app_sos_index') }}" },
+            { "@type": "ListItem", "position": 3, "name": {{ scenario.title|json_encode|raw }}, "item": "{{ url('app_sos_show', {slug: scenario.slug}) }}" }
+        ]
+    }
+    </script>
+{% endblock %}
+
+{% block body %}
+    {% set urgencyLabel = {
+        'critical': 'Critique · agir maintenant',
+        'urgent':   'Urgent · ne pas tarder',
+        'serious':  'À traiter rapidement'
+    }[scenario.urgency]|default('À traiter rapidement') %}
+
+    {# ========= HEADER ========= #}
+    <article>
+        <header class="pt-12 md:pt-20 pb-12 md:pb-16">
+            <div class="container-wide">
+                {# Fil d'Ariane discret #}
+                <nav class="text-xs uppercase tracking-[0.2em] text-fog mb-8" aria-label="Fil d'Ariane">
+                    <a href="{{ path('app_sos_index') }}" class="text-fog no-underline hover:text-navy">SOS</a>
+                    <span aria-hidden="true" class="mx-2 text-mist">·</span>
+                    <span class="text-ink">{{ scenario.kicker }}</span>
+                </nav>
+
+                <div class="max-w-prose-narrow">
+                    <span class="sos-card__badge sos-card__badge--{{ scenario.urgency }} inline-flex mb-6">{{ urgencyLabel }}</span>
+
+                    <h1 class="text-[clamp(2.25rem,5vw,3.75rem)] font-semibold leading-[1.08] tracking-[-0.02em] text-ink text-balance mb-6 animate-slide-up">
+                        {{ scenario.title }}
+                    </h1>
+
+                    <p class="text-xl text-fog leading-relaxed">{{ scenario.summary }}</p>
+                </div>
+            </div>
+        </header>
+
+        {# ========= DIAGNOSTIC ========= #}
+        <section class="pb-12 md:pb-16">
+            <div class="container-wide">
+                <div class="max-w-prose-narrow">
+                    <p class="eyebrow mb-6">Vous êtes concerné·e si…</p>
+                    <ul class="space-y-3 list-none p-0">
+                        {% for sign in scenario.diagnosis %}
+                            <li class="flex items-start gap-3 text-ink leading-relaxed">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                     class="flex-shrink-0 mt-1 text-navy/60" aria-hidden="true">
+                                    <path d="M9 11l3 3L22 4"/>
+                                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                                </svg>
+                                <span>{{ sign }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        {# ========= ÉTAPES SÉQUENTIELLES ========= #}
+        <section class="pb-16 md:pb-24 border-t border-mist pt-12 md:pt-16">
+            <div class="container-wide">
+                <div class="max-w-prose-wide">
+                    <p class="eyebrow mb-6">Marche à suivre</p>
+                    <h2 class="text-h2 text-balance mb-12">
+                        Trois temps. Le premier décide souvent du reste.
+                    </h2>
+
+                    <div class="space-y-12 md:space-y-16">
+                        {% for bucket in scenario.steps %}
+                            <div class="sos-bucket">
+                                <div class="sos-bucket__header">
+                                    <span class="sos-bucket__index" aria-hidden="true">{{ loop.index }}</span>
+                                    <div>
+                                        <h3 class="text-2xl font-semibold text-ink leading-tight tracking-tight">{{ bucket.label }}</h3>
+                                        {% if bucket.note %}
+                                            <p class="text-fog text-base mt-1">{{ bucket.note }}</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <ol class="sos-bucket__steps">
+                                    {% for action in bucket.actions %}
+                                        <li class="sos-step">
+                                            <div class="sos-step__title">{{ action.title }}</div>
+                                            {% if action.detail %}
+                                                <p class="sos-step__detail">{{ action.detail }}</p>
+                                            {% endif %}
+                                        </li>
+                                    {% endfor %}
+                                </ol>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {# ========= RESSOURCES OFFICIELLES ========= #}
+        {% if scenario.resources|length > 0 %}
+        <section class="pb-16 md:pb-20 border-t border-mist pt-12 md:pt-16 bg-bone">
+            <div class="container-wide">
+                <div class="max-w-prose-wide">
+                    <p class="eyebrow mb-6">Ressources officielles</p>
+                    <h2 class="text-h3 text-balance mb-8">
+                        Les bons interlocuteurs, vérifiés.
+                    </h2>
+                    <div class="grid gap-3 sm:grid-cols-2">
+                        {% for resource in scenario.resources %}
+                            <a href="{{ resource.url }}" target="_blank" rel="noopener noreferrer"
+                               class="card-link block no-underline group">
+                                <div class="flex items-start gap-3">
+                                    <span class="font-mono text-[10px] uppercase tracking-[0.18em] mt-1 px-2 py-0.5 rounded {{ resource.kind == 'official' ? 'bg-navy text-paper' : 'bg-mist text-fog' }}">
+                                        {{ resource.kind == 'official' ? 'Officiel' : 'Outil' }}
+                                    </span>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="font-medium text-ink leading-snug group-hover:text-navy transition-colors">
+                                            {{ resource.label }}
+                                        </p>
+                                        <p class="text-xs text-fog mt-0.5 truncate">{{ resource.url|split('/')[2]|default(resource.url) }}</p>
+                                    </div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                         class="flex-shrink-0 mt-1 text-fog group-hover:text-navy transition-colors" aria-hidden="true">
+                                        <path d="M7 17 17 7"/>
+                                        <path d="M7 7h10v10"/>
+                                    </svg>
+                                </div>
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </section>
+        {% endif %}
+
+        {# ========= SCÉNARIOS LIÉS ========= #}
+        {% if related|length > 0 %}
+        <section class="section border-t border-mist">
+            <div class="container-wide">
+                <p class="eyebrow mb-6">Voir aussi</p>
+                <h2 class="text-h3 text-balance mb-10">Si la situation est mixte&nbsp;:</h2>
+                <div class="grid gap-6 md:gap-8 md:grid-cols-2">
+                    {% for r in related %}
+                        <a href="{{ path('app_sos_show', {slug: r.slug}) }}"
+                           class="sos-card group no-underline"
+                           data-urgency="{{ r.urgency }}">
+                            <p class="article-kicker mb-4">{{ r.kicker }}</p>
+                            <h3 class="text-xl font-semibold text-ink leading-tight tracking-tight mb-3 group-hover:text-navy transition-colors">
+                                {{ r.title }}
+                            </h3>
+                            <p class="text-fog leading-relaxed text-sm mb-4">{{ r.summary }}</p>
+                            <span class="btn-link text-sm">
+                                Voir le guide
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                            </span>
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        {% endif %}
+    </article>
+
+    {% include 'components/_newsletter.html.twig' with {source: 'sos-detail'} only %}
+{% endblock %}

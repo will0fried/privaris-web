@@ -33,6 +33,36 @@
     </section>
 
     {# =====================================================
+       SOS TEASER — bandeau compact juste après le hero.
+       C'est le moment où quelqu'un arrive en panique sur la home.
+       On lui donne UN clic vers l'aide d'urgence avant tout le reste.
+       ===================================================== #}
+    <section class="pb-10 md:pb-14">
+        <div class="container-wide">
+            <a href="{{ path('app_sos_index') }}" class="sos-teaser group">
+                <div class="sos-teaser__icon" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 9v4"/>
+                        <path d="M12 17h.01"/>
+                        <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                    </svg>
+                </div>
+                <div class="flex-1 min-w-0">
+                    <p class="sos-teaser__label">SOS · Quelque chose vient d'arriver</p>
+                    <p class="sos-teaser__title text-balance">
+                        Compte piraté, lien suspect cliqué, fichiers bloqués&nbsp;? On vous guide en 10 minutes.
+                    </p>
+                </div>
+                <span class="sos-teaser__cta">
+                    Voir le guide
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+                         class="transition-transform group-hover:translate-x-0.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                </span>
+            </a>
+        </div>
+    </section>
+
+    {# =====================================================
        Données préparées côté contrôleur :
          - alerts   : articles avec alert=true (sidebar Signal — 3 max)
          - featured : article avec featured=true (La Une) — admin-driven,

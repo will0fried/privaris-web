@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SOS · Quelque chose vient d'arriver, on vous guide · Privaris{% endblock %}
+{% block description %}Compte piraté, lien suspect cliqué, données fuitées, ordinateur rançonné, chantage. Le guide d'action de Privaris : ce qu'il faut faire dans les 10 prochaines minutes.{% endblock %}
+
+{% block body %}
+    {# ========= HERO ========= #}
+    <section class="pt-16 md:pt-24 pb-10 md:pb-14">
+        <div class="container-wide">
+            <div class="max-w-3xl">
+                <p class="eyebrow animate-fade-in">SOS · 3 minutes pour agir</p>
+                <h1 class="text-[clamp(2.25rem,6vw,5rem)] font-semibold leading-[1.08] md:leading-[1.02] tracking-[-0.02em] md:tracking-[-0.03em] text-ink text-balance animate-slide-up mt-6">
+                    Quelque chose vient d'arriver. <span class="text-navy">On vous guide.</span>
+                </h1>
+                <p class="text-lg md:text-xl text-fog leading-relaxed max-w-2xl mt-8">
+                    Choisissez ce qui se passe en bas. On vous donne ce qu'il faut faire
+                    dans les 10 prochaines minutes, dans les 24 heures, et après. Sans jargon.
+                    Sans «&nbsp;c'est compliqué&nbsp;».
+                </p>
+
+                {# Reassure block — un media qui dit "vous êtes au bon endroit" #}
+                <div class="mt-8 inline-flex items-center gap-2.5 text-sm text-fog">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M20 6 9 17l-5-5"/>
+                    </svg>
+                    <span>Pages relues, sources officielles citées, mises à jour quand le réel bouge.</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {# ========= GRILLE SCÉNARIOS ========= #}
+    <section class="pb-16 md:pb-24 border-t border-mist pt-12 md:pt-16">
+        <div class="container-wide">
+            <div class="grid gap-6 md:gap-8 md:grid-cols-2">
+                {% for scenario in scenarios %}
+                    {% set urgencyLabel = {
+                        'critical': 'Critique',
+                        'urgent':   'Urgent',
+                        'serious':  'À traiter'
+                    }[scenario.urgency]|default('À traiter') %}
+
+                    <a href="{{ path('app_sos_show', {slug: scenario.slug}) }}"
+                       class="sos-card group no-underline"
+                       data-urgency="{{ scenario.urgency }}">
+                        <div class="flex items-center justify-between mb-5">
+                            <p class="article-kicker">{{ scenario.kicker }}</p>
+                            <span class="sos-card__badge sos-card__badge--{{ scenario.urgency }}">{{ urgencyLabel }}</span>
+                        </div>
+
+                        <h2 class="text-2xl md:text-3xl font-semibold text-ink leading-tight tracking-tight mb-4 group-hover:text-navy transition-colors text-balance">
+                            {{ scenario.title }}
+                        </h2>
+                        <p class="text-fog leading-relaxed mb-6">{{ scenario.summary }}</p>
+
+                        <span class="btn-link text-sm">
+                            Voir le guide
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+                        </span>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    {# ========= RAPPEL CONFIANCE ========= #}
+    <section class="section border-t border-mist bg-bone">
+        <div class="container-wide">
+            <div class="max-w-3xl">
+                <p class="eyebrow mb-6">Au-delà de l'urgence</p>
+                <p class="text-statement text-balance mb-10">
+                    Ce qui n'est pas ici&nbsp;? Demandez-nous.
+                </p>
+                <p class="text-fog text-lg leading-relaxed mb-8 max-w-2xl">
+                    Si votre situation ne rentre pas dans ces cinq cas, écrivez-nous.
+                    On répond, on vous oriente vers les bonnes ressources, et si le sujet
+                    revient souvent, on en fait une nouvelle fiche SOS.
+                </p>
+                <a href="{{ path('app_contact') }}" class="btn-primary">Décrire votre situation</a>
+            </div>
+        </div>
+    </section>
+
+    {% include 'components/_newsletter.html.twig' with {source: 'sos'} only %}
+{% endblock %}
