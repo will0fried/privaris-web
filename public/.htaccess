@@ -49,8 +49,12 @@ Options -MultiViews +SymLinksIfOwnerMatch
     Header always set Referrer-Policy "strict-origin-when-cross-origin"
     Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), interest-cohort=()"
     Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-    # Content-Security-Policy — ajuster si CDN externes utilisés
-    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; media-src 'self' https:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+    # Content-Security-Policy
+    # script-src : 'self' + 'unsafe-inline' + 'unsafe-eval' (Stimulus / Turbo).
+    #   - https://ga.jspm.io : polyfill es-module-shims utilisé par Symfony AssetMapper
+    #     pour les anciens navigateurs sans support natif des import maps.
+    #   - data: : modules JS inlinés (importmap shim, Stimulus eager loading).
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://ga.jspm.io data:; script-src-elem 'self' 'unsafe-inline' https://ga.jspm.io data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; media-src 'self' https:; connect-src 'self' https://ga.jspm.io; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
 </IfModule>
 
 # Bloquer l'accès aux fichiers sensibles
