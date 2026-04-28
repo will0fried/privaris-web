@@ -176,6 +176,53 @@ class ArticleRepository extends ServiceEntityRepository
      * Le tri DESC sur publishedAt est conservé. On s'appuie sur Doctrine\Paginator
      * pour compter correctement avec les jointures (categ/tag).
      */
+    /**
+     * Recherche simple sur titre, résumé et contenu.
+     *
+     * Approche pragmatique :
+     *   - LIKE %query% sur 3 champs (title, excerpt, content) avec OR
+     *   - Articles publiés uniquement, triés par date desc
+     *   - Pas d'index FULLTEXT pour l'instant : volumes faibles, gain mesurable
+     *     seulement au-delà de ~10k articles. Scoring de pertinence à voir
+     *     plus tard (CASE WHEN sur les matches titre vs corps).
+     *
+     * Renvoie un array [items, total, page, pages, perPage, query] aligné avec
+     * paginatePublished() pour pouvoir réutiliser le composant pagination.
+     */
+    public function search(string $query, int $page = 1, int $perPage = 12): array
+    {
+        $page    = max(1, $page);
+        $perPage = max(1, $perPage);
+        $query   = trim($query);
+
+        if ($query === '') {
+            return ['items' => [], 'total' => 0, 'page' => 1, 'pages' => 1, 'perPage' => $perPage, 'query' => ''];
+        }
+
+        // Échappe les wildcards SQL pour éviter qu'un % saisi devienne un joker.
+        $escaped = addcslashes($query, '%_\\');
+        $like    = '%' . $escaped . '%';
+
+        $qb = $this->publishedQb()
+            ->andWhere('a.title LIKE :q OR a.excerpt LIKE :q OR a.content LIKE :q')
+            ->setParameter('q', $like)
+            ->setFirstResult(($page - 1) * $perPage)
+            ->setMaxResults($perPage);
+
+        $paginator = new Paginator($qb->getQuery(), fetchJoinCollection: true);
+        $total     = \count($paginator);
+        $pages     = (int) max(1, ceil($total / $perPage));
+
+        return [
+            'items'   => iterator_to_array($paginator->getIterator()),
+            'total'   => $total,
+            'page'    => min($page, $pages),
+            'pages'   => $pages,
+            'perPage' => $perPage,
+            'query'   => $query,
+        ];
+    }
+
     public function paginatePublished(int $page, int $perPage = 12, ?Category $category = null, ?Tag $tag = null): array
     {
         $page    = max(1, $page);
