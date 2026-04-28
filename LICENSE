@@ -1,0 +1,47 @@
+Privaris
+
+Copyright (C) 2026 Wilfried Koussouri
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+================================================================
+SPDX-License-Identifier: AGPL-3.0-or-later
+
+The full text of the GNU Affero General Public License v3.0 is
+available at https://www.gnu.org/licenses/agpl-3.0.txt and should
+also be present in this repository as the file LICENSE-FULL.
+
+To fetch the canonical full text into this repository, run from
+the project root:
+
+    curl -L -o LICENSE-FULL https://www.gnu.org/licenses/agpl-3.0.txt
+
+================================================================
+
+In short (this is NOT the license itself, see LICENSE-FULL):
+
+The AGPL-3.0 is a strong copyleft license. You may use, study,
+modify and redistribute this software, including in your own
+projects, subject to two key obligations:
+
+  1. Any modified version you distribute MUST also be licensed
+     under AGPL-3.0 (or later) and you MUST publish the source
+     of those modifications.
+
+  2. If you run a modified version on a server and let users
+     interact with it over a network, you MUST offer those
+     users access to the corresponding source code.
+
+The AGPL-3.0 is the same spirit as the GPL-3.0 with an additional
+"network use" clause (Section 13) that closes the SaaS loophole.

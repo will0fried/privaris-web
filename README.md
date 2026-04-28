@@ -1,153 +1,151 @@
-# Privaris — Blog & Podcast cybersécurité
+# Privaris
 
-Site web du média **Privaris**, construit en **Symfony 7** + **Tailwind CSS** + **EasyAdmin**.
+> Cybersécurité au quotidien, expliquée sans jargon. Pour vous, vos proches,
+> votre famille.
 
----
+Privaris est un média indépendant français qui rend la cybersécurité accessible
+au grand public. Pas d'expertise pro requise pour lire les articles, pas de
+publicité, pas de tracker.
+
+Site en ligne : [privaris.fr](https://privaris.fr) · Code source ouvert sous
+licence AGPL-3.0.
 
 ## Stack
 
-- **Symfony 7.1** (PHP 8.3)
+- **Symfony 7** (PHP 8.3)
 - **Doctrine ORM 3** + MySQL 8
-- **Twig** + **Tailwind CSS** (via `symfonycasts/tailwind-bundle`)
-- **AssetMapper** + **Symfony UX** (Stimulus, Turbo, Live Components)
-- **EasyAdmin 4** pour le back-office
-- **scheb/2fa-bundle** pour la 2FA TOTP (Google Authenticator, 1Password…)
-- **Symfony Mailer** (SMTP) + **Brevo API** pour la newsletter
-- Hébergement cible : **PlanetHoster** (offre HybridCloud / World)
+- **Twig** + **Tailwind CSS v4** via Asset Mapper
+- **Stimulus** pour les interactions front
+- **EasyAdmin** pour le back-office, avec **2FA TOTP** (`scheb/2fa-bundle`)
+- **Symfony Mailer** + **Brevo** pour les emails et la newsletter
 
-## Périmètre v1
+## Périmètre fonctionnel
 
-- [x] Blog (home, liste, article, catégorie, tag)
-- [x] Podcast (liste, épisode, flux RSS iTunes-compatible, lecteur HTML5)
-- [x] Newsletter (double opt-in, Brevo, désinscription 1 clic, rate limiting)
-- [x] Pages corporate (À propos, Contact, Mentions légales, RGPD)
-- [x] Back-office admin sécurisé (login + 2FA TOTP + audit log + rate limiting)
-- [x] Sitemap XML + robots.txt + Open Graph
-- [x] Headers sécurité (CSP, HSTS, X-Frame-Options…)
+- Articles, catégories, tags, alertes, "À la une"
+- Pages SOS d'urgence (5 scénarios : compte piraté, phishing, virus,
+  fuite de données, sextorsion)
+- Podcast (épisodes, flux RSS iTunes-compatible, lecteur HTML5)
+- Newsletter (double opt-in, Brevo, désinscription en un clic)
+- Recherche dans les articles
+- Boutons de partage social sans tracker (Facebook, LinkedIn, WhatsApp,
+  X, Email, Copier le lien) + Web Share API natif sur mobile
+- Pages corporate : à propos, contact, mentions légales, confidentialité
+- Sitemap XML, schema.org, Open Graph
+- En-têtes de sécurité (CSP, HSTS, X-Frame-Options, etc.)
+- Rate limiting (login, contact, newsletter)
 
 ## Installation locale
 
-Prérequis : PHP 8.3+, Composer 2, MySQL 8 (ou MariaDB 10.6+), Node 20+ (pour Tailwind build seulement).
+Prérequis : PHP 8.3+, Composer 2, MySQL 8 (ou MariaDB 10.6+), Node 20+.
 
 ```bash
-# 1. Cloner ou extraire le projet, puis :
+git clone https://github.com/will0fried/privaris-web.git
 cd privaris-web
 
-# 2. Installer les dépendances PHP
 composer install
-
-# 3. Installer les dépendances front (plugin Tailwind typography)
 npm install
 
-# 4. Configurer l'environnement
 cp .env.local.example .env.local
-# → éditer .env.local avec :
-#    - APP_SECRET (générer avec : php -r "echo bin2hex(random_bytes(16));")
-#    - DATABASE_URL
-#    - MAILER_DSN
-#    - BREVO_API_KEY / BREVO_LIST_ID
+# Édite .env.local avec tes valeurs (DB, Brevo, etc.)
 
-# 5. Créer la base et les tables
-php bin/console doctrine:database:create
-php bin/console doctrine:migrations:diff
 php bin/console doctrine:migrations:migrate --no-interaction
-
-# 6. Charger les données de démo (admin + catégories + articles + épisodes)
 php bin/console doctrine:fixtures:load --no-interaction
 
-# 7. Compiler Tailwind + importmap
-php bin/console tailwind:build
-php bin/console importmap:install
-
-# 8. Lancer le serveur local
+php bin/console asset-map:compile
 symfony server:start
-# ou : php -S localhost:8000 -t public
 ```
 
-Ouvrir [http://localhost:8000](http://localhost:8000).  
-Admin : [http://localhost:8000/admin](http://localhost:8000/admin)  
-**Compte par défaut (fixtures)** : `admin@privaris.fr` / `ChangeMe!2026` — à changer immédiatement.
+Le site répond sur [http://localhost:8000](http://localhost:8000).
+L'admin est sur [/admin](http://localhost:8000/admin).
 
-## Créer un admin en prod
+Le mot de passe admin est généré aléatoirement par les fixtures et affiché en
+sortie de commande. Note-le, il ne sera plus jamais affiché. Tu peux aussi le
+fixer toi-même via la variable `APP_ADMIN_INITIAL_PASSWORD` dans `.env.local`.
+
+## Le contenu éditorial
+
+Les articles vivent dans un dépôt séparé `privaris-editorial/articles/`,
+au format Markdown avec frontmatter YAML. Les fixtures les chargent en base
+au build. Ce dépôt n'est pas dans cette repo : c'est volontaire, les
+contenus éditoriaux n'ont pas le même cycle de vie que le code.
+
+## Déploiement en production
+
+Voir [DEPLOY.md](./DEPLOY.md) pour le guide complet de déploiement chez
+PlanetHoster (création de la DB, configuration `.env.local`, migrations,
+SSL, vérifications).
+
+## Vérifications avant push
 
 ```bash
-php bin/console app:create-admin votre@email.fr --name="Votre nom" --role=ROLE_SUPER_ADMIN
-```
-
-## Développement Tailwind en mode watch
-
-```bash
-php bin/console tailwind:build --watch
-```
-
-## Vérification du projet (à lancer en local après `composer install`)
-
-Avant toute mise en prod, lancer cette batterie de vérifications :
-
-```bash
-# 1. Lint Twig / YAML / conteneur DI / Doctrine mapping
 php bin/console lint:twig templates/
 php bin/console lint:yaml config/
 php bin/console lint:container
 php bin/console doctrine:schema:validate
-
-# 2. Analyse des dépendances (failles connues)
 composer audit
-
-# 3. Warmup du cache en prod pour détecter les erreurs de config
-APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear
-APP_ENV=prod APP_DEBUG=0 php bin/console cache:warmup
-
-# 4. Vérification des routes (aperçu)
-php bin/console debug:router
-
-# 5. (Optionnel) PHPStan / Psalm si installés
-# vendor/bin/phpstan analyse src --level=6
-
-# 6. Tests (à écrire dans tests/ — aucun livré par défaut)
-# php bin/phpunit
 ```
-
-Tous ces checks doivent passer sans erreur avant `git push` sur la branche de prod.
 
 ## Arborescence
 
 ```
 privaris-web/
-├── assets/              # JS (Stimulus) + CSS (Tailwind entry)
-├── bin/console          # CLI Symfony
-├── config/              # Config framework, packages, routes
-├── migrations/          # Migrations Doctrine (générées)
-├── public/              # Racine web (index.php + .htaccess)
+├── assets/              JS (Stimulus) + CSS (Tailwind entry)
+├── bin/console          CLI Symfony
+├── config/              Config framework, packages, routes
+├── migrations/          Migrations Doctrine
+├── public/              Racine web (index.php + .htaccess)
 ├── src/
-│   ├── Command/         # Commandes CLI custom
-│   ├── Controller/      # Controllers publics + Admin (EasyAdmin)
-│   ├── DataFixtures/    # Seed data
-│   ├── Entity/          # Doctrine ORM entities
-│   ├── EventSubscriber/ # Audit log login
-│   ├── Form/            # Form types (Contact)
-│   ├── Repository/      # Query builders
-│   ├── Security/        # Handlers 2FA
-│   └── Service/         # NewsletterService, PodcastFeedGenerator
-├── templates/           # Twig
-└── tailwind.config.js
+│   ├── Controller/      Controllers publics + Admin EasyAdmin
+│   ├── DataFixtures/    Seed data (admin, catégories, tags)
+│   ├── Entity/          Entités Doctrine
+│   ├── EventSubscriber/ Audit log login + en-têtes sécurité
+│   ├── Form/            Form types
+│   ├── Repository/      Query builders
+│   ├── Security/        Handlers 2FA
+│   └── Service/         SosCatalog, NewsletterService, etc.
+├── templates/           Twig
+├── DEPLOY.md            Guide de déploiement
+└── LICENSE              AGPL-3.0
 ```
 
 ## Sécurité
 
-Le site étant thématique cybersécurité, il est **configuré défense-en-profondeur** :
+Le site étant un média cyber, il applique la défense en profondeur :
 
-- Authentification : Symfony Security + **2FA TOTP obligatoire** (activable au premier login via EasyAdmin)
-- Rate limiting : login (5/min), newsletter (3/h), contact (5/h)
-- Headers HTTP : CSP stricte, HSTS, X-Frame-Options DENY, X-Content-Type-Options, Referrer-Policy strict
-- Logs d'audit : canal monolog dédié `security_audit`, rotation 90 jours
-- Cookies : `SameSite=Lax`, `HttpOnly`, `Secure` en prod
-- CSRF : actif sur tous les formulaires (login, contact, newsletter, admin)
+- 2FA TOTP obligatoire pour l'admin
+- Rate limiting (login, contact, newsletter)
+- En-têtes HTTP stricts (CSP, HSTS, X-Frame-Options DENY, Referrer-Policy)
+- Logs d'audit dédiés (`security_audit`, rotation 90 jours)
+- Cookies `SameSite=Lax`, `HttpOnly`, `Secure` en prod
+- CSRF actif sur tous les formulaires
+- Aucun secret dans le repo, tout passe par `.env.local` (non versionné)
 
-## Déploiement PlanetHoster
+Si tu trouves une faille, écris à `contact@privaris.fr` plutôt que d'ouvrir
+une issue publique. Réponse sous 7 jours.
 
-Voir le **Guide de déploiement PlanetHoster** (PDF) dans le dossier parent du projet : `Guide-deploiement-PlanetHoster.pdf`.
+## Contribuer
+
+Les pull requests sont les bienvenues, surtout pour :
+
+- Corrections de coquilles dans les contenus rendus côté code (textes des
+  pages SOS, copies UI, mentions légales).
+- Améliorations d'accessibilité (a11y).
+- Optimisations de performance (cache, requêtes Doctrine, assets).
+- Nouvelles intégrations sobres et privacy-friendly.
+
+Pour des contributions plus larges (nouvelles entités, refactor d'une
+fonctionnalité), ouvre d'abord une issue pour discuter du périmètre.
 
 ## Licence
 
-Propriétaire — tous droits réservés Privaris.
+[AGPL-3.0-or-later](./LICENSE).
+
+Tu peux librement utiliser, modifier et redistribuer ce code, à condition
+que toute version modifiée publiée ou hébergée publiquement reste sous
+AGPL-3.0 et que les sources soient accessibles. C'est cohérent avec le
+positionnement du média : transparent et auditables.
+
+Le contenu éditorial (articles, podcast, illustrations) est protégé
+séparément par le droit d'auteur classique : citation et lien autorisés,
+reproduction soumise à autorisation. Voir
+[mentions légales](https://privaris.fr/mentions-legales).
