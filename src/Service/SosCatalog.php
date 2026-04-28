@@ -114,7 +114,7 @@ final class SosCatalog
                     'actions' => [
                         ['title' => 'Adoptez un gestionnaire de mots de passe', 'detail' => 'Bitwarden, 1Password, Proton Pass. Un mot de passe différent par site, généré aléatoirement. Vous ne retiendrez plus que le mot de passe maître.'],
                         ['title' => 'Activez la 2FA partout',           'detail' => 'Mail principal, banque, réseaux sociaux, achat en ligne. Un attaquant qui a votre mot de passe n\'entre quand même pas.'],
-                        ['title' => 'Surveillez les fuites',            'detail' => 'Inscrivez votre email sur haveibeenpwned.com — vous serez prévenu si vos identifiants apparaissent dans une nouvelle fuite.'],
+                        ['title' => 'Surveillez les fuites',            'detail' => 'Inscrivez votre email sur haveibeenpwned.com. Vous serez prévenu si vos identifiants apparaissent dans une nouvelle fuite.'],
                     ],
                 ],
             ],
@@ -287,7 +287,7 @@ final class SosCatalog
                     'actions' => [
                         ['title' => 'Un mot de passe unique par site',     'detail' => 'Avec un gestionnaire de mots de passe. Quand fuite il y a, elle reste contenue à un seul service.'],
                         ['title' => 'Utilisez des alias email',           'detail' => 'SimpleLogin, AnonAddy, ou les alias iCloud/Proton. Un alias par service. Un alias compromis ? Vous le coupez, le service ne peut plus vous joindre, l\'arnaqueur non plus.'],
-                        ['title' => 'Activez les alertes HIBP',           'detail' => 'haveibeenpwned.com/NotifyMe — gratuit, vous prévient à la prochaine fuite. Aucune raison de s\'en priver.'],
+                        ['title' => 'Activez les alertes HIBP',           'detail' => 'haveibeenpwned.com/NotifyMe : gratuit, vous prévient à la prochaine fuite. Aucune raison de s\'en priver.'],
                     ],
                 ],
             ],
@@ -307,12 +307,12 @@ final class SosCatalog
             'slug'    => 'sextorsion',
             'title'   => 'Je suis menacé(e) de chantage',
             'kicker'  => 'Sextorsion · Chantage · Menace de diffusion',
-            'summary' => 'Quelqu\'un menace de diffuser une vidéo, des photos, une conversation. Vous n\'êtes pas seul·e. Voici la marche à suivre — et la première règle : ne pas payer.',
+            'summary' => 'Quelqu\'un menace de diffuser une vidéo, des photos, une conversation. Vous n\'êtes pas seul·e. Voici la marche à suivre, et la première règle : ne pas payer.',
             'urgency' => 'critical',
             'diagnosis' => [
                 'Un message vous accuse d\'avoir filmé/piraté votre webcam et exige un paiement (souvent en bitcoin).',
                 'Quelqu\'un menace de diffuser des photos ou vidéos intimes à vos contacts.',
-                'Le message cite un de vos anciens mots de passe (issu d\'une fuite, le plus souvent — c\'est rarement une vraie intrusion).',
+                'Le message cite un de vos anciens mots de passe (issu d\'une fuite, le plus souvent ; c\'est rarement une vraie intrusion).',
                 'Un compte rencontré récemment vous fait du chantage après un échange intime.',
             ],
             'steps' => [
@@ -321,7 +321,7 @@ final class SosCatalog
                     'label' => 'Dans les 10 prochaines minutes',
                     'note'  => 'Trois règles, dans cet ordre.',
                     'actions' => [
-                        ['title' => 'Ne payez pas. Jamais.',         'detail' => 'Le paiement ne stoppe rien — il prouve à l\'attaquant que vous êtes une cible solvable, et les demandes recommencent. Dans 99% des cas, l\'attaquant n\'a en fait rien d\'incriminant.'],
+                        ['title' => 'Ne payez pas. Jamais.',         'detail' => 'Le paiement ne stoppe rien. Il prouve à l\'attaquant que vous êtes une cible solvable, et les demandes recommencent. Dans 99% des cas, l\'attaquant n\'a en fait rien d\'incriminant.'],
                         ['title' => 'Ne répondez pas',               'detail' => 'Aucun message, aucune négociation. Tout échange relance la pression. Le silence vous protège.'],
                         ['title' => 'Conservez les preuves',         'detail' => 'Captures d\'écran complètes (avec dates, identifiants, URL), liens vers les profils, numéros, adresses crypto si présentes. Ne supprimez rien : ça servira pour la plainte.'],
                     ],
