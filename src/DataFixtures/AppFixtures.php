@@ -28,14 +28,26 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        // ---- Admin par défaut (à CHANGER en prod via l'admin EasyAdmin) ----
+        // ---- Admin par défaut.
+        // Le mot de passe est lu dans la variable d'env APP_ADMIN_INITIAL_PASSWORD.
+        // Si elle n'est pas définie, on génère un mot de passe aléatoire et on l'affiche
+        // une seule fois en sortie de fixtures. Ça évite tout secret en dur dans le repo
+        // (le code peut être public sans risque) et ça évite aussi qu'un compte admin
+        // par défaut connu ne soit créé en prod si quelqu'un oublie de changer.
+        $initialPassword = $_ENV['APP_ADMIN_INITIAL_PASSWORD'] ?? null;
+        if (!$initialPassword) {
+            $initialPassword = bin2hex(random_bytes(12));
+            fwrite(STDERR, "\n[Privaris] Mot de passe admin généré : {$initialPassword}\n");
+            fwrite(STDERR, "[Privaris] Notez-le maintenant, il ne sera plus affiché. Changez-le après la première connexion.\n\n");
+        }
+
         $admin = (new User())
             ->setEmail('admin@privaris.fr')
             ->setDisplayName('Arsène Cipher')
             ->setSlug('arsene-cipher')
-            ->setBio('Fondateur et rédacteur de Privaris (pseudonyme). Couvre les arnaques en ligne, les comptes piratés et la protection des proches — pour un public qui n\'est pas dans la tech.')
+            ->setBio('Rédaction de Privaris. Couvre les arnaques en ligne, les comptes piratés et la protection des proches, pour un public qui n\'est pas dans la tech.')
             ->setRoles(['ROLE_SUPER_ADMIN']);
-        $admin->setPassword($this->hasher->hashPassword($admin, 'ChangeMe!2026'));
+        $admin->setPassword($this->hasher->hashPassword($admin, $initialPassword));
         $manager->persist($admin);
 
         // ---- Catégories (orientées particuliers / vie quotidienne) ----

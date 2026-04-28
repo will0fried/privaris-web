@@ -2,40 +2,15 @@
 
 <footer class="bg-bone border-t border-mist">
 
-    {# ========= Bande brand — énoncé signature ========= #}
-    <div class="container-wide pt-20 md:pt-28 pb-16 md:pb-20">
-        <div class="grid lg:grid-cols-12 gap-12 lg:gap-16 items-end">
-
-            {# Logo brand — gauche #}
-            <div class="lg:col-span-7 max-w-2xl">
-                <div class="flex items-center gap-2.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-                        <circle cx="16" cy="16" r="13" stroke="{{ brand_navy }}" stroke-width="1.5"/>
-                        <circle cx="16" cy="16" r="8"  stroke="{{ brand_navy }}" stroke-width="1.5"/>
-                        <circle cx="16" cy="16" r="3"  fill="{{ brand_navy }}"/>
-                    </svg>
-                    <span class="font-semibold text-navy tracking-tight">Privaris</span>
-                </div>
-            </div>
-
-            {# Indicateurs confiance — droite #}
-            <div class="lg:col-span-5 lg:pl-10 lg:border-l border-mist">
-                <p class="eyebrow !mb-5">Nos engagements</p>
-                <ul class="space-y-3 text-sm">
-                    <li class="flex items-start gap-3">
-                        <span class="mt-2 w-1 h-1 rounded-full bg-ok flex-shrink-0" aria-hidden="true"></span>
-                        <span class="text-ink">Zéro tracker publicitaire, zéro Google Analytics.</span>
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <span class="mt-2 w-1 h-1 rounded-full bg-ok flex-shrink-0" aria-hidden="true"></span>
-                        <span class="text-ink">Hébergement en France &amp; Union Européenne.</span>
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <span class="mt-2 w-1 h-1 rounded-full bg-ok flex-shrink-0" aria-hidden="true"></span>
-                        <span class="text-ink">Code source ouvert à l'audit, sources citées.</span>
-                    </li>
-                </ul>
-            </div>
+    {# Logo seul, simple. Pas de bandeau "engagements". #}
+    <div class="container-wide pt-16 md:pt-20 pb-10">
+        <div class="flex items-center gap-2.5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                <circle cx="16" cy="16" r="13" stroke="{{ brand_navy }}" stroke-width="1.5"/>
+                <circle cx="16" cy="16" r="8"  stroke="{{ brand_navy }}" stroke-width="1.5"/>
+                <circle cx="16" cy="16" r="3"  fill="{{ brand_navy }}"/>
+            </svg>
+            <span class="font-semibold text-navy tracking-tight">Privaris</span>
         </div>
     </div>
 
@@ -80,18 +55,11 @@
         </div>
     </div>
 
-    {# ========= Baseline fine ========= #}
+    {# Baseline fine, pas de version, juste copyright et RSS. #}
     <div class="border-t border-mist">
         <div class="container-wide py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-fog">
-            <p class="flex items-center gap-2">
-                <span class="inline-block w-1.5 h-1.5 rounded-full bg-ok align-middle" aria-hidden="true"></span>
-                © {{ "now"|date("Y") }} Privaris · conçu sobrement en France
-            </p>
-            <p class="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.15em]">
-                <span>v1.0</span>
-                <span class="text-mist" aria-hidden="true">·</span>
-                <a href="{{ url('app_podcast_feed') }}" class="text-fog hover:text-navy no-underline">RSS</a>
-            </p>
+            <p>© {{ "now"|date("Y") }} Privaris</p>
+            <a href="{{ url('app_podcast_feed') }}" class="text-fog hover:text-navy no-underline font-mono text-[10px] uppercase tracking-[0.15em]">RSS</a>
         </div>
     </div>
 </footer>
