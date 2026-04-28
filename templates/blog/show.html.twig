@@ -158,40 +158,12 @@
                     </div>
                     {% endif %}
 
-                    {# Partager #}
-                    <div>
-                        <p class="text-xs uppercase tracking-[0.2em] text-fog mb-3">Partager</p>
-                        <div class="flex flex-wrap gap-2">
-                            <a href="https://twitter.com/intent/tweet?url={{ url('app_blog_show', {slug: article.slug})|url_encode }}&text={{ article.title|url_encode }}"
-                               target="_blank" rel="noopener"
-                               class="text-xs px-3 py-1.5 rounded-full border border-mist text-fog no-underline hover:border-navy hover:text-navy">
-                                X / Twitter
-                            </a>
-                            <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ url('app_blog_show', {slug: article.slug})|url_encode }}"
-                               target="_blank" rel="noopener"
-                               class="text-xs px-3 py-1.5 rounded-full border border-mist text-fog no-underline hover:border-navy hover:text-navy">
-                                LinkedIn
-                            </a>
-                            <a href="mailto:?subject={{ article.title|url_encode }}&body={{ url('app_blog_show', {slug: article.slug})|url_encode }}"
-                               class="text-xs px-3 py-1.5 rounded-full border border-mist text-fog no-underline hover:border-navy hover:text-navy">
-                                Email
-                            </a>
-                            <button type="button"
-                                    class="copy-link-btn text-xs px-3 py-1.5 rounded-full border border-mist text-fog hover:border-navy hover:text-navy inline-flex items-center gap-1.5"
-                                    data-controller="copy-link"
-                                    data-copy-link-url-value="{{ url('app_blog_show', {slug: article.slug}) }}"
-                                    data-copy-link-label-value="Copier le lien"
-                                    data-copy-link-success-label-value="✓ Copié"
-                                    data-action="click->copy-link#copy"
-                                    aria-label="Copier le lien de l'article">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
-                                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
-                                </svg>
-                                <span data-copy-link-target="label">Copier le lien</span>
-                            </button>
-                        </div>
-                    </div>
+                    {# Partager — composant réutilisable, voir templates/components/_share.html.twig #}
+                    {% include 'components/_share.html.twig' with {
+                        url:   url('app_blog_show', {slug: article.slug}),
+                        title: article.title,
+                        text:  article.excerpt,
+                    } only %}
 
                     {# Épisode associé #}
                     {% if article.relatedEpisode and article.relatedEpisode.isPublished %}
