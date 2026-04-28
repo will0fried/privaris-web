@@ -1286,6 +1286,55 @@
         opacity: 0;
     }
 
+    /* =====================================================
+       PODCAST EMPTY STATE — page /podcast quand aucun épisode publié.
+       Évite l'effet "site cassé" en montrant que la saison 1 est écrite.
+       ===================================================== */
+    .podcast-empty {
+        @apply max-w-2xl;
+    }
+    .podcast-empty__badge {
+        @apply inline-flex items-center gap-2 px-3 py-1 rounded-full font-mono text-[11px] uppercase tracking-[0.18em] text-navy;
+        background: rgba(10, 37, 64, 0.06);
+    }
+    .podcast-empty__pulse {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 9999px;
+        background: var(--color-navy);
+        box-shadow: 0 0 0 0 rgba(10, 37, 64, 0.4);
+        animation: podcast-pulse 2.4s infinite;
+    }
+    @keyframes podcast-pulse {
+        0%   { box-shadow: 0 0 0 0 rgba(10, 37, 64, 0.4); }
+        70%  { box-shadow: 0 0 0 8px rgba(10, 37, 64, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(10, 37, 64, 0); }
+    }
+    .podcast-empty__list {
+        @apply mt-10 pt-8 border-t border-mist;
+    }
+    .podcast-empty__items {
+        @apply space-y-3 list-none p-0;
+        counter-reset: ep;
+    }
+    .podcast-empty__items li {
+        @apply flex items-center gap-4 py-2 border-b border-mist/60;
+    }
+    .podcast-empty__items li:last-child {
+        @apply border-b-0;
+    }
+    .podcast-empty__num {
+        @apply font-mono text-[11px] uppercase tracking-[0.18em] text-fog tabular-nums flex-shrink-0;
+        width: 2rem;
+    }
+    .podcast-empty__title {
+        @apply flex-1 text-ink leading-snug;
+    }
+    .podcast-empty__duration {
+        @apply font-mono text-[11px] uppercase tracking-[0.14em] text-fog tabular-nums flex-shrink-0;
+    }
+
     /* SOS teaser sur la home — bandeau pleine largeur juste après le hero. */
     .sos-teaser {
         @apply relative overflow-hidden rounded-2xl bg-navy text-paper p-7 md:p-9 flex flex-col md:flex-row md:items-center gap-6 md:gap-10 no-underline;

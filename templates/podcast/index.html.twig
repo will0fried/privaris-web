@@ -35,12 +35,14 @@
                 alarmisme.
             </p>
 
+            {% if episodes|length > 0 %}
             <div class="flex flex-wrap items-center gap-x-6 gap-y-3 mt-12 text-sm">
                 <a href="{{ url('app_podcast_feed') }}" class="text-navy font-medium no-underline hover:opacity-70">RSS →</a>
                 <a href="#" class="text-fog no-underline hover:text-navy">Apple Podcasts</a>
                 <a href="#" class="text-fog no-underline hover:text-navy">Spotify</a>
                 <a href="#" class="text-fog no-underline hover:text-navy">Deezer</a>
             </div>
+            {% endif %}
         </div>
     </section>
 
@@ -62,7 +64,60 @@
                             {% include 'components/_episode_row.html.twig' with {episode: episode} only %}
                         {% endfor %}
                     {% else %}
-                        <p class="text-fog">Le premier épisode arrive bientôt.</p>
+                        {# ========= EMPTY STATE — podcast en préparation ========= #}
+                        <div class="podcast-empty">
+                            <div class="podcast-empty__badge">
+                                <span class="podcast-empty__pulse" aria-hidden="true"></span>
+                                En préparation
+                            </div>
+
+                            <h2 class="text-h2 text-balance mt-6 mb-5">
+                                On enregistre les premiers épisodes.
+                            </h2>
+
+                            <p class="text-fog leading-relaxed text-lg max-w-xl mb-8">
+                                Cinq épisodes sont écrits, prêts à passer au micro&nbsp;:
+                                rançongiciel, phishing, double authentification,
+                                protection des enfants, deepfakes vocaux. La saison 1
+                                démarre dès que le studio est calé.
+                            </p>
+
+                            <div class="podcast-empty__list">
+                                <p class="eyebrow !mb-4">Au programme · Saison 1</p>
+                                <ol class="podcast-empty__items">
+                                    <li>
+                                        <span class="podcast-empty__num">01</span>
+                                        <span class="podcast-empty__title">Le rançongiciel, c'est quoi en vrai&nbsp;?</span>
+                                        <span class="podcast-empty__duration">3:12</span>
+                                    </li>
+                                    <li>
+                                        <span class="podcast-empty__num">02</span>
+                                        <span class="podcast-empty__title">Le phishing en 3 minutes</span>
+                                        <span class="podcast-empty__duration">3:45</span>
+                                    </li>
+                                    <li>
+                                        <span class="podcast-empty__num">03</span>
+                                        <span class="podcast-empty__title">Pourquoi la double authentification vaut tout</span>
+                                        <span class="podcast-empty__duration">3:30</span>
+                                    </li>
+                                    <li>
+                                        <span class="podcast-empty__num">04</span>
+                                        <span class="podcast-empty__title">Protéger ses enfants en ligne · dialogue</span>
+                                        <span class="podcast-empty__duration">4:20</span>
+                                    </li>
+                                    <li>
+                                        <span class="podcast-empty__num">05</span>
+                                        <span class="podcast-empty__title">Deepfakes au téléphone · dialogue</span>
+                                        <span class="podcast-empty__duration">3:50</span>
+                                    </li>
+                                </ol>
+                            </div>
+
+                            <div class="mt-10 flex flex-wrap items-center gap-4">
+                                <a href="#newsletter" class="btn-primary">Être prévenu du lancement</a>
+                                <a href="{{ path('app_blog_index') }}" class="btn-ghost">Lire les articles en attendant</a>
+                            </div>
+                        </div>
                     {% endif %}
                 </div>
             </div>

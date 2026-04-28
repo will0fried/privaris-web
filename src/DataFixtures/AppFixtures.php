@@ -399,6 +399,13 @@ TEXT,
             ],
         ];
 
+        // Les 5 scripts d'épisodes existent comme BROUILLONS en base (statut DRAFT,
+        // donc invisibles publiquement). Quand Will enregistre un épisode, il
+        // remplace l'audioUrl placeholder par la vraie URL et passe en PUBLISHED
+        // depuis EasyAdmin. La page /podcast affiche un empty state élégant tant
+        // qu'aucun épisode n'est publié.
+        // Pour réactiver la publication automatique : remplacer Episode::STATUS_DRAFT
+        // par Episode::STATUS_PUBLISHED ci-dessous.
         foreach ($episodeData as $d) {
             $e = (new Episode())
                 ->setNumber($d['number'])
@@ -412,7 +419,7 @@ TEXT,
                 ->setAudioSizeBytes($d['size'])
                 ->setDuration($d['duration'])
                 ->setAudioMimeType('audio/mpeg')
-                ->setStatus(Episode::STATUS_PUBLISHED)
+                ->setStatus(Episode::STATUS_DRAFT)
                 ->setPublishedAt(new \DateTimeImmutable('-'.$d['days'].' days'))
                 ->setEpisodeType('full');
             $manager->persist($e);
