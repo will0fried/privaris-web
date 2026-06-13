@@ -12,22 +12,18 @@
                 <line x1="16" y1="3" x2="16" y2="29" stroke="{{ brand_navy }}" stroke-width="1" opacity="0.4"/>
                 <line x1="3" y1="16" x2="29" y2="16" stroke="{{ brand_navy }}" stroke-width="1" opacity="0.4"/>
             </svg>
-            <span class="font-semibold text-navy tracking-tight text-lg">Privaris</span>
+            <span class="font-mono font-bold tracking-tight text-lg text-ink">privaris<span class="text-navy">.fr</span></span>
         </a>
 
         <nav class="hidden md:flex items-center gap-7 text-sm" aria-label="Menu principal">
-            {# Articles — avec indicateur d'alerte si alerte en cours #}
+            {# Journal — colonne vertébrale (ex-Articles) #}
             <a href="{{ path('app_blog_index') }}"
                class="nav-link {{ route starts with 'app_blog' ? 'is-active' : '' }}">
-                Articles
+                Journal
                 {% if has_alert %}
                     <span class="nav-alert-dot" title="Alerte en cours" aria-label="Alerte en cours"></span>
                 {% endif %}
             </a>
-            <a href="{{ path('app_podcast_index') }}"
-               class="nav-link {{ route starts with 'app_podcast' ? 'is-active' : '' }}">Podcast</a>
-            <a href="{{ path('app_sos_index') }}"
-               class="nav-link {{ route starts with 'app_sos' ? 'is-active' : '' }}">SOS</a>
             <a href="{{ path('app_about') }}"
                class="nav-link {{ route == 'app_about' ? 'is-active' : '' }}">À propos</a>
             <a href="{{ path('app_contact') }}"
@@ -63,11 +59,9 @@
     <div id="mobile-menu" class="mobile-menu-panel md:hidden hidden" role="dialog" aria-modal="true" aria-label="Menu principal">
         <nav class="mobile-menu-panel__nav container-wide" aria-label="Menu mobile">
             <a href="{{ path('app_blog_index') }}"    class="mobile-menu-panel__link {{ route starts with 'app_blog' ? 'is-active' : '' }}">
-                Articles
+                Journal
                 {% if has_alert %}<span class="nav-alert-dot" aria-label="Alerte en cours"></span>{% endif %}
             </a>
-            <a href="{{ path('app_podcast_index') }}" class="mobile-menu-panel__link {{ route starts with 'app_podcast' ? 'is-active' : '' }}">Podcast</a>
-            <a href="{{ path('app_sos_index') }}"     class="mobile-menu-panel__link {{ route starts with 'app_sos' ? 'is-active' : '' }}">SOS</a>
             <a href="{{ path('app_about') }}"         class="mobile-menu-panel__link {{ route == 'app_about' ? 'is-active' : '' }}">À propos</a>
             <a href="{{ path('app_contact') }}"       class="mobile-menu-panel__link {{ route == 'app_contact' ? 'is-active' : '' }}">Contact</a>
             <a href="{{ path('app_search') }}"        class="mobile-menu-panel__link {{ route == 'app_search' ? 'is-active' : '' }}">Rechercher</a>

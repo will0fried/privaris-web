@@ -1,64 +1,100 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Privaris · Cybersécurité au quotidien, expliquée sans jargon{% endblock %}
-{% block description %}Privaris couvre les arnaques en ligne, les comptes piratés et la protection des proches. Un sujet par article, en français, sans jargon.{% endblock %}
+{% block title %}Privaris · Le journal — apprendre la cyber en public{% endblock %}
+{% block description %}Le carnet de bord d'une reconversion en cybersécurité : homelab, attaques, défense, writeups, et la cyber expliquée sans jargon.{% endblock %}
 
 {% block body %}
     {# =====================================================
        HERO — Tagline + scène + signature, status-pill à droite.
        Composition équilibrée (texte gauche / pastille bas-droite).
        ===================================================== #}
-    <section class="pt-14 md:pt-20 pb-10 md:pb-14 has-decor">
+    {# =====================================================
+       HERO — flux de logs / terminal inversé (carnet de bord)
+       ===================================================== #}
+    <section class="pt-14 md:pt-20 pb-10 md:pb-12">
         <div class="container-wide">
-            <div class="flex items-end justify-between gap-10 flex-wrap">
-                <div class="max-w-4xl">
-                    <p class="eyebrow animate-fade-in">Privaris · Cybersécurité au quotidien</p>
-                    <p class="text-xl md:text-2xl text-fog leading-relaxed max-w-3xl mt-8 animate-fade-in">
-                        Un SMS «&nbsp;Ameli&nbsp;» qui met la pression.
-                        Un mail qui ressemble à celui de la banque.
-                        Un ado qui ne répond plus sur Snapchat.
-                    </p>
-                    <h1 class="text-[clamp(2rem,4.75vw,4rem)] font-semibold leading-[1.1] tracking-[-0.02em] text-ink text-balance mt-8 animate-slide-up">
-                        À ces heures-là, <span class="text-navy">Privaris</span>.
-                    </h1>
+            <p class="j-stamp animate-fade-in">j'apprends la cyber en public</p>
+            <h1 class="text-[clamp(2rem,5vw,3.75rem)] font-bold leading-[1.08] tracking-[-0.02em] text-ink text-balance mt-4 mb-5 animate-slide-up">
+                Le carnet de bord d'une <span class="text-navy">reconversion cyber</span>.
+            </h1>
+            <p class="text-lg md:text-xl text-fog leading-relaxed max-w-2xl mb-9 animate-fade-in">
+                Salarié le jour, Master en cybersécurité le soir. Je monte un lab dans mon salon, je l'attaque, je le défends, je le casse — et je documente tout. Les victoires comme les plantages. Surtout les plantages.
+            </p>
+
+            <div class="j-term max-w-3xl">
+                <div class="j-term__bar">
+                    <span class="j-term__dot" aria-hidden="true"></span>
+                    <span class="j-term__dot" aria-hidden="true"></span>
+                    <span class="j-term__dot j-term__dot--g" aria-hidden="true"></span>
+                    <span class="j-term__title">privaris@lab : ~/journal</span>
                 </div>
-                <div class="flex items-center gap-5 text-sm">
-                    <span class="status-pill">
-                        <span class="status-pill__dot" aria-hidden="true"></span>
-                        En ligne · {{ "now"|format_datetime(pattern='d MMM', locale='fr') }}
-                    </span>
+                <div class="j-term__body">
+                    <div class="j-log">
+                        <div><span class="t">$</span> ./privaris --journal</div>
+                        <div><span class="t">[{{ "now"|format_datetime(pattern='yyyy-MM-dd HH:mm', locale='fr') }}]</span> boot privaris.journal …</div>
+                        <div><span class="ok">[ok]</span> journal d'apprentissage — «&nbsp;montrer ce que je pratique&nbsp;»</div>
+                    </div>
+                    <div class="mt-2 pt-3" style="border-top:1px dashed var(--color-mist);">
+                        {% if featured or rest|length > 0 %}
+                            {% if featured %}
+                                <a class="ep ep--live" href="{{ path('app_blog_show', {slug: featured.slug}) }}">
+                                    <span class="ep__code">{{ featured.publishedAt|format_datetime(pattern='dd/MM', locale='fr') }}</span>
+                                    <span class="ep__name">{{ featured.title }}</span>
+                                    <span class="ep__state">▸ lire</span>
+                                </a>
+                            {% endif %}
+                            {% for a in rest %}{% if loop.index <= 3 %}
+                                <a class="ep ep--live" href="{{ path('app_blog_show', {slug: a.slug}) }}">
+                                    <span class="ep__code">{{ a.publishedAt|format_datetime(pattern='dd/MM', locale='fr') }}</span>
+                                    <span class="ep__name">{{ a.title }}</span>
+                                    <span class="ep__state">▸ lire</span>
+                                </a>
+                            {% endif %}{% endfor %}
+                        {% else %}
+                            <div class="ep ep--soon"><span class="ep__code">[lab]</span><span class="ep__name">Monter Proxmox sur un mini-PC à 120 €</span><span class="ep__state">à venir</span></div>
+                            <div class="ep ep--soon"><span class="ep__code">[ctf]</span><span class="ep__name">Root-Me : mon premier challenge web</span><span class="ep__state">à venir</span></div>
+                            <div class="ep ep--soon"><span class="ep__code">[note]</span><span class="ep__name">Le modèle OSI, version claire</span><span class="ep__state">à venir</span></div>
+                        {% endif %}
+                        <div class="j-log" style="padding:6px 6px 0;">prochain épisode<span class="j-cursor" aria-hidden="true"></span></div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
+    {# Le teaser « SOS · aide d'urgence aux particuliers » a été retiré :
+       l'identité est désormais le journal (apprendre en public), plus un média d'accompagnement grand public. #}
+
     {# =====================================================
-       SOS TEASER — bandeau compact juste après le hero.
-       C'est le moment où quelqu'un arrive en panique sur la home.
-       On lui donne UN clic vers l'aide d'urgence avant tout le reste.
+       RENDEZ-VOUS — les 3 formats du journal
        ===================================================== #}
-    <section class="pb-10 md:pb-14">
+    <section class="pb-14 md:pb-20 border-t border-mist pt-12 md:pt-16">
         <div class="container-wide">
-            <a href="{{ path('app_sos_index') }}" class="sos-teaser group">
-                <div class="sos-teaser__icon" aria-hidden="true">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 9v4"/>
-                        <path d="M12 17h.01"/>
-                        <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-                    </svg>
+            <div class="j-sechead">
+                <span class="j-sechead__num">01</span>
+                <h2 class="text-h2 text-ink">Ce que je publie</h2>
+                <span class="j-sechead__rule"></span>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="card card-hover">
+                    <p class="j-stamp">pratique</p>
+                    <h3 class="text-xl font-semibold text-ink mt-2 mb-2">Labs &amp; TP</h3>
+                    <p class="text-fog leading-relaxed">Je monte mon lab, j'attaque, je défends — et je montre comment, étape par étape. La preuve que je pratique.</p>
+                    <p class="j-stamp mt-4">› homelab · attaque / défense</p>
                 </div>
-                <div class="flex-1 min-w-0">
-                    <p class="sos-teaser__label">SOS · Quelque chose vient d'arriver</p>
-                    <p class="sos-teaser__title text-balance">
-                        Compte piraté, lien suspect cliqué, fichiers bloqués&nbsp;? On vous guide en 10 minutes.
-                    </p>
+                <div class="card card-hover">
+                    <p class="j-stamp">challenges</p>
+                    <h3 class="text-xl font-semibold text-ink mt-2 mb-2">Writeups</h3>
+                    <p class="text-fog leading-relaxed">Mes résolutions Root-Me, TryHackMe, CTF — en français : le raisonnement, pas seulement la solution.</p>
+                    <p class="j-stamp mt-4">› root-me · tryhackme</p>
                 </div>
-                <span class="sos-teaser__cta">
-                    Voir le guide
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
-                         class="transition-transform group-hover:translate-x-0.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-                </span>
-            </a>
+                <div class="card card-hover">
+                    <p class="j-stamp">cours</p>
+                    <h3 class="text-xl font-semibold text-ink mt-2 mb-2">Décryptages</h3>
+                    <p class="text-fog leading-relaxed">Un concept vu en Master, réexpliqué simplement. Si je sais l'expliquer, c'est que je l'ai compris.</p>
+                    <p class="j-stamp mt-4">› notes de cours</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -319,41 +355,41 @@
         <div class="container-wide">
             <div class="max-w-5xl">
                 <div class="reveal" data-controller="reveal">
-                    <p class="eyebrow">Ce qu'on fait ici</p>
-                    <p class="text-statement text-balance mb-16">
-                        Avant. Pendant. Et ceux qui comptent.
+                    <p class="j-stamp">le principe</p>
+                    <p class="text-statement text-balance mb-16 mt-2">
+                        Ce site n'est pas une vitrine. C'est un <span class="text-navy">flux de bord</span>.
                     </p>
                 </div>
 
                 <div class="grid md:grid-cols-3 gap-6 md:gap-8">
                     <div class="engagement-card reveal" data-controller="reveal" data-reveal-delay-value="0">
-                        <h3 class="text-xl font-semibold text-ink mb-3">Avant le clic</h3>
+                        <h3 class="text-xl font-semibold text-ink mb-3">Je débute, et c'est le sujet</h3>
                         <p class="text-fog leading-relaxed">
-                            Un SMS qui fait peur, un mail qui imite votre banque. On vous apprend à repérer ce qui cloche, avant de cliquer.
+                            Salarié, en Master cyber le soir. Je n'ai pas réponse à tout — je montre le vrai chemin, galères comprises.
                         </p>
                         <p class="engagement-card__tag">
                             <span class="engagement-card__tag-dot" aria-hidden="true"></span>
-                            RECONNAÎTRE
+                            RECONVERSION
                         </p>
                     </div>
                     <div class="engagement-card reveal" data-controller="reveal" data-reveal-delay-value="80">
-                        <h3 class="text-xl font-semibold text-ink mb-3">Quand ça dérape</h3>
+                        <h3 class="text-xl font-semibold text-ink mb-3">Je casse, je répare, je note</h3>
                         <p class="text-fog leading-relaxed">
-                            Compte piraté, mot de passe volé, argent parti. Étape par étape, on vous aide à reprendre la main.
+                            Proxmox, machines vulnérables, attaque puis défense. Chaque session de lab devient un épisode documenté.
                         </p>
                         <p class="engagement-card__tag">
                             <span class="engagement-card__tag-dot" aria-hidden="true"></span>
-                            REPRENDRE LA MAIN
+                            HOMELAB
                         </p>
                     </div>
                     <div class="engagement-card reveal" data-controller="reveal" data-reveal-delay-value="160">
-                        <h3 class="text-xl font-semibold text-ink mb-3">Pour vos proches</h3>
+                        <h3 class="text-xl font-semibold text-ink mb-3">Sans jargon</h3>
                         <p class="text-fog leading-relaxed">
-                            Un ado, un parent, un ami pas à l'aise avec la tech. On vous donne les mots pour les aider, sans les braquer.
+                            Ce que je comprends, je le retraduis pour tout le monde. Le jargon reste à la porte.
                         </p>
                         <p class="engagement-card__tag">
                             <span class="engagement-card__tag-dot" aria-hidden="true"></span>
-                            ACCOMPAGNER
+                            TRANSMETTRE
                         </p>
                     </div>
                 </div>

@@ -115,6 +115,37 @@
     }
 }
 
+/* =========================================================
+   IDENTITÉ « JOURNAL » — papier + vert phosphore (carnet de bord / terminal inversé)
+   Override des tokens existants : tout le site (bg-navy, text-navy, hover:bg-navy-600,
+   border-mist, bg-paper, text-fog…) bascule d'un coup, sans toucher chaque template.
+   Le nom « navy » est conservé mais pointe désormais vers le vert phosphore.
+   ========================================================= */
+@theme {
+    --color-navy:     #0F7A3D;   /* vert phosphore profond — accent principal */
+    --color-navy-50:  #ECF6EF;
+    --color-navy-100: #D2EADB;
+    --color-navy-200: #A7D6B9;
+    --color-navy-300: #5FB07E;
+    --color-navy-400: #2E9457;
+    --color-navy-500: #0F7A3D;
+    --color-navy-600: #0B5E2F;   /* hover plus sombre */
+    --color-navy-700: #0A4F28;
+    --color-navy-800: #073C1E;
+    --color-navy-900: #052E17;
+
+    --color-ink:      #17150F;   /* encre chaude, presque noir */
+    --color-fog:      #6F6857;   /* gris chaud — texte secondaire */
+    --color-mist:     #DED8C8;   /* bordures chaudes */
+    --color-canvas:   #F5F2EA;   /* fond papier de la page */
+    --color-paper:    #FBF9F3;   /* surfaces / cartes (un cran plus clair) */
+    --color-bone:     #EFEADD;   /* remplissages discrets */
+    --color-ok:       #0F7A3D;   /* ok = vert accent */
+
+    /* Mono = colonne vertébrale du journal (horodatages, codes d'épisode) */
+    --color-phosphor: #0B5E2F;
+}
+
 /* ---------------------------------------------------------
    Base — reset et styles globaux
    --------------------------------------------------------- */
@@ -126,8 +157,11 @@
     }
 
     body {
-        @apply bg-paper text-ink font-sans;
+        @apply bg-canvas text-ink font-sans;
         font-feature-settings: "ss01", "cv11";
+        /* Texture papier discrète (pointillé), signature de l'identité Journal */
+        background-image: radial-gradient(var(--color-bone) 1px, transparent 1px);
+        background-size: 22px 22px;
     }
 
     h1, h2, h3, h4 {
@@ -198,7 +232,7 @@
 
     /* Nav — frosted glass, sticky */
     .nav-frosted {
-        background: rgba(255, 255, 255, 0.72);
+        background: rgba(245, 242, 234, 0.82);
         -webkit-backdrop-filter: saturate(180%) blur(20px);
         backdrop-filter: saturate(180%) blur(20px);
         @apply shadow-nav;
@@ -1372,4 +1406,70 @@
 @layer utilities {
     .text-balance { text-wrap: balance; }
     .text-pretty  { text-wrap: pretty; }
+}
+
+/* =========================================================
+   COMPOSANTS « JOURNAL » — carnet de bord / terminal inversé.
+   Réutilisables dans toutes les pages (accueil, blog, podcast, SOS…).
+   ========================================================= */
+@layer components {
+    /* Étiquette monospace en capitales — horodatages, codes d'épisode, kickers */
+    .j-stamp {
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--color-navy-600);
+    }
+
+    /* En-tête de section : numéro mono + titre + filet */
+    .j-sechead { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.4rem; }
+    .j-sechead__num { font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-navy-600); }
+    .j-sechead__rule { flex: 1; height: 1px; background: var(--color-mist); }
+
+    /* Panneau terminal (fond clair) */
+    .j-term {
+        background: var(--color-paper);
+        border: 1px solid var(--color-mist);
+        border-radius: 14px;
+        overflow: hidden;
+        box-shadow: 0 18px 40px -28px rgba(11, 94, 47, 0.45);
+    }
+    .j-term__bar {
+        display: flex; align-items: center; gap: 7px;
+        padding: 11px 14px; border-bottom: 1px solid var(--color-mist);
+        background: linear-gradient(var(--color-paper), var(--color-bone));
+    }
+    .j-term__dot { width: 11px; height: 11px; border-radius: 50%; background: #CFC8B6; display: inline-block; }
+    .j-term__dot--g { background: var(--color-navy); }
+    .j-term__title { margin-left: 8px; font-family: var(--font-mono); font-size: 11.5px; color: var(--color-fog); }
+    .j-term__body { padding: 18px; font-family: var(--font-mono); font-size: 13.5px; line-height: 1.85; }
+
+    /* Lignes de log */
+    .j-log { color: var(--color-fog); white-space: pre-wrap; }
+    .j-log .t { color: #A79F8C; }
+    .j-log .ok { color: var(--color-navy); font-weight: 600; }
+    .j-log .warn { color: #B9742B; }
+
+    /* Lignes d'épisode (S01E01 …) */
+    .ep { display: flex; align-items: baseline; gap: 14px; padding: 8px 6px; border-radius: 8px; font-family: var(--font-mono); font-size: 13.5px; text-decoration: none; }
+    .ep:hover { background: rgba(15, 122, 61, 0.10); }
+    .ep__code { color: var(--color-navy-600); font-weight: 700; width: 64px; flex: none; }
+    .ep__name { color: var(--color-ink); flex: 1; min-width: 0; }
+    .ep__state { color: var(--color-fog); font-size: 12px; white-space: nowrap; }
+    .ep--live .ep__state { color: var(--color-navy); }
+    .ep--soon { opacity: 0.62; }
+    .ep--soon .ep__name { color: var(--color-fog); }
+
+    /* Curseur clignotant */
+    .j-cursor { display: inline-block; width: 9px; height: 15px; background: var(--color-navy); margin-left: 2px; vertical-align: -2px; animation: j-blink 1.05s steps(1) infinite; }
+    @keyframes j-blink { 50% { opacity: 0; } }
+
+    /* Bande verte (newsletter / CTA fort) */
+    .j-band { background: linear-gradient(135deg, #0B5E2F, #0F7A3D); color: #EAF6EE; border-radius: 18px; }
+    .j-band h2 { color: #fff; }
+
+    @media (prefers-reduced-motion: reduce) {
+        .j-cursor { animation: none; }
+    }
 }

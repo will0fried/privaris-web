@@ -9,7 +9,7 @@
     {%- elseif activeTag is defined -%}
         #{{ activeTag.name }} · Privaris{% if currentPage > 1 %} · Page {{ currentPage }}{% endif %}
     {%- else -%}
-        Tous les articles · Privaris{% if currentPage > 1 %} · Page {{ currentPage }}{% endif %}
+        Le journal · Privaris{% if currentPage > 1 %} · Page {{ currentPage }}{% endif %}
     {%- endif -%}
 {% endblock %}
 
@@ -19,7 +19,7 @@
     {%- elseif activeTag is defined -%}
         Les articles de Privaris filtrés sur #{{ activeTag.name }} : arnaques, comptes piratés, protection des proches.
     {%- else -%}
-        Tous les articles de Privaris : arnaques en ligne, comptes piratés, protection des proches. Un article par semaine, en français, sans jargon.
+        Le journal d'apprentissage de Privaris : labs, writeups et décryptages de cours en cybersécurité. En public, en français, sans jargon.
     {%- endif -%}
 {% endblock %}
 
@@ -45,7 +45,7 @@
                     <p class="eyebrow animate-fade-in">
                         {% if activeCategory is defined %}Catégorie
                         {% elseif activeTag is defined %}Tag
-                        {% else %}Les articles{% endif %}
+                        {% else %}Le journal{% endif %}
                     </p>
                     <h1 class="text-[clamp(2.25rem,6vw,5rem)] font-semibold leading-[1.08] md:leading-[1.02] tracking-[-0.02em] md:tracking-[-0.03em] text-ink text-balance animate-slide-up">
                         {% if activeCategory is defined %}
@@ -53,24 +53,23 @@
                         {% elseif activeTag is defined %}
                             #{{ activeTag.name }}
                         {% else %}
-                            Un article, <span class="text-navy">un sujet</span>, un réflexe.
+                            Le journal, <span class="text-navy">entrée</span> par entrée.
                         {% endif %}
                     </h1>
                     {% if activeCategory is defined and activeCategory.description %}
                         <p class="text-lg md:text-xl text-fog leading-relaxed max-w-2xl mt-8">{{ activeCategory.description }}</p>
                     {% elseif activeTag is not defined %}
                         <p class="text-lg md:text-xl text-fog leading-relaxed max-w-2xl mt-8">
-                            Les arnaques qui tournent, les comptes piratés,
-                            les proches qu'on aide à s'en sortir.
-                            On publie un article par semaine. Pas plus, pas
-                            moins.
+                            Ce que j'apprends en Master, mis en pratique et documenté :
+                            labs, writeups de challenges, et décryptages de cours.
+                            Daté, par thème, au fil de l'eau.
                         </p>
                     {% endif %}
                 </div>
                 <div class="flex items-center gap-5 text-sm">
                     {% set total = pagination.total|default(articles|length) %}
                     <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-fog tabular-nums">
-                        {{ total }} article{{ total > 1 ? 's' : '' }}{% if totalPages > 1 %} · Page {{ currentPage }} / {{ totalPages }}{% endif %}
+                        {{ total }} entrée{{ total > 1 ? 's' : '' }}{% if totalPages > 1 %} · Page {{ currentPage }} / {{ totalPages }}{% endif %}
                     </p>
                 </div>
             </div>
@@ -98,7 +97,7 @@
         {% set featured = articles|first %}
         <section class="pt-16 md:pt-20 pb-16 md:pb-24">
             <div class="container-wide">
-                <p class="eyebrow mb-8">La Une</p>
+                <p class="eyebrow mb-8">Dernière entrée</p>
                 <a href="{{ path('app_blog_show', {slug: featured.slug}) }}" class="article-feature group no-underline">
                     <div class="grid lg:grid-cols-12 gap-8 lg:gap-14 items-center">
                         <div class="lg:col-span-7">
@@ -179,7 +178,7 @@
                         <circle cx="16" cy="16" r="8"  stroke="currentColor" stroke-width="1"/>
                         <circle cx="16" cy="16" r="3"  fill="currentColor"/>
                     </svg>
-                    <p class="text-fog">Pas encore d'article dans cette rubrique.</p>
+                    <p class="text-fog">Pas encore d'entrée ici.</p>
                 </div>
             {% endif %}
         </div>
