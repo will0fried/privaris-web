@@ -7,4 +7,9 @@ import './bootstrap.js';
  */
 import './styles/app.css';
 
+// Masque l'écran de chargement dès que le CSS applicatif est appliqué.
+if (typeof window !== 'undefined' && typeof window.__privarisHideSplash === 'function') {
+    window.__privarisHideSplash();
+}
+
 console.info('[Privaris] UI bootstrapped.');

@@ -3,7 +3,7 @@
    Palette navy #1A3A5C, minimal, Apple-like.
    --------------------------------------------------------- */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap');
+/* Polices chargées en <link> non-bloquant dans base.html.twig (plus d'@import bloquant ici). */
 
 @import "tailwindcss";
 

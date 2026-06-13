@@ -54,7 +54,7 @@ Options -MultiViews +SymLinksIfOwnerMatch
     #   - https://ga.jspm.io : polyfill es-module-shims utilisé par Symfony AssetMapper
     #     pour les anciens navigateurs sans support natif des import maps.
     #   - data: : modules JS inlinés (importmap shim, Stimulus eager loading).
-    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://ga.jspm.io data:; script-src-elem 'self' 'unsafe-inline' https://ga.jspm.io data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; media-src 'self' https:; connect-src 'self' https://ga.jspm.io; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+    Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://ga.jspm.io data:; script-src-elem 'self' 'unsafe-inline' https://ga.jspm.io data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; media-src 'self' https:; connect-src 'self' https://ga.jspm.io; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'"
 </IfModule>
 
 # Bloquer l'accès aux fichiers sensibles
