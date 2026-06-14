@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Podcast Privaris · Trois minutes avec Arsène, chaque mardi{% endblock %}
-{% block description %}Trois minutes chaque mardi : une arnaque démontée, un geste à garder. Apple Podcasts, Spotify, Deezer, RSS. Sans jargon, sans alarmisme.{% endblock %}
+{% block title %}Podcast Privaris · le labo, raconté à voix haute{% endblock %}
+{% block description %}Bientôt : je raconte mes manips à voix haute, en format court. En attendant, tout est dans le journal écrit. Sans bullshit.{% endblock %}
 
 {% block head_extra %}
     {# JSON-LD PodcastSeries — décrit la série pour Google et les agrégateurs #}
@@ -11,10 +11,10 @@
         "@type": "PodcastSeries",
         "name": "Privaris",
         "url": "{{ url('app_podcast_index') }}",
-        "description": "Un épisode court chaque semaine pour parler cybersécurité sans jargon ni alarmisme. Pour vous, vos proches et votre famille.",
+        "description": "Le podcast de Privaris · Mon Labo : raconter une manip de cybersécurité à voix haute, en format court. À venir.",
         "webFeed": "{{ url('app_podcast_feed') }}",
         "inLanguage": "fr-FR",
-        "author": { "@type": "Person", "name": "Arsène Cipher" },
+        "author": { "@type": "Person", "name": "W." },
         "publisher": { "@type": "Organization", "name": "Privaris" }
     }
     </script>
@@ -24,15 +24,14 @@
     {# ========= HERO — titre énorme, liens d'abonnement sobres ========= #}
     <section class="hero-xl has-decor">
         <div class="container-wide">
-            <p class="eyebrow animate-fade-in">Mardi, 7h02, dans votre casque</p>
+            <p class="eyebrow animate-fade-in">Le podcast · bientôt</p>
             <h1 class="text-hero text-balance max-w-5xl animate-slide-up">
-                Le temps d'un <span class="text-navy">café</span>.<br class="hidden md:block"> Un piège <span class="text-navy">en moins</span>.
+                Le labo,<br class="hidden md:block"> <span class="text-navy">à voix haute</span>.
             </h1>
             <p class="text-lg md:text-xl text-fog leading-relaxed max-w-2xl mt-10">
-                Trois minutes chaque mardi matin avec Arsène Cipher. Une
-                arnaque du moment, démontée à voix haute. Un geste à garder.
-                La cyber comme on en parle entre proches, sans jargon, sans
-                alarmisme.
+                L'idée : raconter une manip — ce que j'ai tenté, ce qui a cassé,
+                ce que j'en ai tiré — en format court. Le podcast arrive ; pour
+                l'instant, tout est dans le journal écrit.
             </p>
 
             {% if episodes|length > 0 %}
@@ -53,9 +52,8 @@
                 <div class="split-section__label">
                     <p class="eyebrow">Les épisodes</p>
                     <p class="text-sm text-fog leading-relaxed max-w-xs">
-                        Nouveau chaque mardi matin. Trois à quatre minutes,
-                        un piège précis, zéro remplissage. À écouter dans
-                        la file du café, pas dans la salle d'attente.
+                        Bientôt. En attendant, c'est dans le journal que ça se
+                        passe : une manip, un writeup, un plantage de moins.
                     </p>
                 </div>
                 <div class="split-section__body">

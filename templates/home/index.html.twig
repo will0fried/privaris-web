@@ -21,47 +21,42 @@
                 Salarié le jour, Master en cybersécurité le soir. Je monte un lab dans mon salon, je l'attaque, je le défends, je le casse — et je documente tout. Les victoires comme les plantages. Surtout les plantages.
             </p>
 
-            <div class="j-term max-w-3xl">
-                <div class="j-term__bar">
-                    <span class="j-term__dot" aria-hidden="true"></span>
-                    <span class="j-term__dot" aria-hidden="true"></span>
-                    <span class="j-term__dot j-term__dot--g" aria-hidden="true"></span>
-                    <span class="j-term__title">privaris@lab : ~/journal</span>
-                </div>
-                <div class="j-term__body">
-                    <div class="j-log">
-                        <div><span class="t">$</span> ./privaris --journal</div>
-                        <div><span class="t">[{{ "now"|format_datetime(pattern='yyyy-MM-dd HH:mm', locale='fr') }}]</span> boot privaris.journal …</div>
-                        <div><span class="ok">[ok]</span> journal d'apprentissage — «&nbsp;montrer ce que je pratique&nbsp;»</div>
-                    </div>
-                    <div class="mt-2 pt-3" style="border-top:1px dashed var(--color-mist);">
-                        {% if featured or rest|length > 0 %}
-                            {% if featured %}
-                                <a class="ep ep--live" href="{{ path('app_blog_show', {slug: featured.slug}) }}">
-                                    <span class="ep__code">{{ featured.publishedAt|format_datetime(pattern='dd/MM', locale='fr') }}</span>
-                                    <span class="ep__name">{{ featured.title }}</span>
-                                    <span class="ep__state">▸ lire</span>
-                                </a>
-                            {% endif %}
-                            {% for a in rest %}{% if loop.index <= 3 %}
-                                <a class="ep ep--live" href="{{ path('app_blog_show', {slug: a.slug}) }}">
-                                    <span class="ep__code">{{ a.publishedAt|format_datetime(pattern='dd/MM', locale='fr') }}</span>
-                                    <span class="ep__name">{{ a.title }}</span>
-                                    <span class="ep__state">▸ lire</span>
-                                </a>
-                            {% endif %}{% endfor %}
-                        {% else %}
-                            <div class="ep ep--soon"><span class="ep__code">~</span><span class="ep__name">Première entrée du journal à venir</span><span class="ep__state">bientôt</span></div>
-                        {% endif %}
-                        <div class="j-log" style="padding:6px 6px 0;">prochain épisode<span class="j-cursor" aria-hidden="true"></span></div>
-                    </div>
-                </div>
+            {# =====================================================
+               RADAR « Mon Labo » — les détections = les entrées du journal.
+               Positionnement + balayage gérés par radar_controller.js (Stimulus).
+               ===================================================== #}
+            <div class="radar" data-controller="radar" role="group" aria-label="Radar des détections — le journal">
+                <svg class="radar__rings" viewBox="0 0 100 100" aria-hidden="true">
+                    <g fill="none" stroke="#FFFFFF">
+                        <circle cx="50" cy="50" r="46" stroke-width=".25" opacity=".18"/>
+                        <circle cx="50" cy="50" r="34" stroke-width=".25" opacity=".14"/>
+                        <circle cx="50" cy="50" r="22" stroke-width=".25" opacity=".14"/>
+                        <circle cx="50" cy="50" r="10" stroke-width=".25" opacity=".16"/>
+                        <line x1="50" y1="3" x2="50" y2="97" stroke-width=".22" opacity=".12"/>
+                        <line x1="3" y1="50" x2="97" y2="50" stroke-width=".22" opacity=".12"/>
+                    </g>
+                </svg>
+                <div class="radar__sweep" aria-hidden="true"></div>
+                <div class="radar__core" aria-hidden="true"><span class="radar__core-dot"></span><span class="radar__core-label">Radar actif</span></div>
+
+                {% set detections = (featured ? [featured] : [])|merge(rest) %}
+                {% for a in detections|slice(0, 8) %}
+                    <a class="radar__blip{{ loop.first ? ' is-live' : '' }}"
+                       data-radar-target="blip"
+                       href="{{ path('app_blog_show', {slug: a.slug}) }}">
+                        <span class="radar__label"><span class="radar__label-kind">{{ a.category ? a.category.name : 'Manip' }}</span>{{ a.title }}</span>
+                    </a>
+                {% else %}
+                    <a class="radar__blip is-soon" data-radar-target="blip" href="#newsletter">
+                        <span class="radar__label">Première détection à venir</span>
+                    </a>
+                {% endfor %}
             </div>
+            <p class="radar__hint">Survole une détection · clique pour lire l'entrée du journal</p>
         </div>
     </section>
 
-    {# Le teaser « SOS · aide d'urgence aux particuliers » a été retiré :
-       l'identité est désormais le journal (apprendre en public), plus un média d'accompagnement grand public. #}
+    {# (Ancien teaser SOS retiré — l'identité est le radar « Mon Labo », apprendre la cyber en public.) #}
 
     {# =====================================================
        RENDEZ-VOUS — les 3 formats du journal

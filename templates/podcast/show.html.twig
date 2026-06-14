@@ -94,13 +94,13 @@
                 {# --- Colonne écoute / lecture --- #}
                 <div class="lg:col-span-2 max-w-prose-narrow">
                     <div class="prose-privaris">
-                        {{ episode.description|raw }}
+                        {{ episode.description|sanitize_html('app.content') }}
                     </div>
 
                     {% if episode.transcript %}
                     <details class="mt-12 pt-8 border-t border-mist">
                         <summary class="cursor-pointer text-navy font-medium hover:opacity-70">Transcription complète</summary>
-                        <div class="prose-privaris mt-6">{{ episode.transcript|raw }}</div>
+                        <div class="prose-privaris mt-6">{{ episode.transcript|sanitize_html('app.content') }}</div>
                     </details>
                     {% endif %}
                 </div>

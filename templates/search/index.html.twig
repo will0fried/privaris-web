@@ -12,7 +12,7 @@
     {%- endif -%}
 {% endblock %}
 
-{% block description %}Recherchez dans tous les articles Privaris : arnaques, phishing, comptes piratés, protection des proches.{% endblock %}
+{% block description %}Cherchez dans le journal Privaris : labs, writeups, décryptages — tout ce que j'apprends en public en cybersécurité.{% endblock %}
 
 {# Pages de recherche : noindex (déjà géré côté contrôleur via X-Robots-Tag,
    on double avec un meta robots pour les bots qui ne lisent que ça). #}
@@ -49,7 +49,7 @@
                                type="search"
                                name="q"
                                value="{{ query }}"
-                               placeholder="Phishing, mot de passe, ado, arnaque…"
+                               placeholder="nmap, Proxmox, Kali, writeup…"
                                required
                                minlength="{{ minLength }}"
                                maxlength="100"
@@ -118,7 +118,7 @@
                         Quelques mots qui mènent souvent quelque part&nbsp;:
                     </p>
                     <div class="flex flex-wrap gap-2">
-                        {% set suggestions = ['phishing', 'mot de passe', 'compte piraté', 'arnaque', 'enfants', 'WhatsApp', 'banque', 'Ameli', 'sextorsion'] %}
+                        {% set suggestions = ['homelab', 'nmap', 'Proxmox', 'Kali', 'writeup', 'réseau', 'Linux', 'défense'] %}
                         {% for s in suggestions %}
                             <a href="{{ path('app_search', {q: s}) }}"
                                class="text-sm px-4 py-2 rounded-full border border-mist text-fog no-underline hover:border-navy hover:text-navy transition">

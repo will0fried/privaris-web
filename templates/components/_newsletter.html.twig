@@ -26,6 +26,7 @@
                 <form class="newsletter-form flex flex-col sm:flex-row gap-3 max-w-lg"
                       data-controller="newsletter"
                       data-newsletter-endpoint-value="{{ path('app_newsletter_subscribe') }}"
+                      data-newsletter-csrf-value="{{ csrf_token('newsletter_subscribe') }}"
                       data-action="submit->newsletter#submit">
                     <input type="email" name="email" required autocomplete="email"
                            placeholder="votre@email.fr"

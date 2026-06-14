@@ -17,7 +17,7 @@
     {%- if activeCategory is defined and activeCategory.description -%}
         {{ activeCategory.description }} Un article, un sujet, un réflexe à retenir.
     {%- elseif activeTag is defined -%}
-        Les articles de Privaris filtrés sur #{{ activeTag.name }} : arnaques, comptes piratés, protection des proches.
+        Les entrées du journal filtrées sur #{{ activeTag.name }} : labs, writeups et décryptages, en public.
     {%- else -%}
         Le journal d'apprentissage de Privaris : labs, writeups et décryptages de cours en cybersécurité. En public, en français, sans jargon.
     {%- endif -%}

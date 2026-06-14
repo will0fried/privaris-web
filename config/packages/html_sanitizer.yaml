@@ -1,0 +1,21 @@
+# Assainisseur HTML pour le contenu rédigé dans l'admin (articles, épisodes).
+#
+# Le corps des articles/épisodes est saisi en HTML par la rédaction (ROLE_EDITOR)
+# puis rendu tel quel dans les pages publiques. Même si les auteurs sont de
+# confiance, on ne rend JAMAIS du HTML brut côté visiteur : un compte rédacteur
+# compromis, ou un copier-coller piégé, deviendrait sinon une XSS stockée.
+#
+# `allow_safe_elements` autorise toute la mise en forme courante (titres, listes,
+# liens, images, citations, code, tableaux…) mais supprime <script>, les
+# attributs `on*`, les `javascript:` URLs, <iframe>, etc.
+framework:
+    html_sanitizer:
+        sanitizers:
+            app.content:
+                allow_safe_elements: true
+                allow_relative_links: true
+                allow_relative_medias: true
+                # Schémas autorisés pour les liens (les autres sont supprimés).
+                allowed_link_schemes: ['http', 'https', 'mailto']
+                # Schémas autorisés pour les médias (img, etc.).
+                allowed_media_schemes: ['http', 'https', 'data']

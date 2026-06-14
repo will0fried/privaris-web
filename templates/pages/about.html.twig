@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}À propos · Privaris, et pourquoi on le fait{% endblock %}
-{% block description %}Privaris, c'est un média cyber en français pour les particuliers. Qui on est, comment on travaille, pourquoi il n'y a ni pub ni traceurs.{% endblock %}
+{% block title %}À propos · Privaris, le carnet de labo de W.{% endblock %}
+{% block description %}Privaris, c'est Mon Labo : j'apprends la cybersécurité en public, par la pratique. Qui je suis, comment je bosse, pourquoi il n'y a ni pub ni traceur.{% endblock %}
 
 {% block body %}
     {# ========= HERO compact (même langage que la home) ========= #}
@@ -11,13 +11,12 @@
                 <div class="max-w-4xl">
                     <p class="eyebrow animate-fade-in">À propos de Privaris</p>
                     <h1 class="text-[clamp(2.25rem,5.5vw,5rem)] font-semibold leading-[1.08] md:leading-[1.02] tracking-[-0.02em] md:tracking-[-0.03em] text-ink text-balance animate-slide-up">
-                        Un média cyber pour ceux <span class="text-navy">qui ne sont pas dans la tech</span>.
+                        Un carnet de labo, <span class="text-navy">ouvert à tous</span>.
                     </h1>
                     <p class="text-lg md:text-xl text-fog leading-relaxed max-w-2xl mt-8">
-                        Un SMS «&nbsp;Ameli&nbsp;» vous a fait douter.
-                        Un proche a cliqué sur le mauvais lien.
-                        Vous avez cherché une procédure à 23h.
-                        On a fait ce site pour ces moments-là.
+                        J'apprends la cybersécurité en la pratiquant : je monte un lab, je l'attaque, je le défends, je le casse.
+                        Et je documente tout, ici, semaine après semaine — les réussites comme les plantages.
+                        Surtout les plantages.
                     </p>
                 </div>
                 <div class="flex items-center gap-3 text-sm">
@@ -41,38 +40,37 @@
 
                 {# ---- MANIFESTE (8 cols) ---- #}
                 <div class="lg:col-span-8">
-                    <p class="eyebrow mb-6">Ce qu'on fait</p>
+                    <p class="eyebrow mb-6">Ce que je fais</p>
                     <p class="text-statement text-balance mb-10">
-                        Un sujet à la fois.
-                        <span class="text-fog">En français, posément.</span>
+                        Apprendre en public.
+                        <span class="text-fog">Une manip à la fois.</span>
                     </p>
                     <p class="text-lg text-ink/85 leading-relaxed max-w-3xl mb-6">
-                        Privaris est écrit depuis une cuisine, un café à portée,
-                        un téléphone posé à côté. Chaque semaine, on reçoit les
-                        messages que vous nous transférez : SMS bizarres, emails
-                        trop beaux, appels qui sentent l'entourloupe. On les
-                        ouvre, on les démonte, et on vous raconte ce qu'on a
-                        trouvé.
+                        Privaris est écrit depuis un coin de salon, un mini-PC qui
+                        ronronne à côté. Salarié le jour, en Master de cybersécurité
+                        le soir : chaque semaine, je prends ce que je viens d'apprendre
+                        et je le mets vraiment en pratique. Je monte une machine, je
+                        l'attaque, je regarde ce qui casse — et je raconte.
                     </p>
                     <p class="text-lg text-ink/85 leading-relaxed max-w-3xl mb-6">
-                        La méthode tient en trois gestes. <span class="text-navy font-medium">Prendre
-                        le piège en vrai</span>, sans l'inventer. <span class="text-navy font-medium">Le
-                        mettre à plat</span>, sans jargon. <span class="text-navy font-medium">Pointer
-                        le détail</span> qui aurait dû vous alerter. Pas de théorie.
-                        Pas de leçon. Juste «&nbsp;tenez, regardez, voilà ce qui
-                        clochait&nbsp;».
+                        La méthode tient en quatre temps. <span class="text-navy font-medium">Une
+                        hypothèse</span>, ce que je veux comprendre ou casser. <span class="text-navy font-medium">Un
+                        protocole</span>, ce que je tente, étape par étape. <span class="text-navy font-medium">Des
+                        observations</span>, ce qui s'est vraiment passé, plantages compris. Et la
+                        leçon que j'en tire. Pas de posture d'expert. Juste «&nbsp;tiens, regarde,
+                        voilà ce que j'ai appris&nbsp;».
                     </p>
                     <p class="text-lg text-ink/85 leading-relaxed max-w-3xl mb-8">
-                        L'objectif, au bout du chemin, c'est qu'on vous devienne
-                        inutile. Que vous voyiez les pièges venir sans nous.
-                        En attendant, on est là tous les mardis matin : un
-                        article, un réflexe, un piège de moins qui marche.
+                        Le but, au fond, est double : devenir vraiment bon en pratiquant
+                        à découvert, et laisser une trace utile à celui qui débutera après
+                        moi. Je ne suis pas un expert — c'est exactement le sujet. On se
+                        retrouve chaque semaine : une manip, un writeup, un plantage de moins.
                     </p>
 
                     <div class="flex items-center gap-3 pt-6 border-t border-mist max-w-3xl">
                         <div class="w-8 h-px bg-navy/40" aria-hidden="true"></div>
                         <span class="font-mono text-[11px] uppercase tracking-[0.18em] text-fog">
-                            Arsène Cipher · fondateur
+                            W. · Mon Labo
                         </span>
                     </div>
                 </div>
@@ -224,7 +222,7 @@
                             <ul class="divide-y divide-mist" style="list-style:none;padding:0;margin:0;">
                                 <li class="flex items-start gap-3 py-3">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="margin-top:5px;flex-shrink:0;color:var(--color-ok);" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-                                    <span class="text-ink leading-relaxed" style="font-size:0.95rem;">Des articles sur les arnaques qui tournent, avant qu'elles arrivent chez vous.</span>
+                                    <span class="text-ink leading-relaxed" style="font-size:0.95rem;">Des manips de homelab, des writeups, des décryptages — ce que je pratique, montré en vrai.</span>
                                 </li>
                                 <li class="flex items-start gap-3 py-3">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="margin-top:5px;flex-shrink:0;color:var(--color-ok);" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
@@ -236,7 +234,7 @@
                                 </li>
                                 <li class="flex items-start gap-3 py-3">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round" style="margin-top:5px;flex-shrink:0;color:var(--color-ok);" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
-                                    <span class="text-ink leading-relaxed" style="font-size:0.95rem;">Un podcast court&nbsp;: un sujet, 3 à 4 minutes, chaque mardi.</span>
+                                    <span class="text-ink leading-relaxed" style="font-size:0.95rem;">Un podcast court&nbsp;: un sujet de cyber, raconté simplement. (Bientôt.)</span>
                                 </li>
                             </ul>
                         </article>
@@ -295,28 +293,27 @@
                 <div class="lg:col-span-7">
                     <p class="eyebrow">Fiche de personnage</p>
                     <p class="text-statement text-balance mb-8">
-                        Arsène Cipher, en quelques lignes.
+                        W., en quelques lignes.
                     </p>
 
                     <div class="flex items-center gap-4 mb-6">
                         <div class="w-14 h-14 rounded-full bg-navy/10 flex items-center justify-center text-navy text-lg font-semibold">
-                            AC
+                            W.
                         </div>
                         <div>
                             <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-navy mb-0.5">
-                                Fondateur · journaliste
+                                Salarié + Master cyber · apprend en public
                             </p>
-                            <p class="text-xl font-semibold text-ink">Arsène Cipher</p>
+                            <p class="text-xl font-semibold text-ink">W.</p>
                         </div>
                     </div>
 
                     <p class="text-lg text-ink/85 leading-relaxed max-w-2xl mb-7">
-                        Le nom est un pseudo : la cyber en coulisses plutôt
-                        qu'en vitrine. Il écrit les articles, anime le podcast,
-                        répond aux mails. Pas de posture d'expert, pas d'image
-                        de marque, juste quelqu'un qui a pris le temps de lire
-                        ce que vous n'avez pas envie de lire, pour vous en
-                        ressortir l'essentiel.
+                        « W. », c'est une signature discrète : la cyber en
+                        coulisses plutôt qu'en vitrine. Salarié le jour, en Master
+                        de cybersécurité le soir, j'apprends en montant un lab, en
+                        l'attaquant, en le défendant — et je note tout. Pas de
+                        posture d'expert : je débute, et c'est exactement le sujet.
                     </p>
 
                     <div class="flex flex-wrap items-center gap-x-6 gap-y-3 pt-6 border-t border-mist max-w-2xl">
@@ -353,12 +350,11 @@
                 <div class="lg:col-span-4">
                     <p class="eyebrow mb-5">Méthodologie</p>
                     <p class="text-statement text-balance mb-5">
-                        Comment on <span class="text-navy">travaille</span>.
+                        Comment je <span class="text-navy">bosse</span>.
                     </p>
                     <p class="text-base text-fog leading-relaxed max-w-sm">
-                        Pas de recettes secrètes. Juste une méthode écrite,
-                        appliquée à chaque article, auditable si on vous demande
-                        comment on a vérifié tel fait.
+                        Pas de recette magique. Une méthode simple, appliquée à
+                        chaque manip — et que tu peux reproduire chez toi.
                     </p>
                 </div>
 
@@ -367,12 +363,12 @@
                         <li class="flex gap-5 pb-8 border-b border-mist">
                             <p class="font-mono text-navy flex-shrink-0" style="font-size:14px;letter-spacing:0.1em;font-weight:600;min-width:48px;">01</p>
                             <div>
-                                <h3 class="text-xl font-semibold text-ink mb-2.5">Deux sources minimum</h3>
+                                <h3 class="text-xl font-semibold text-ink mb-2.5">Reproductible</h3>
                                 <p class="text-fog leading-relaxed">
-                                    Toute affirmation chiffrée ou factuelle est recoupée par
-                                    au moins deux sources indépendantes (ANSSI, CERT, CNIL, éditeurs de
-                                    sécurité reconnus, communiqués officiels). Pas de reprise brute
-                                    d'une source unique, même prestigieuse.
+                                    Ce que je montre, tu peux le refaire : je donne les
+                                    commandes, les configs, les versions. Pas de
+                                    «&nbsp;fais-moi confiance&nbsp;» — la preuve, c'est que
+                                    ça tourne aussi chez toi.
                                 </p>
                             </div>
                         </li>
@@ -392,12 +388,12 @@
                         <li class="flex gap-5 pb-8 border-b border-mist">
                             <p class="font-mono text-navy flex-shrink-0" style="font-size:14px;letter-spacing:0.1em;font-weight:600;min-width:48px;">03</p>
                             <div>
-                                <h3 class="text-xl font-semibold text-ink mb-2.5">Relecture par un expert</h3>
+                                <h3 class="text-xl font-semibold text-ink mb-2.5">Les plantages restent</h3>
                                 <p class="text-fog leading-relaxed">
-                                    Les articles de fond sont relus par un professionnel
-                                    du sujet avant publication, et surtout testés sur des
-                                    lecteurs non spécialistes, pour vérifier qu'on explique
-                                    vraiment. Les erreurs restantes sont les nôtres.
+                                    Quand ça casse, je le laisse dans le récit. La soirée
+                                    où rien ne marche en apprend plus qu'un tuto parfait.
+                                    Montrer le vrai chemin, galères comprises, c'est tout
+                                    l'intérêt d'apprendre en public.
                                 </p>
                             </div>
                         </li>
@@ -462,7 +458,7 @@
                                 <svg class="text-fog group-hover:text-navy transition-transform group-open:rotate-45 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
                             </summary>
                             <p class="text-fog leading-relaxed mt-4 max-w-2xl">
-                                Oui, intégralement. Articles, podcasts, newsletters : tout est gratuit, rien n'est caché derrière un mur payant.
+                                Oui, intégralement. Le journal, les writeups, les décryptages : tout est gratuit, rien derrière un mur payant.
                             </p>
                         </details>
 
@@ -472,7 +468,7 @@
                                 <svg class="text-fog group-hover:text-navy transition-transform group-open:rotate-45 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
                             </summary>
                             <p class="text-fog leading-relaxed mt-4 max-w-2xl">
-                                À vous, vos proches, vos parents. Toute personne qui veut se protéger en ligne sans avoir à devenir informaticien.
+                                À ceux qui apprennent la cyber, ou veulent la comprendre : débutants, reconvertis, étudiants, curieux. En public, sans bullshit.
                             </p>
                         </details>
 
@@ -482,7 +478,7 @@
                                 <svg class="text-fog group-hover:text-navy transition-transform group-open:rotate-45 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
                             </summary>
                             <p class="text-fog leading-relaxed mt-4 max-w-2xl">
-                                Arsène Cipher, fondateur, écrit la majorité des contenus. Des invités (éducateurs, enquêteurs, médecins, proches) viennent ponctuellement partager leur regard.
+                                W., qui apprend la cybersécurité en public — salarié le jour, en Master le soir. Pas d'équipe ni d'experts invités : juste moi, qui documente ce que je pratique.
                             </p>
                         </details>
 
@@ -492,27 +488,27 @@
                                 <svg class="text-fog group-hover:text-navy transition-transform group-open:rotate-45 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
                             </summary>
                             <p class="text-fog leading-relaxed mt-4 max-w-2xl">
-                                Parce que la pub en ligne colle des traceurs partout, soit l'inverse de ce qu'on défend. Vous êtes notre seul client.
+                                Parce que la pub en ligne colle des traceurs partout, soit l'inverse de ce qu'on apprend ici. Le site reste indépendant, sans pub et sans traceur.
                             </p>
                         </details>
 
                         <details class="group" style="padding:1.25rem 0.25rem;">
                             <summary class="flex items-start justify-between gap-6 cursor-pointer list-none">
-                                <h3 class="text-lg font-semibold text-ink group-hover:text-navy transition-colors">Le podcast, à quelle fréquence ?</h3>
+                                <h3 class="text-lg font-semibold text-ink group-hover:text-navy transition-colors">Y a-t-il un podcast ?</h3>
                                 <svg class="text-fog group-hover:text-navy transition-transform group-open:rotate-45 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
                             </summary>
                             <p class="text-fog leading-relaxed mt-4 max-w-2xl">
-                                Un épisode chaque mardi matin. Trois à quatre minutes. Apple Podcasts, Spotify, ou RSS.
+                                Bientôt : raconter une manip à voix haute, en format court. Pour l'instant, tout est dans le journal écrit.
                             </p>
                         </details>
 
                         <details class="group" style="padding:1.25rem 0.25rem;">
                             <summary class="flex items-start justify-between gap-6 cursor-pointer list-none">
-                                <h3 class="text-lg font-semibold text-ink group-hover:text-navy transition-colors">Comment proposer un sujet ou témoigner ?</h3>
+                                <h3 class="text-lg font-semibold text-ink group-hover:text-navy transition-colors">Comment proposer un sujet ou une correction ?</h3>
                                 <svg class="text-fog group-hover:text-navy transition-transform group-open:rotate-45 flex-shrink-0 mt-1" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
                             </summary>
                             <p class="text-fog leading-relaxed mt-4 max-w-2xl">
-                                Écrivez à <a href="mailto:redaction@privaris.fr" class="text-navy">redaction@privaris.fr</a>, ou via la <a href="{{ path('app_contact') }}" class="text-navy">page contact</a>. On peut anonymiser.
+                                Une idée de manip, une remarque, une erreur repérée ? Écris-moi à <a href="mailto:redaction@privaris.fr" class="text-navy">redaction@privaris.fr</a>, ou via la <a href="{{ path('app_contact') }}" class="text-navy">page contact</a>.
                             </p>
                         </details>
                     </div>
@@ -528,12 +524,12 @@
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
-            {"@type": "Question", "name": "Privaris est-il gratuit ?", "acceptedAnswer": {"@type": "Answer", "text": "Oui, intégralement. Articles, podcasts, newsletters : rien n'est payant. Le modèle reposera à terme sur des partenariats éditoriaux transparents et des ateliers ou formations grand public."}},
-            {"@type": "Question", "name": "À qui s'adresse le site ?", "acceptedAnswer": {"@type": "Answer", "text": "À toute personne qui souhaite se protéger sur internet sans jargon : particuliers, parents, aidants accompagnant un proche âgé, personnes curieuses de reprendre la main sur leurs données."}},
-            {"@type": "Question", "name": "Qui écrit les articles ?", "acceptedAnswer": {"@type": "Answer", "text": "Arsène Cipher, fondateur (pseudonyme), signe la majorité des contenus. Des invités (éducateurs, enquêteurs, médecins, professionnels de la cyber) participent ponctuellement sur des sujets précis, en apportant leur regard de terrain."}},
-            {"@type": "Question", "name": "Pourquoi pas de publicité sur Privaris ?", "acceptedAnswer": {"@type": "Answer", "text": "Parce que la publicité en ligne entraîne presque toujours des traceurs, qui contredisent la maîtrise de ses données. Et parce qu'un média cyber payé par des annonceurs cyber perd sa liberté de critique."}},
-            {"@type": "Question", "name": "À quelle fréquence est publié le podcast Privaris ?", "acceptedAnswer": {"@type": "Answer", "text": "Un épisode par semaine, le mardi matin. Format court de 3 à 4 minutes, disponible sur Apple Podcasts, Spotify, et via le flux RSS du site."}},
-            {"@type": "Question", "name": "Comment proposer un sujet ou témoigner ?", "acceptedAnswer": {"@type": "Answer", "text": "Par la page contact, ou en écrivant à redaction@privaris.fr. Les témoignages d'incidents peuvent être traités en anonymisé si besoin."}}
+            {"@type": "Question", "name": "Privaris est-il gratuit ?", "acceptedAnswer": {"@type": "Answer", "text": "Oui, intégralement. Le journal, les writeups, les décryptages : tout est gratuit, rien derrière un mur payant."}},
+            {"@type": "Question", "name": "À qui s'adresse le site ?", "acceptedAnswer": {"@type": "Answer", "text": "À ceux qui apprennent la cybersécurité, ou veulent la comprendre : débutants, personnes en reconversion, étudiants, curieux. En public, en français, sans bullshit."}},
+            {"@type": "Question", "name": "Qui écrit les articles ?", "acceptedAnswer": {"@type": "Answer", "text": "W., qui apprend la cybersécurité en public — salarié le jour, en Master le soir. Pas d'équipe ni d'experts invités : juste quelqu'un qui documente ce qu'il pratique, plantages compris."}},
+            {"@type": "Question", "name": "Pourquoi pas de publicité sur Privaris ?", "acceptedAnswer": {"@type": "Answer", "text": "Parce que la publicité en ligne entraîne presque toujours des traceurs, soit l'inverse de ce qu'on apprend ici. Le site est indépendant, sans pub et sans traceur, et le restera."}},
+            {"@type": "Question", "name": "Y a-t-il un podcast Privaris ?", "acceptedAnswer": {"@type": "Answer", "text": "Bientôt : l'idée est de raconter une manip à voix haute, en format court. Pour l'instant, tout est dans le journal écrit."}},
+            {"@type": "Question", "name": "Comment proposer un sujet ou une correction ?", "acceptedAnswer": {"@type": "Answer", "text": "Par la page contact, ou en écrivant à redaction@privaris.fr. Une idée de manip, une remarque, une erreur repérée : c'est bienvenu."}}
         ]
     }
     </script>

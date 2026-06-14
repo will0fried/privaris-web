@@ -121,8 +121,8 @@
                 {# --- Colonne lecture --- #}
                 <div class="lg:col-span-2 max-w-prose-narrow">
                     <div class="prose-privaris">
-                        {# Le contenu est stocké en HTML rédigé dans l'admin (confiance rédaction). #}
-                        {{ article.content|raw }}
+                        {# Contenu HTML rédigé dans l'admin, assaini avant rendu (anti-XSS stockée). #}
+                        {{ article.content|sanitize_html('app.content') }}
                     </div>
 
                     {% if article.tags|length > 0 %}

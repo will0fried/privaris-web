@@ -43,20 +43,19 @@ class AppFixtures extends Fixture
 
         $admin = (new User())
             ->setEmail('admin@privaris.fr')
-            ->setDisplayName('Arsène Cipher')
-            ->setSlug('arsene-cipher')
-            ->setBio('Rédaction de Privaris. Couvre les arnaques en ligne, les comptes piratés et la protection des proches, pour un public qui n\'est pas dans la tech.')
+            ->setDisplayName('W.')
+            ->setSlug('wilfried')
+            ->setBio('J\'apprends la cybersécurité en public. Salarié le jour, en Master le soir : je monte un lab, je l\'attaque, je le défends — et je documente tout, plantages compris.')
             ->setRoles(['ROLE_SUPER_ADMIN']);
         $admin->setPassword($this->hasher->hashPassword($admin, $initialPassword));
         $manager->persist($admin);
 
-        // ---- Catégories (orientées particuliers / vie quotidienne) ----
+        // ---- Catégories « Mon Labo » (le journal d'apprentissage) ----
         $categoriesData = [
-            ['Actualités',        'actualites',        'L\'essentiel de la cyber du moment, traduit pour tout le monde.'],
-            ['Décryptages',       'decryptages',       'On prend le temps d\'expliquer un sujet de fond, sans raccourci et sans jargon.'],
-            ['Bonnes pratiques',  'bonnes-pratiques',  'Des réflexes simples à adopter aujourd\'hui pour protéger vos données.'],
-            ['Alertes',           'alertes',           'Les arnaques et menaces du moment qu\'il vaut mieux connaître avant de tomber dedans.'],
-            ['Famille & Maison',  'famille-maison',    'La cybersécurité à la maison : enfants, parents, Wi-Fi, objets connectés.'],
+            ['Labs',         'labs',         'Je monte un lab, je l\'attaque, je le défends — et je montre comment, étape par étape.'],
+            ['Writeups',     'writeups',     'Mes résolutions de challenges (Root-Me, TryHackMe, CTF) en français, le raisonnement compris.'],
+            ['Décryptages',  'decryptages',  'Un concept vu en Master, réexpliqué simplement. Si je sais l\'expliquer, c\'est que je l\'ai compris.'],
+            ['Veille',       'veille',       'Ce que je surveille en ce moment dans la cyber. Sans bullshit, sans alarmisme.'],
         ];
         $categories = [];
         foreach ($categoriesData as [$name, $slug, $desc]) {
@@ -65,18 +64,18 @@ class AppFixtures extends Fixture
             $categories[$slug] = $c;
         }
 
-        // ---- Tags (recentrés) ----
+        // ---- Tags « Mon Labo » ----
         $tagsData = [
-            ['phishing',   'phishing'],
-            ['arnaques',   'arnaques'],
-            ['mdp',        'mots de passe'],
-            ['mfa',        'double authentification'],
-            ['wifi',       'Wi-Fi'],
-            ['enfants',    'enfants'],
-            ['ia',         'IA & deepfake'],
-            ['smishing',   'SMS frauduleux'],
-            ['piratage',   'piratage'],
-            ['donnees',    'données personnelles'],
+            ['homelab',  'homelab'],
+            ['attaque',  'attaque'],
+            ['defense',  'défense'],
+            ['reseau',   'réseau'],
+            ['linux',    'Linux'],
+            ['nmap',     'nmap'],
+            ['ctf',      'CTF'],
+            ['crypto',   'cryptographie'],
+            ['outils',   'outils'],
+            ['proxmox',  'Proxmox'],
         ];
         $tags = [];
         foreach ($tagsData as [$slug, $name]) {
@@ -86,10 +85,120 @@ class AppFixtures extends Fixture
         }
 
         // ============================================================
-        //  ARTICLES, chargés depuis privaris-editorial/articles/*.md
-        //  Source unique de vérité pour le contenu éditorial.
+        //  ARTICLES « Mon Labo » : les premières entrées du journal.
+        //  (Le vrai contenu s'écrit ensuite dans /admin. Ceci est le seed.)
         // ============================================================
-        $this->loadArticlesFromMarkdown($manager, $admin, $categories, $tags);
+        $articlesData = [
+            [
+                'title'    => 'Premier contact : je scanne mon propre réseau',
+                'slug'     => 'premier-contact-scan-reseau',
+                'excerpt'  => 'Avant de défendre quoi que ce soit, il faut voir. Première manip : je braque un projecteur sur mon propre réseau pour savoir ce qui s\'y passe vraiment.',
+                'category' => 'labs',
+                'tags'     => ['homelab', 'reseau', 'nmap'],
+                'days'     => 1,
+                'reading'  => 4,
+                'featured' => true,
+                'content'  => <<<'HTML'
+<p><strong>Objectif.</strong> Apprendre la cyber pour de vrai commence par une évidence : on ne protège que ce qu'on voit. Ce soir, je cartographie mon propre réseau, exactement comme le ferait quelqu'un qui cherche une porte d'entrée.</p>
+<h2>Ce que j'ai fait</h2>
+<ul>
+<li>Installé l'outil de scan sur mon portable.</li>
+<li>Lancé un balayage de ma box et des appareils connectés.</li>
+<li>Noté chaque port ouvert, et à quoi il sert.</li>
+</ul>
+<p>La surprise du jour : une imprimante qui expose un accès web, sans aucun mot de passe. Un appareil que j'avais complètement oublié.</p>
+<h2>Ce que j'en retiens</h2>
+<p>La première compétence, ce n'est pas l'attaque, c'est la <strong>visibilité</strong>. Avant de défendre, il faut cartographier. La prochaine manip : monter un vrai labo pour casser des choses sans casser mon vrai ordinateur.</p>
+HTML,
+            ],
+            [
+                'title'    => 'Proxmox sur un mini-PC à 120 € : mon labo prend forme',
+                'slug'     => 'proxmox-mini-pc-labo',
+                'excerpt'  => 'Transformer une brouette d\'occasion en hyperviseur. La fondation de tout le reste : pouvoir tout casser et tout recommencer en un clic.',
+                'category' => 'labs',
+                'tags'     => ['homelab', 'proxmox', 'linux'],
+                'days'     => 8,
+                'reading'  => 6,
+                'featured' => false,
+                'content'  => <<<'HTML'
+<p><strong>Objectif.</strong> Avoir un terrain de jeu où je peux installer, attaquer et défendre des machines sans risquer mon ordinateur de tous les jours.</p>
+<h2>Ce que j'ai fait</h2>
+<p>J'ai récupéré un mini-PC d'occasion à 120 €, et j'y ai installé <strong>Proxmox</strong>, un hyperviseur : une machine qui héberge plein de machines virtuelles, chacune isolée des autres.</p>
+<ul>
+<li>Installation de Proxmox depuis une clé USB.</li>
+<li>Création de ma première machine virtuelle.</li>
+<li>Découverte des <em>snapshots</em> : une photo de la machine à un instant T, pour tout recommencer après l'avoir cassée.</li>
+</ul>
+<h2>Ce que j'en retiens</h2>
+<p>Le snapshot change tout : je n'ai plus peur de casser. Et quand on n'a plus peur de casser, on apprend dix fois plus vite.</p>
+HTML,
+            ],
+            [
+                'title'    => 'Ma première machine volontairement vulnérable',
+                'slug'     => 'premiere-machine-vulnerable',
+                'excerpt'  => 'Déployer une cible faillible, l\'isoler proprement, et dresser la carte de ses failles. Le terrain de la première vraie attaque.',
+                'category' => 'labs',
+                'tags'     => ['homelab', 'attaque', 'reseau'],
+                'days'     => 15,
+                'reading'  => 5,
+                'featured' => false,
+                'content'  => <<<'HTML'
+<p><strong>Objectif.</strong> Avoir une cible légale et sûre pour m'entraîner : une machine conçue exprès pour être vulnérable.</p>
+<h2>Ce que j'ai fait</h2>
+<ul>
+<li>Déployé une VM volontairement faillible dans mon labo.</li>
+<li>Isolé cette machine du reste de mon réseau (pas question qu'elle parle à ma vraie box).</li>
+<li>Scanné ses services et dressé la liste de ses failles.</li>
+</ul>
+<h2>Ce que j'en retiens</h2>
+<p>L'isolation d'abord. Une machine vulnérable, c'est utile pour apprendre — et dangereux si elle touche le vrai réseau. La prochaine fois : je passe à l'attaque, puis je lis ce que ça laisse dans les logs.</p>
+HTML,
+            ],
+            [
+                'title'    => 'Je m\'attaque moi-même : Kali contre mes logs',
+                'slug'     => 'je-m-attaque-moi-meme-kali-logs',
+                'excerpt'  => 'Mener une vraie attaque depuis Kali, puis changer de casquette et aller lire les traces. Attaque et détection, les deux faces de la même pièce.',
+                'category' => 'labs',
+                'tags'     => ['attaque', 'defense', 'linux'],
+                'days'     => 22,
+                'reading'  => 6,
+                'featured' => false,
+                'content'  => <<<'HTML'
+<p><strong>Objectif.</strong> Comprendre une attaque des deux côtés : la mener, puis la repérer dans les journaux, comme un défenseur.</p>
+<h2>Ce que j'ai fait</h2>
+<p>Depuis <strong>Kali Linux</strong>, j'ai exploité une faille simple de ma machine vulnérable. Puis j'ai changé de casquette : direction les <em>logs</em> de la cible pour voir ce que mon attaque y avait laissé.</p>
+<ul>
+<li>Exploitation d'un service mal configuré.</li>
+<li>Lecture des journaux côté défenseur : connexions, erreurs, traces.</li>
+<li>Repérage du moment exact où « ça a basculé ».</li>
+</ul>
+<h2>Ce que j'en retiens</h2>
+<p>Attaquer apprend à défendre. Une fois qu'on a vu à quoi ressemble une intrusion <em>vue d'en face</em>, on ne lit plus jamais un log de la même façon.</p>
+HTML,
+            ],
+        ];
+
+        foreach ($articlesData as $d) {
+            $article = (new Article())
+                ->setTitle($d['title'])
+                ->setSlug($d['slug'])
+                ->setExcerpt(mb_substr($d['excerpt'], 0, 280))
+                ->setSeoTitle(mb_substr($d['title'], 0, 160))
+                ->setSeoDescription(mb_substr($d['excerpt'], 0, 300))
+                ->setContent($d['content'])
+                ->setStatus(Article::STATUS_PUBLISHED)
+                ->setPublishedAt(new \DateTimeImmutable('-'.$d['days'].' days'))
+                ->setReadingMinutes($d['reading'])
+                ->setFeatured($d['featured'])
+                ->setAuthor($admin)
+                ->setCategory($categories[$d['category']]);
+            foreach ($d['tags'] as $tagSlug) {
+                if (isset($tags[$tagSlug])) {
+                    $article->addTag($tags[$tagSlug]);
+                }
+            }
+            $manager->persist($article);
+        }
 
         // ============================================================
         //  ÉPISODES DE PODCAST, scripts complets prêts à enregistrer

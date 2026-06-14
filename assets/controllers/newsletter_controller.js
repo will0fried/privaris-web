@@ -7,7 +7,7 @@ import { Controller } from '@hotwired/stimulus';
  */
 export default class extends Controller {
     static targets = ['email', 'submitBtn', 'message'];
-    static values = { endpoint: String };
+    static values = { endpoint: String, csrf: String };
 
     async submit(event) {
         event.preventDefault();
@@ -17,11 +17,17 @@ export default class extends Controller {
         this.submitBtnTarget.disabled = true;
         this.submitBtnTarget.textContent = '…';
 
+        const sourceInput = this.element.querySelector('input[name="source"]');
+
         try {
             const response = await fetch(this.endpointValue, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Accept': 'application/json' },
-                body: new URLSearchParams({ email }),
+                body: new URLSearchParams({
+                    email,
+                    source: sourceInput ? sourceInput.value : 'unknown',
+                    _token: this.csrfValue,
+                }),
             });
             const data = await response.json();
 

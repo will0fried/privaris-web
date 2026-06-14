@@ -38,6 +38,13 @@ class NewsletterController extends AbstractController
         $email = trim((string) $request->request->get('email', ''));
         $source = (string) $request->request->get('source', 'unknown');
 
+        // Protection CSRF : empêche un site tiers de forcer l'inscription
+        // d'une adresse à l'insu de la victime (le double opt-in limite déjà
+        // l'impact, mais on coupe le vecteur à la racine).
+        if (!$this->isCsrfTokenValid('newsletter_subscribe', (string) $request->request->get('_token', ''))) {
+            return new JsonResponse(['ok' => false, 'message' => 'Jeton de sécurité invalide. Rechargez la page et réessayez.'], 403);
+        }
+
         // Rate limiting
         $limiter = $this->newsletterSubscriptionLimiter->create($request->getClientIp() ?? 'anon');
         if (!$limiter->consume(1)->isAccepted()) {

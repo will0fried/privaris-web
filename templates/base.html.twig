@@ -20,10 +20,10 @@
 		</style>
 
 		<title>
-			{% block title %}Privaris · Cybersécurité au quotidien, expliquée sans jargon
+			{% block title %}Privaris · Mon Labo — apprendre la cyber en public
 			{% endblock %}
 		</title>
-		<meta name="description" content="{% block description %}Privaris, le média indépendant qui explique la cybersécurité aux particuliers : arnaques, mots de passe, Wi-Fi, enfants. Sans jargon, sans alarmisme, sans pub.{% endblock %}">
+		<meta name="description" content="{% block description %}Le carnet de bord de W. : j'apprends la cybersécurité en la pratiquant — homelab, attaque, défense, writeups — et je documente tout, plantages compris. Sans bullshit, sans pub, sans traceur.{% endblock %}">
 
 		{# Robots — par défaut index,follow. Les pages privées / admin peuvent surcharger. #}
 		<meta name="robots" content="{% block robots %}index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1{% endblock %}">
@@ -71,7 +71,7 @@
 					"name": "Privaris",
 					"url": "{{ absolute_url('/') }}",
 					"logo": "{{ absolute_url(asset('images/logo.svg')) }}",
-					"description": "Média indépendant français qui rend la cybersécurité accessible à tout le monde : particuliers, parents, aidants. Sans publicité, sans traceurs, sans jargon.",
+					"description": "Privaris · Mon Labo — le carnet de labo de W. : apprendre la cybersécurité en public, par la pratique. Homelab, attaque et défense, writeups. Indépendant, sans pub, sans traceur.",
 					"sameAs": []
 				},
 				{
