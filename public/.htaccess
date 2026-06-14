@@ -1,25 +1,13 @@
 # Privaris · Mon Labo — service statique
-# L'application Symfony d'origine est conservée (voir .htaccess.symfony.bak)
-# mais n'est plus servie : le site est désormais la page unique du labo.
+# (ancien .htaccess Symfony conservé dans .htaccess.symfony.bak)
+# Aucune redirection ici -> aucune boucle possible.
 
 DirectoryIndex index.html
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
-
-  # Ancien front controller Symfony -> accueil
-  RewriteRule ^index\.php$ / [R=301,L]
-
-  # Racine -> la page du labo
-  RewriteRule ^$ index.html [L]
-
-  # Servir les fichiers/dossiers existants tels quels (css, js, images, favicon…)
-  RewriteCond %{REQUEST_FILENAME} -f [OR]
-  RewriteCond %{REQUEST_FILENAME} -d
-  RewriteRule ^ - [L]
-
-  # Tout le reste -> la page unique
-  RewriteRule ^ index.html [L]
+  # Toujours servir la page du labo (réécriture interne, pas de redirection)
+  RewriteRule ^(index\.php)?$ index.html [L]
 </IfModule>
 
 <IfModule mod_expires.c>
