@@ -115,36 +115,7 @@
     }
 }
 
-/* =========================================================
-   IDENTITÉ « JOURNAL » — papier + vert phosphore (carnet de bord / terminal inversé)
-   Override des tokens existants : tout le site (bg-navy, text-navy, hover:bg-navy-600,
-   border-mist, bg-paper, text-fog…) bascule d'un coup, sans toucher chaque template.
-   Le nom « navy » est conservé mais pointe désormais vers le vert phosphore.
-   ========================================================= */
-@theme {
-    --color-navy:     #0F7A3D;   /* vert phosphore profond — accent principal */
-    --color-navy-50:  #ECF6EF;
-    --color-navy-100: #D2EADB;
-    --color-navy-200: #A7D6B9;
-    --color-navy-300: #5FB07E;
-    --color-navy-400: #2E9457;
-    --color-navy-500: #0F7A3D;
-    --color-navy-600: #0B5E2F;   /* hover plus sombre */
-    --color-navy-700: #0A4F28;
-    --color-navy-800: #073C1E;
-    --color-navy-900: #052E17;
-
-    --color-ink:      #17150F;   /* encre chaude, presque noir */
-    --color-fog:      #6F6857;   /* gris chaud — texte secondaire */
-    --color-mist:     #DED8C8;   /* bordures chaudes */
-    --color-canvas:   #F5F2EA;   /* fond papier de la page */
-    --color-paper:    #FBF9F3;   /* surfaces / cartes (un cran plus clair) */
-    --color-bone:     #EFEADD;   /* remplissages discrets */
-    --color-ok:       #0F7A3D;   /* ok = vert accent */
-
-    /* Mono = colonne vertébrale du journal (horodatages, codes d'épisode) */
-    --color-phosphor: #0B5E2F;
-}
+/* (Override « vert phosphore » retiré : on revient à la marque navy de Privaris — #0A2540 / #1C3A66.) */
 
 /* ---------------------------------------------------------
    Base — reset et styles globaux
@@ -157,11 +128,8 @@
     }
 
     body {
-        @apply bg-canvas text-ink font-sans;
+        @apply bg-paper text-ink font-sans;
         font-feature-settings: "ss01", "cv11";
-        /* Texture papier discrète (pointillé), signature de l'identité Journal */
-        background-image: radial-gradient(var(--color-bone) 1px, transparent 1px);
-        background-size: 22px 22px;
     }
 
     h1, h2, h3, h4 {
@@ -232,7 +200,7 @@
 
     /* Nav — frosted glass, sticky */
     .nav-frosted {
-        background: rgba(245, 242, 234, 0.82);
+        background: rgba(255, 255, 255, 0.72);
         -webkit-backdrop-filter: saturate(180%) blur(20px);
         backdrop-filter: saturate(180%) blur(20px);
         @apply shadow-nav;
@@ -1433,7 +1401,7 @@
         border: 1px solid var(--color-mist);
         border-radius: 14px;
         overflow: hidden;
-        box-shadow: 0 18px 40px -28px rgba(11, 94, 47, 0.45);
+        box-shadow: 0 18px 40px -28px rgba(10, 37, 64, 0.35);
     }
     .j-term__bar {
         display: flex; align-items: center; gap: 7px;
@@ -1453,7 +1421,7 @@
 
     /* Lignes d'épisode (S01E01 …) */
     .ep { display: flex; align-items: baseline; gap: 14px; padding: 8px 6px; border-radius: 8px; font-family: var(--font-mono); font-size: 13.5px; text-decoration: none; }
-    .ep:hover { background: rgba(15, 122, 61, 0.10); }
+    .ep:hover { background: rgba(10, 37, 64, 0.06); }
     .ep__code { color: var(--color-navy-600); font-weight: 700; width: 64px; flex: none; }
     .ep__name { color: var(--color-ink); flex: 1; min-width: 0; }
     .ep__state { color: var(--color-fog); font-size: 12px; white-space: nowrap; }
@@ -1466,7 +1434,7 @@
     @keyframes j-blink { 50% { opacity: 0; } }
 
     /* Bande verte (newsletter / CTA fort) */
-    .j-band { background: linear-gradient(135deg, #0B5E2F, #0F7A3D); color: #EAF6EE; border-radius: 18px; }
+    .j-band { background: linear-gradient(135deg, #0A2540, #1C3A66); color: #E6EEF6; border-radius: 18px; }
     .j-band h2 { color: #fff; }
 
     @media (prefers-reduced-motion: reduce) {

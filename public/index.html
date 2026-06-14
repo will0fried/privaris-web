@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privaris · Mon Labo — le radar</title>
+<meta name="description" content="Un radar qu'on opère. Chaque détection est un épisode de mon carnet de labo cyber. Plus c'est proche du centre, plus ça sort tôt.">
+<meta property="og:title" content="Privaris · Mon Labo">
+<meta property="og:description" content="Apprendre la cyber en public. Un radar qu'on opère : chaque détection est un épisode.">
+<meta property="og:type" content="website">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<!-- Polices de la marque. Pour tenir la promesse « zéro traceur », les auto-héberger (voir README). -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- marque radar réutilisable -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <g id="radarmark" fill="none" stroke="#0A2540" stroke-linecap="round">
+    <circle cx="32" cy="32" r="22" stroke-width="1.4" opacity=".30"/><circle cx="32" cy="32" r="14" stroke-width="1.4" opacity=".5"/>
+    <circle cx="32" cy="32" r="6" stroke-width="2" opacity=".9"/>
+    <line x1="32" y1="8" x2="32" y2="56" stroke-width=".8" opacity=".3"/><line x1="8" y1="32" x2="56" y2="32" stroke-width=".8" opacity=".3"/>
+    <circle cx="32" cy="32" r="2.4" fill="#0A2540" stroke="none"/><circle cx="44" cy="22" r="2.2" fill="#C0392B" stroke="none"/>
+  </g></defs></svg>
+
+<header class="top">
+  <div class="wrap">
+    <a class="mark" href="./"><svg viewBox="0 0 64 64"><use href="#radarmark"/></svg>
+      <span class="lockup"><span class="word">PRIVARIS</span><span class="divr">/</span><span class="sub">Mon Labo</span></span></a>
+    <nav class="main"><a href="#carnet">Le carnet</a><a href="#releve">Le relevé</a></nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <p class="kicker"><span class="pulse">●</span> Mon Labo — apprendre la cyber, sans bullshit</p>
+    <h1>Le radar est allumé.</h1>
+    <p class="lede">Chaque détection est un épisode de mon carnet de labo. Plus le signal est proche du centre, plus il sort tôt. Survole, clique — et reviens les voir approcher.</p>
+  </section>
+
+  <section class="stage">
+    <div class="scope" id="scope" role="group" aria-label="Radar des épisodes">
+      <svg class="rings" viewBox="0 0 100 100" aria-hidden="true">
+        <g fill="none" stroke="#FFFFFF">
+          <circle cx="50" cy="50" r="46" stroke-width=".25" opacity=".18"/>
+          <circle cx="50" cy="50" r="34" stroke-width=".25" opacity=".14"/>
+          <circle cx="50" cy="50" r="22" stroke-width=".25" opacity=".14"/>
+          <circle cx="50" cy="50" r="10" stroke-width=".25" opacity=".16"/>
+          <line x1="50" y1="3" x2="50" y2="97" stroke-width=".22" opacity=".12"/>
+          <line x1="3" y1="50" x2="97" y2="50" stroke-width=".22" opacity=".12"/>
+          <line x1="15" y1="15" x2="85" y2="85" stroke-width=".18" opacity=".08"/>
+          <line x1="85" y1="15" x2="15" y2="85" stroke-width=".18" opacity=".08"/>
+        </g>
+      </svg>
+      <div class="sweep"></div>
+      <span class="rangelbl" style="top:39%">cette saison</span>
+      <span class="rangelbl" style="top:7%">plus tard →</span>
+      <div class="core"><div class="d"></div><div class="t">Radar actif</div></div>
+    </div>
+  </section>
+  <p class="hint">Survole une détection · <b>clique</b> pour ouvrir l'entrée du carnet</p>
+
+  <section id="carnet" class="reader wrap">
+    <div class="fiche" id="fiche" aria-live="polite">
+      <div class="fiche__head"><span class="no">CARNET</span><span class="state soon">○ INITIALISATION…</span></div>
+      <div class="fiche__body"><p class="teaser">Le carnet se charge…</p></div>
+    </div>
+    <noscript>
+      <p style="text-align:center;color:var(--slate);font-family:var(--mono);font-size:13px;margin-top:18px;">
+        Le radar a besoin de JavaScript. Saison 01 — épisodes : On allume le radar · Premier contact · Le labo à 120 € · Première machine vulnérable · Je m'attaque moi-même.
+      </p>
+    </noscript>
+  </section>
+
+  <section id="releve" class="wrap" style="padding-bottom:20px;">
+    <div class="releve">
+      <p class="k">Le relevé du dimanche</p>
+      <h2>Reçois chaque détection par mail</h2>
+      <p>Un e-mail par semaine : l'entrée du dimanche, le plantage qui va avec, et ce que j'en ai tiré. On s'abonne à un carnet, pas à un gourou.</p>
+      <!-- Branche l'URL Buttondown ici (voir README). -->
+      <form class="form" action="#" method="post" onsubmit="return false;">
+        <input type="email" name="email" placeholder="ton@email.fr" aria-label="email" required>
+        <button type="submit">M'inscrire</button>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap foot">
+  <span class="mark"><svg viewBox="0 0 64 64" width="22" height="22"><use href="#radarmark"/></svg></span>
+  <span class="spaces"><b>Privaris</b> — les espaces : <b>Mon Labo</b> <span class="soon">· Pro (à venir)</span></span>
+  <span class="sp"></span><span class="mono" style="font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;">zéro pub · zéro traceur</span>
+</div></footer>
+
+<script src="js/episodes.js"></script>
+<script src="js/radar.js"></script>
+</body>
+</html>

@@ -3,18 +3,18 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-		<meta name="theme-color" content="#F5F2EA">
+		<meta name="theme-color" content="#FFFFFF">
 
 		{# CSS critique inline : fond clair + écran de chargement instantané.
 		   Le CSS applicatif étant chargé via JS, ceci évite l'écran sombre au lancement. #}
 		<style>
-		  html{background-color:#F5F2EA}
-		  #app-splash{position:fixed;inset:0;z-index:2147483647;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.1rem;background:#F5F2EA;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;transition:opacity .45s ease,visibility .45s ease}
+		  html{background-color:#FFFFFF}
+		  #app-splash{position:fixed;inset:0;z-index:2147483647;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.1rem;background:#FFFFFF;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;transition:opacity .45s ease,visibility .45s ease}
 		  .app-splash--hidden{opacity:0;visibility:hidden}
-		  .app-splash__mark{font-weight:700;font-size:1.35rem;letter-spacing:-.01em;color:#17150F}
-		  .app-splash__mark span{color:#0F7A3D}
-		  .app-splash__spinner{width:30px;height:30px;border-radius:50%;border:3px solid #DED8C8;border-top-color:#0F7A3D;animation:app-spin .8s linear infinite}
-		  .app-splash__hint{font-size:.78rem;color:#6F6857;letter-spacing:.02em}
+		  .app-splash__mark{font-weight:700;font-size:1.35rem;letter-spacing:-.01em;color:#0A2540}
+		  .app-splash__mark span{color:#1C3A66}
+		  .app-splash__spinner{width:30px;height:30px;border-radius:50%;border:3px solid #E3E8EF;border-top-color:#0A2540;animation:app-spin .8s linear infinite}
+		  .app-splash__hint{font-size:.78rem;color:#6B7685;letter-spacing:.02em}
 		  @keyframes app-spin{to{transform:rotate(360deg)}}
 		  @media (prefers-reduced-motion:reduce){.app-splash__spinner{animation:none}#app-splash{transition:none}}
 		</style>
