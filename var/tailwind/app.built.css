@@ -217,14 +217,8 @@
   .mx-auto {
     margin-inline: auto;
   }
-  .mt-6 {
-    margin-top: calc(var(--spacing) * 6);
-  }
   .mt-8 {
     margin-top: calc(var(--spacing) * 8);
-  }
-  .mb-1\.5 {
-    margin-bottom: calc(var(--spacing) * 1.5);
   }
   .mb-2 {
     margin-bottom: calc(var(--spacing) * 2);
@@ -1930,7 +1924,7 @@
   color: var(--color-dim);
   margin-bottom: 8px;
 }
-.form-pv input[type="text"], .form-pv input[type="email"], .form-pv input:not([type]), .form-pv textarea {
+.form-pv input[type="text"], .form-pv input[type="email"], .form-pv input[type="password"], .form-pv input[type="search"], .form-pv input:not([type]), .form-pv textarea {
   width: 100%;
   background: #0A1120;
   border: 1px solid var(--color-line);

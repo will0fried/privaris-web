@@ -23,9 +23,9 @@
 		{# URL canonique — évite le contenu dupliqué (query strings, trailing slashes, etc). #}
 		<link rel="canonical" href="{% block canonical %}{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|default({})) }}{% endblock %}">
 
-		<link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
-		<link rel="alternate icon" href="{{ asset('favicon.ico') }}">
-		<link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}">
+		<link rel="icon" href="{{ asset('favicon.svg') }}?v=2" type="image/svg+xml">
+		<link rel="alternate icon" href="{{ asset('favicon.ico') }}?v=2">
+		<link rel="apple-touch-icon" href="{{ asset('apple-touch-icon.png') }}?v=2">
 
 		{# Preconnect aux fontes Google — accélère le premier rendu typographique #}
 		<link rel="preconnect" href="https://fonts.googleapis.com">
