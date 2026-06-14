@@ -15,15 +15,14 @@
 
 {% block description %}
     {%- if activeCategory is defined and activeCategory.description -%}
-        {{ activeCategory.description }} Un article, un sujet, un réflexe à retenir.
+        {{ activeCategory.description }}
     {%- elseif activeTag is defined -%}
         Les entrées du journal filtrées sur #{{ activeTag.name }} : labs, writeups et décryptages, en public.
     {%- else -%}
-        Le journal d'apprentissage de Privaris : labs, writeups et décryptages de cours en cybersécurité. En public, en français, sans jargon.
+        Le journal de Privaris : chaque entrée est une manip réelle, documentée de bout en bout. Réussites comme plantages.
     {%- endif -%}
 {% endblock %}
 
-{# SEO : rel=prev / rel=next pour la pagination + canonical nettoyée #}
 {% block head_extra %}
     {% if pagination is defined %}
         {% set pageParams = app.request.attributes.get('_route_params')|default({}) %}
@@ -37,152 +36,80 @@
 {% endblock %}
 
 {% block body %}
-    {# ========= HERO ========= #}
-    <section class="pt-16 md:pt-24 pb-10 md:pb-14 has-decor">
-        <div class="container-wide">
-            <div class="flex items-end justify-between gap-10 flex-wrap">
-                <div class="max-w-4xl">
-                    <p class="eyebrow animate-fade-in">
-                        {% if activeCategory is defined %}Catégorie
-                        {% elseif activeTag is defined %}Tag
-                        {% else %}Le journal{% endif %}
-                    </p>
-                    <h1 class="text-[clamp(2.25rem,6vw,5rem)] font-semibold leading-[1.08] md:leading-[1.02] tracking-[-0.02em] md:tracking-[-0.03em] text-ink text-balance animate-slide-up">
-                        {% if activeCategory is defined %}
-                            {{ activeCategory.name }}.
-                        {% elseif activeTag is defined %}
-                            #{{ activeTag.name }}
-                        {% else %}
-                            Le journal, <span class="text-navy">entrée</span> par entrée.
-                        {% endif %}
-                    </h1>
-                    {% if activeCategory is defined and activeCategory.description %}
-                        <p class="text-lg md:text-xl text-fog leading-relaxed max-w-2xl mt-8">{{ activeCategory.description }}</p>
-                    {% elseif activeTag is not defined %}
-                        <p class="text-lg md:text-xl text-fog leading-relaxed max-w-2xl mt-8">
-                            Ce que j'apprends en Master, mis en pratique et documenté :
-                            labs, writeups de challenges, et décryptages de cours.
-                            Daté, par thème, au fil de l'eau.
-                        </p>
-                    {% endif %}
-                </div>
-                <div class="flex items-center gap-5 text-sm">
-                    {% set total = pagination.total|default(articles|length) %}
-                    <p class="font-mono text-[11px] uppercase tracking-[0.18em] text-fog tabular-nums">
-                        {{ total }} entrée{{ total > 1 ? 's' : '' }}{% if totalPages > 1 %} · Page {{ currentPage }} / {{ totalPages }}{% endif %}
-                    </p>
-                </div>
-            </div>
+{% set total = pagination.total|default(articles|length) %}
+<div class="wrap wrap--mid">
+
+    {# ========= EN-TÊTE ========= #}
+    <header class="j-head">
+        <p class="ey">
+            {% if activeCategory is defined %}Catégorie
+            {% elseif activeTag is defined %}Tag
+            {% else %}Archive{% endif %}
+        </p>
+        <h1>
+            {% if activeCategory is defined %}{{ activeCategory.name }}
+            {% elseif activeTag is defined %}#{{ activeTag.name }}
+            {% else %}Le journal{% endif %}
+        </h1>
+        <p>
+            {% if activeCategory is defined and activeCategory.description %}{{ activeCategory.description }}
+            {% else %}Chaque entrée est une manip réelle, documentée de bout en bout. Les réussites comme les plantages.{% endif %}
+        </p>
+        <div class="j-count">
+            {{ total }} entrée{{ total > 1 ? 's' : '' }} · Saison 01{% if totalPages > 1 %} · Page {{ currentPage }} / {{ totalPages }}{% endif %}
         </div>
-    </section>
+    </header>
 
     {# ========= FILTRES ========= #}
-    <section class="pb-10 border-b border-mist">
-        <div class="container-wide">
-            <div class="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm">
-                <a href="{{ path('app_blog_index') }}"
-                   class="no-underline transition {{ activeCategory is not defined and activeTag is not defined ? 'text-navy font-medium border-b-2 border-navy pb-1' : 'text-fog hover:text-navy' }}">Tout</a>
-                {% for cat in categories %}
-                    <a href="{{ path('app_blog_category', {slug: cat.slug}) }}"
-                       class="no-underline transition {{ activeCategory is defined and activeCategory.id == cat.id ? 'text-navy font-medium border-b-2 border-navy pb-1' : 'text-fog hover:text-navy' }}">
-                        {{ cat.name }}
-                    </a>
-                {% endfor %}
-            </div>
-        </div>
-    </section>
+    <div class="j-filters">
+        <a class="j-chip {{ activeCategory is not defined and activeTag is not defined ? 'is-active' : '' }}" href="{{ path('app_blog_index') }}">Tout</a>
+        {% for cat in categories %}
+            <a class="j-chip {{ activeCategory is defined and activeCategory.id == cat.id ? 'is-active' : '' }}" href="{{ path('app_blog_category', {slug: cat.slug}) }}">{{ cat.name }}</a>
+        {% endfor %}
+    </div>
 
-    {# ========= LA UNE — featured article (seulement en page 1, sans filtre) ========= #}
-    {% if articles|length > 0 and activeCategory is not defined and activeTag is not defined and currentPage == 1 %}
-        {% set featured = articles|first %}
-        <section class="pt-16 md:pt-20 pb-16 md:pb-24">
-            <div class="container-wide">
-                <p class="eyebrow mb-8">Dernière entrée</p>
-                <a href="{{ path('app_blog_show', {slug: featured.slug}) }}" class="article-feature group no-underline">
-                    <div class="grid lg:grid-cols-12 gap-8 lg:gap-14 items-center">
-                        <div class="lg:col-span-7">
-                            <div class="article-feature__cover">
-                                {% if featured.coverImageUrl %}
-                                    <img src="{{ featured.coverImageUrl|media_url('articles') }}" alt="{{ featured.coverImageAlt ?: featured.title }}" class="w-full h-full object-cover" fetchpriority="high" decoding="async">
-                                {% else %}
-                                    {% include 'components/_cover_placeholder.html.twig' with {seed: featured.id|default(1), large: true} only %}
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="lg:col-span-5">
-                            <div class="flex items-center gap-3 mb-5">
-                                {% if featured.category %}
-                                    <span class="article-kicker">{{ featured.category.name }}</span>
-                                    <span class="text-mist" aria-hidden="true">·</span>
-                                {% endif %}
-                                <time datetime="{{ featured.publishedAt|date('c') }}" class="font-mono text-[11px] uppercase tracking-[0.15em] text-fog">
-                                    {{ featured.publishedAt|format_datetime(pattern='d MMM yyyy', locale='fr') }}
-                                </time>
-                            </div>
-                            <h2 class="text-[clamp(1.875rem,3.2vw,2.75rem)] font-semibold leading-[1.1] tracking-[-0.02em] text-ink text-balance mb-6 group-hover:text-navy transition-colors">
-                                {{ featured.title }}
-                            </h2>
-                            <p class="text-lg text-fog leading-relaxed mb-8 line-clamp-3">{{ featured.excerpt }}</p>
-                            <div class="flex items-center justify-between pt-6 border-t border-mist">
-                                {% if featured.author %}
-                                    <div class="flex items-center gap-2.5 text-sm">
-                                        {% if featured.author.avatarUrl %}
-                                            <img src="{{ featured.author.avatarUrl|media_url('avatars') }}" alt="" class="w-7 h-7 rounded-full" loading="lazy" decoding="async">
-                                        {% else %}
-                                            <div class="w-7 h-7 rounded-full bg-navy/10 flex items-center justify-center text-navy text-xs font-semibold">
-                                                {{ (featured.author.displayName ?: featured.author.email)|first|upper }}
-                                            </div>
-                                        {% endif %}
-                                        <span class="text-ink font-medium">{{ featured.author.displayName ?: featured.author.email }}</span>
-                                    </div>
-                                {% endif %}
-                                <span class="font-mono text-[11px] uppercase tracking-[0.14em] text-fog tabular-nums">{{ featured.readingMinutes }} MIN</span>
-                            </div>
+    {# ========= ARCHIVE ========= #}
+    {% if articles|length > 0 %}
+        <section class="j-arch">
+            {% for a in articles %}
+                <a class="j-item" href="{{ path('app_blog_show', {slug: a.slug}) }}">
+                    <div class="idx">
+                        {{ '%02d'|format(total - ((currentPage - 1) * articles|length) - loop.index0) }}
+                        <small>{{ a.publishedAt ? a.publishedAt|date('d.m.y') : '—' }}</small>
+                    </div>
+                    <div>
+                        <h2>{{ a.title }}</h2>
+                        {% if a.excerpt %}<p class="ex">{{ a.excerpt }}</p>{% endif %}
+                        <div class="tags">
+                            <span>{{ a.category ? a.category.name|upper : 'LABS' }}</span>
+                            <span class="t">{{ a.readingMinutes }} min</span>
                         </div>
                     </div>
+                    <span class="go" aria-hidden="true">→</span>
                 </a>
-            </div>
+            {% endfor %}
         </section>
+
+        {% if pagination is defined %}
+            {% set _route = activeCategory is defined ? 'app_blog_category'
+                         : activeTag is defined ? 'app_blog_tag'
+                         : 'app_blog_index' %}
+            {% set _routeParams = activeCategory is defined ? {slug: activeCategory.slug}
+                               : activeTag is defined ? {slug: activeTag.slug}
+                               : {} %}
+            {% include 'components/_pagination.html.twig' with {
+                pagination: pagination,
+                route: _route,
+                routeParams: _routeParams
+            } only %}
+        {% endif %}
+    {% else %}
+        <div style="padding:60px 0;text-align:center;color:var(--color-muted);">
+            <p>Pas encore d'entrée ici.</p>
+        </div>
     {% endif %}
 
-    {# ========= GRILLE ARTICLES ========= #}
-    <section class="pb-24 md:pb-32 {% if articles|length > 0 and activeCategory is not defined and activeTag is not defined and currentPage == 1 %}border-t border-mist{% endif %} pt-16 md:pt-20">
-        <div class="container-wide">
-            {% if articles|length > 0 %}
-                {# On ne montre la "Une" en grand qu'en page 1, sans filtre #}
-                {% set offset = (activeCategory is not defined and activeTag is not defined and currentPage == 1) ? 1 : 0 %}
-                <div class="grid gap-12 lg:gap-14 md:grid-cols-2 lg:grid-cols-3">
-                    {% for article in articles|slice(offset) %}
-                        {% include 'components/_article_card.html.twig' with {article: article} only %}
-                    {% endfor %}
-                </div>
-
-                {# Pagination #}
-                {% if pagination is defined %}
-                    {% set _route = activeCategory is defined ? 'app_blog_category'
-                                 : activeTag is defined ? 'app_blog_tag'
-                                 : 'app_blog_index' %}
-                    {% set _routeParams = activeCategory is defined ? {slug: activeCategory.slug}
-                                       : activeTag is defined ? {slug: activeTag.slug}
-                                       : {} %}
-                    {% include 'components/_pagination.html.twig' with {
-                        pagination: pagination,
-                        route: _route,
-                        routeParams: _routeParams
-                    } only %}
-                {% endif %}
-            {% else %}
-                <div class="py-16 text-center max-w-md mx-auto">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 32 32" fill="none" class="mx-auto mb-5 text-navy/15" aria-hidden="true">
-                        <circle cx="16" cy="16" r="13" stroke="currentColor" stroke-width="1"/>
-                        <circle cx="16" cy="16" r="8"  stroke="currentColor" stroke-width="1"/>
-                        <circle cx="16" cy="16" r="3"  fill="currentColor"/>
-                    </svg>
-                    <p class="text-fog">Pas encore d'entrée ici.</p>
-                </div>
-            {% endif %}
-        </div>
-    </section>
-
     {% include 'components/_newsletter.html.twig' with {source: 'blog'} only %}
+
+</div>
 {% endblock %}

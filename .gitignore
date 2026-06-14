@@ -4,7 +4,7 @@
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
 /public/bundles/
-/var/
+/var/*
 /vendor/
 ###< symfony/framework-bundle ###
 
@@ -19,7 +19,12 @@
 ###< symfony/phpunit-bridge ###
 
 ###> symfonycasts/tailwind-bundle ###
-/var/tailwind/
+# Binaires CLI ignorés (propres à la plateforme), MAIS le CSS compilé est committé
+# pour le déploiement : l'hébergement mutualisé ne peut pas lancer tailwind:build.
+# Le serveur ne fait alors que `php bin/console asset-map:compile` (pur PHP).
+!/var/tailwind/
+/var/tailwind/*
+!/var/tailwind/app.built.css
 ###< symfonycasts/tailwind-bundle ###
 
 # IDE / OS

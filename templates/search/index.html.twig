@@ -12,124 +12,70 @@
     {%- endif -%}
 {% endblock %}
 
-{% block description %}Cherchez dans le journal Privaris : labs, writeups, décryptages — tout ce que j'apprends en public en cybersécurité.{% endblock %}
-
-{# Pages de recherche : noindex (déjà géré côté contrôleur via X-Robots-Tag,
-   on double avec un meta robots pour les bots qui ne lisent que ça). #}
+{% block description %}Cherche dans le journal Privaris : labs, writeups, décryptages, tout ce que j'apprends en public en cybersécurité.{% endblock %}
 {% block robots %}noindex, follow{% endblock %}
 
 {% block body %}
-    {# ========= HERO + FORMULAIRE ========= #}
-    <section class="pt-16 md:pt-24 pb-10 md:pb-14 has-decor">
-        <div class="container-wide">
-            <div class="max-w-3xl">
-                <p class="eyebrow animate-fade-in">Recherche</p>
-                <h1 class="text-[clamp(2.25rem,6vw,5rem)] font-semibold leading-[1.08] md:leading-[1.02] tracking-[-0.02em] md:tracking-[-0.03em] text-ink text-balance animate-slide-up mt-6">
-                    {% if hasQuery %}
-                        {{ total }} résultat{{ total > 1 ? 's' : '' }}
-                        <span class="text-fog">pour</span>
-                        <span class="text-navy">« {{ query }} »</span>
-                    {% else %}
-                        Que cherchez-vous ?
-                    {% endif %}
-                </h1>
+<div class="wrap wrap--mid">
 
-                <form action="{{ path('app_search') }}" method="get"
-                      class="mt-10 flex items-stretch gap-2 max-w-2xl"
-                      role="search"
-                      aria-label="Recherche dans les articles">
-                    <label for="search-input" class="sr-only">Mot-clé à rechercher</label>
-                    <div class="relative flex-1">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                             class="absolute left-4 top-1/2 -translate-y-1/2 text-fog pointer-events-none" aria-hidden="true">
-                            <circle cx="11" cy="11" r="7"/>
-                            <path d="m20 20-3.5-3.5"/>
-                        </svg>
-                        <input id="search-input"
-                               type="search"
-                               name="q"
-                               value="{{ query }}"
-                               placeholder="nmap, Proxmox, Kali, writeup…"
-                               required
-                               minlength="{{ minLength }}"
-                               maxlength="100"
-                               autocomplete="off"
-                               autofocus
-                               class="w-full pl-12 pr-4 py-3.5 text-base bg-paper border border-mist rounded-full text-ink placeholder:text-fog focus:outline-none focus:border-navy focus:ring-2 focus:ring-navy/15 transition">
-                    </div>
-                    <button type="submit" class="btn-primary">
-                        <span>Rechercher</span>
-                    </button>
-                </form>
+    <header class="j-head">
+        <p class="ey">Recherche</p>
+        <h1>
+            {% if hasQuery %}{{ total }} résultat{{ total > 1 ? 's' : '' }} <span style="color:var(--color-muted);">pour « {{ query }} »</span>
+            {% else %}Que cherches-tu ?{% endif %}
+        </h1>
 
-                {% if tooShort %}
-                    <p class="mt-4 text-sm text-fog" role="status">
-                        Au moins {{ minLength }} caractères, s'il vous plaît.
-                    </p>
-                {% endif %}
+        <form action="{{ path('app_search') }}" method="get" role="search" aria-label="Recherche"
+              style="margin-top:28px;display:flex;gap:10px;max-width:560px;flex-wrap:wrap;">
+            <label for="search-input" class="sr-only">Mot-clé</label>
+            <input id="search-input" type="search" name="q" value="{{ query }}"
+                   placeholder="nmap, Proxmox, Kali, writeup…" required minlength="{{ minLength }}" maxlength="100"
+                   autocomplete="off" autofocus
+                   style="flex:1;min-width:220px;background:#0A1120;border:1px solid var(--color-line);border-radius:10px;padding:13px 16px;color:var(--color-text);font-family:var(--font-sans);font-size:15px;">
+            <button type="submit" class="pv-btn">Rechercher</button>
+        </form>
+
+        {% if tooShort %}
+            <p style="margin-top:14px;font-size:13px;color:var(--color-muted);" role="status">Au moins {{ minLength }} caractères, s'il te plaît.</p>
+        {% endif %}
+    </header>
+
+    {% if hasQuery and articles|length > 0 %}
+        <div class="ledger" style="margin-top:20px;">
+            {% for a in articles %}
+                <a class="led-row" href="{{ path('app_blog_show', {slug: a.slug}) }}">
+                    <span class="num">{{ '%02d'|format(loop.index) }}</span>
+                    <span class="date">{{ a.publishedAt ? a.publishedAt|date('d.m') : '—' }}</span>
+                    <span class="ttl">{{ a.title }}</span>
+                    <span class="cat">{{ a.category ? a.category.name|upper : 'LABS' }}</span>
+                    <span class="rt">{{ a.readingMinutes }} min</span>
+                </a>
+            {% endfor %}
+        </div>
+
+        {% if pagination is defined and totalPages > 1 %}
+            {% include 'components/_pagination.html.twig' with {pagination: pagination, route: 'app_search', routeParams: {q: query}} only %}
+        {% endif %}
+
+    {% elseif hasQuery %}
+        <div style="padding:60px 0;text-align:center;max-width:34rem;margin:0 auto;">
+            <p style="font-size:22px;font-weight:600;font-family:var(--font-disp);margin:0 0 10px;">Aucune entrée trouvée.</p>
+            <p style="color:var(--color-muted);line-height:1.6;margin:0 0 24px;">Rien sur « {{ query }} » pour l'instant. Essaie un terme plus large, ou parcours le journal.</p>
+            <a href="{{ path('app_blog_index') }}" class="pv-btn">Tout le journal</a>
+        </div>
+
+    {% else %}
+        <div style="padding:30px 0 0;">
+            <p class="kicker">Pistes</p>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;">
+                {% set suggestions = ['homelab', 'nmap', 'Proxmox', 'Kali', 'writeup', 'réseau', 'Linux', 'défense'] %}
+                {% for s in suggestions %}
+                    <a class="j-chip" href="{{ path('app_search', {q: s}) }}">{{ s }}</a>
+                {% endfor %}
             </div>
         </div>
-    </section>
-
-    {# ========= RÉSULTATS ========= #}
-    <section class="pb-24 md:pb-32 border-t border-mist pt-12 md:pt-16">
-        <div class="container-wide">
-            {% if hasQuery and articles|length > 0 %}
-                <div class="grid gap-12 lg:gap-14 md:grid-cols-2 lg:grid-cols-3">
-                    {% for article in articles %}
-                        {% include 'components/_article_card.html.twig' with {article: article} only %}
-                    {% endfor %}
-                </div>
-
-                {% if pagination is defined and totalPages > 1 %}
-                    {% include 'components/_pagination.html.twig' with {
-                        pagination: pagination,
-                        route: 'app_search',
-                        routeParams: {q: query}
-                    } only %}
-                {% endif %}
-
-            {% elseif hasQuery %}
-                {# ========= ÉTAT VIDE — recherche faite, rien trouvé ========= #}
-                <div class="py-16 md:py-24 max-w-xl mx-auto text-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 32 32" fill="none" class="mx-auto mb-8 text-navy/15" aria-hidden="true">
-                        <circle cx="14" cy="14" r="9" stroke="currentColor" stroke-width="1.5"/>
-                        <path d="m21 21 6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                        <line x1="10" y1="14" x2="18" y2="14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-                    </svg>
-                    <p class="text-2xl font-semibold text-ink mb-3">
-                        Aucun article trouvé.
-                    </p>
-                    <p class="text-fog leading-relaxed mb-8">
-                        On n'a rien publié sur «&nbsp;{{ query }}&nbsp;» pour l'instant.
-                        Essayez un terme plus large, ou parcourez nos rubriques.
-                    </p>
-                    <div class="flex items-center justify-center gap-3 flex-wrap">
-                        <a href="{{ path('app_blog_index') }}" class="btn-primary">Voir tous les articles</a>
-                        <a href="{{ path('app_sos_index') }}" class="btn-ghost">SOS · J'ai un problème maintenant</a>
-                    </div>
-                </div>
-
-            {% else %}
-                {# ========= ÉTAT INITIAL — pas de recherche en cours ========= #}
-                <div class="max-w-3xl">
-                    <p class="eyebrow mb-6">Pistes</p>
-                    <p class="text-fog leading-relaxed mb-8 max-w-2xl">
-                        Quelques mots qui mènent souvent quelque part&nbsp;:
-                    </p>
-                    <div class="flex flex-wrap gap-2">
-                        {% set suggestions = ['homelab', 'nmap', 'Proxmox', 'Kali', 'writeup', 'réseau', 'Linux', 'défense'] %}
-                        {% for s in suggestions %}
-                            <a href="{{ path('app_search', {q: s}) }}"
-                               class="text-sm px-4 py-2 rounded-full border border-mist text-fog no-underline hover:border-navy hover:text-navy transition">
-                                {{ s }}
-                            </a>
-                        {% endfor %}
-                    </div>
-                </div>
-            {% endif %}
-        </div>
-    </section>
+    {% endif %}
 
     {% include 'components/_newsletter.html.twig' with {source: 'search'} only %}
+</div>
 {% endblock %}

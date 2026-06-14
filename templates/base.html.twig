@@ -3,27 +3,19 @@
 	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-		<meta name="theme-color" content="#FFFFFF">
+		<meta name="theme-color" content="#070B14">
 
-		{# CSS critique inline : fond clair + écran de chargement instantané.
-		   Le CSS applicatif étant chargé via JS, ceci évite l'écran sombre au lancement. #}
-		<style>
-		  html{background-color:#FFFFFF}
-		  #app-splash{position:fixed;inset:0;z-index:2147483647;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.1rem;background:#FFFFFF;font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;transition:opacity .45s ease,visibility .45s ease}
-		  .app-splash--hidden{opacity:0;visibility:hidden}
-		  .app-splash__mark{font-weight:700;font-size:1.35rem;letter-spacing:-.01em;color:#0A2540}
-		  .app-splash__mark span{color:#1C3A66}
-		  .app-splash__spinner{width:30px;height:30px;border-radius:50%;border:3px solid #E3E8EF;border-top-color:#0A2540;animation:app-spin .8s linear infinite}
-		  .app-splash__hint{font-size:.78rem;color:#6B7685;letter-spacing:.02em}
-		  @keyframes app-spin{to{transform:rotate(360deg)}}
-		  @media (prefers-reduced-motion:reduce){.app-splash__spinner{animation:none}#app-splash{transition:none}}
-		</style>
+		{# Fond sombre instantané — évite tout flash clair avant l'arrivée du CSS. #}
+		<style>html{background-color:#070B14}</style>
+
+		{# Transitions de page natives (Turbo 8 + View Transitions API) : fondu fluide entre les pages. #}
+		<meta name="view-transition" content="same-origin">
 
 		<title>
-			{% block title %}Privaris · Mon Labo — apprendre la cyber en public
+			{% block title %}Privaris · Mon Labo, apprendre la cyber en public
 			{% endblock %}
 		</title>
-		<meta name="description" content="{% block description %}Le carnet de bord de W. : j'apprends la cybersécurité en la pratiquant — homelab, attaque, défense, writeups — et je documente tout, plantages compris. Sans bullshit, sans pub, sans traceur.{% endblock %}">
+		<meta name="description" content="{% block description %}Le carnet de labo de W. : j'apprends la cybersécurité en la pratiquant (homelab, attaque, défense, writeups) et je documente tout, plantages compris. Sans bullshit, sans pub, sans traceur.{% endblock %}">
 
 		{# Robots — par défaut index,follow. Les pages privées / admin peuvent surcharger. #}
 		<meta name="robots" content="{% block robots %}index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1{% endblock %}">
@@ -39,10 +31,10 @@
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-		{# Polices en chargement non-bloquant (remplace l'@import bloquant qui était dans le CSS) #}
-		<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" media="print" onload="this.media='all'">
-		<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap"></noscript>
+		{# Polices en chargement non-bloquant — Inter (texte) · Space Grotesk (titres) · JetBrains Mono (labels) #}
+		<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" media="print" onload="this.media='all'">
+		<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap"></noscript>
 
 
 		<link
@@ -71,7 +63,7 @@
 					"name": "Privaris",
 					"url": "{{ absolute_url('/') }}",
 					"logo": "{{ absolute_url(asset('images/logo.svg')) }}",
-					"description": "Privaris · Mon Labo — le carnet de labo de W. : apprendre la cybersécurité en public, par la pratique. Homelab, attaque et défense, writeups. Indépendant, sans pub, sans traceur.",
+					"description": "Privaris · Mon Labo, le carnet de labo de W. : apprendre la cybersécurité en public, par la pratique. Homelab, attaque et défense, writeups. Indépendant, sans pub, sans traceur.",
 					"sameAs": []
 				},
 				{
@@ -100,21 +92,6 @@
 		{% endblock %}
 	</head>
 	<body class="min-h-screen flex flex-col antialiased">
-		{# Écran de chargement — retiré dès que le CSS applicatif est prêt (voir assets/app.js), avec filet de sécurité. #}
-		<div id="app-splash" role="status" aria-live="polite">
-			<div class="app-splash__mark">privaris<span>.fr</span></div>
-			<div class="app-splash__spinner" aria-hidden="true"></div>
-			<div class="app-splash__hint">chargement…</div>
-		</div>
-		<script>
-		  (function(){
-		    var s=document.getElementById('app-splash'); if(!s){return;}
-		    function hide(){s.classList.add('app-splash--hidden');setTimeout(function(){if(s&&s.parentNode){s.parentNode.removeChild(s);}},500);}
-		    window.__privarisHideSplash=hide;
-		    window.addEventListener('load',function(){setTimeout(hide,150);});
-		    setTimeout(hide,3500);
-		  })();
-		</script>
 		{# Skip link — accessibilité clavier #}
 		<a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:bg-navy focus:text-paper focus:px-4 focus:py-2 focus:rounded-md focus:shadow-lg">Aller au contenu</a>
 

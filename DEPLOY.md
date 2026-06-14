@@ -66,8 +66,9 @@ Symfony sert depuis `public/`, pas depuis la racine. Dans N0C :
 # Composer (PHP)
 composer install --no-dev --optimize-autoloader --classmap-authoritative
 
-# Node + Tailwind (génération du CSS final)
-npm install
+# Assets : le CSS Tailwind est DÉJÀ compilé et committé (var/tailwind/app.built.css).
+# Pas de npm ni de tailwind:build sur le serveur (le binaire natif plante sur mutualisé).
+# Uniquement la compilation AssetMapper, pur PHP :
 php bin/console asset-map:compile
 ```
 
@@ -134,9 +135,9 @@ Dans N0C :
 
 Ouvre `https://privaris.fr` en navigation privée :
 
-- Page d'accueil charge correctement
-- Articles s'affichent
-- Le SOS teaser apparaît
+- Page d'accueil charge correctement, en sombre, avec le radar et les polices Space Grotesk
+- Le registre des entrées du journal s'affiche
+- Console navigateur : aucune erreur CSP (polices et styles bien chargés)
 - Le formulaire de contact fonctionne (envoie un message test, vérifie la réception sur ton mail perso)
 - La newsletter fonctionne (inscris-toi avec une adresse de test, reçois le mail de confirmation, clique le lien, vérifie l'inscription dans Brevo)
 
@@ -153,24 +154,31 @@ Premier réflexe : **change le mot de passe immédiatement**, puis **active la 2
 
 ## Mises à jour suivantes
 
+Rappel : **le CSS se build en local** (`php bin/console tailwind:build`) et se
+committe (`var/tailwind/app.built.css`). Le serveur ne build jamais.
+
 ```bash
 ssh -p [PORT] [USER]@[HOST]
 cd ~/public_html
 
-git pull origin main
+# Récupérer le code. `reset --hard` est plus robuste que `pull` : il force le
+# serveur à matcher le repo (et c'est OBLIGATOIRE si tu as réécrit l'historique
+# en local avec un push --force). NE PAS lancer `git clean` : .env.local partirait.
+git fetch origin
+git reset --hard origin/main
 
 # Si nouvelles dépendances
 composer install --no-dev --optimize-autoloader
 
-# Si nouvelles migrations
+# Si nouvelles migrations (rare : seulement si une entité a changé)
 php bin/console doctrine:migrations:migrate --no-interaction --env=prod
 
-# Si CSS / assets ont changé
+# Toujours : recompiler les assets (pur PHP) + vider le cache
 php bin/console asset-map:compile --env=prod
-
-# Toujours
 php bin/console cache:clear --env=prod
-php bin/console cache:warmup --env=prod
+
+# Si le vieux CSS persiste : un public/assets/ périmé shadow le neuf
+# rm -rf public/assets && php bin/console asset-map:compile --env=prod
 ```
 
 ---

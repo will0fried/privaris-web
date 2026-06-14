@@ -1,138 +1,48 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Mentions légales · Privaris{% endblock %}
+{% block description %}Éditeur, hébergeur, droits applicables, conformément à la loi pour la confiance dans l'économie numérique.{% endblock %}
 
 {% block body %}
-    {# ========= HEADER ========= #}
-    <section class="hero-xl has-decor">
-        <div class="container-wide">
-            <p class="eyebrow animate-fade-in">Légal</p>
-            <h1 class="text-hero text-balance max-w-5xl animate-slide-up">
-                Mentions légales.
-            </h1>
-            <p class="text-lg md:text-xl text-fog leading-relaxed max-w-2xl mt-10">
-                Éditeur, hébergeur, droits applicables, conformément à la loi pour la confiance
-                dans l'économie numérique.
-            </p>
-        </div>
-    </section>
+<div class="wrap wrap--tight">
+    <header class="ab-hero">
+        <p class="ey">Légal</p>
+        <h1>Mentions légales</h1>
+        <p class="ab-lede">Éditeur, hébergeur, droits applicables, conformément à la loi pour la confiance dans l'économie numérique.</p>
+    </header>
 
-    {# ========= CORPS + SOMMAIRE ========= #}
-    <section class="pb-24 md:pb-32 border-t border-mist pt-16 md:pt-20">
-        <div class="container-wide">
-            <div class="grid lg:grid-cols-3 gap-10 lg:gap-14 items-start">
+    <div class="prose-pv" style="margin-top:24px;">
+        <h2 id="editeur">Éditeur du site</h2>
+        <p>Privaris est un site personnel indépendant, édité à titre non commercial par une personne physique non professionnelle, conformément à l'article 6.III.2 de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l'économie numérique (LCEN).</p>
+        <p><strong>Wilfried Koussouri</strong><br>
+        Besançon (25)<br>
+        Contact : <a href="{{ path('app_contact') }}">via le formulaire</a> ou <a href="mailto:contact@privaris.fr">contact@privaris.fr</a></p>
+        <p>Le site n'a aucune activité commerciale : pas de publicité, pas d'affiliation, pas de revenus publicitaires, pas d'abonnement payant. Aucune immatriculation au Registre du Commerce et des Sociétés n'est donc requise.</p>
 
-                {# --- Corps --- #}
-                <div class="lg:col-span-2 max-w-prose-narrow">
-                    <div class="prose-privaris">
-                        <h2 id="editeur">Éditeur du site</h2>
-                        <p>
-                            Privaris est un site personnel indépendant, édité à titre non commercial
-                            par une personne physique non professionnelle, conformément à
-                            l'article 6.III.2 de la loi n°&nbsp;2004-575 du 21 juin 2004
-                            pour la confiance dans l'économie numérique (LCEN).
-                        </p>
-                        <p>
-                            <strong>Wilfried Koussouri</strong><br>
-                            Besançon (25)<br>
-                            Contact : <a href="{{ path('app_contact') }}">via le formulaire</a>
-                            ou <a href="mailto:contact@privaris.fr">contact@privaris.fr</a>
-                        </p>
-                        <p>
-                            Le site n'a aucune activité commerciale : pas de publicité,
-                            pas d'affiliation, pas de revenus publicitaires, pas d'abonnement
-                            payant. Aucune immatriculation au Registre du Commerce et des
-                            Sociétés n'est donc requise.
-                        </p>
+        <h2 id="directeur">Directeur de la publication</h2>
+        <p>Wilfried Koussouri, joignable via le formulaire de contact. Les entrées sont signées « W. », une signature discrète qui désigne l'auteur et n'a aucune valeur de titre professionnel.</p>
 
-                        <h2 id="directeur">Directeur de la publication</h2>
-                        <p>
-                            Wilfried Koussouri, joignable via le formulaire de contact.
-                            Les articles sont signés «&nbsp;W.&nbsp;», une signature
-                            discrète qui désigne l'auteur et n'a aucune valeur de
-                            titre professionnel.
-                        </p>
+        <h2 id="hebergement">Hébergement</h2>
+        <p>Le site est hébergé en France par :</p>
+        <p><strong>PlanetHoster France SAS</strong><br>
+        36 Rue Albert 1er, 92500 Rueil-Malmaison, France<br>
+        <a href="https://www.planethoster.com/fr" target="_blank" rel="noopener">planethoster.com/fr</a><br>
+        Téléphone : +33 1 76 60 41 43</p>
+        <p>Datacenter situé en France métropolitaine. Les données techniques transitent et sont stockées sur le territoire de l'Union européenne.</p>
 
-                        <h2 id="hebergement">Hébergement</h2>
-                        <p>
-                            Le site est hébergé en France par&nbsp;:
-                        </p>
-                        <p>
-                            <strong>PlanetHoster France SAS</strong><br>
-                            36 Rue Albert 1er, 92500 Rueil-Malmaison, France<br>
-                            <a href="https://www.planethoster.com/fr" target="_blank" rel="noopener">planethoster.com/fr</a><br>
-                            Téléphone : +33&nbsp;1&nbsp;76&nbsp;60&nbsp;41&nbsp;43
-                        </p>
-                        <p>
-                            Datacenter situé en France métropolitaine. Les
-                            données techniques transitent et sont stockées
-                            sur le territoire de l'Union européenne.
-                        </p>
+        <h2 id="pi">Propriété intellectuelle</h2>
+        <p>L'ensemble des contenus publiés sur ce site (textes, graphismes, logos, podcasts) est protégé par le droit d'auteur. Toute reproduction, même partielle, est soumise à autorisation préalable, sauf courte citation accompagnée de la source et d'un lien.</p>
 
-                        <h2 id="pi">Propriété intellectuelle</h2>
-                        <p>
-                            L'ensemble des contenus publiés sur ce site (textes, graphismes,
-                            logos, podcasts) est protégé par le droit d'auteur. Toute
-                            reproduction, même partielle, est soumise à autorisation préalable,
-                            sauf courte citation accompagnée de la source et d'un lien.
-                        </p>
+        <h2 id="responsabilite">Responsabilité</h2>
+        <p>Les informations publiées sur Privaris le sont à titre informatif et pédagogique. Elles ne constituent pas des conseils professionnels (juridiques, financiers, médicaux ou de sécurité informatique au sens d'une prestation rémunérée). En cas de doute sur une situation personnelle, prends contact avec un professionnel qualifié ou avec les services officiels (cybermalveillance.gouv.fr, CNIL, ANSSI).</p>
 
-                        <h2 id="responsabilite">Responsabilité</h2>
-                        <p>
-                            Les informations publiées sur Privaris le sont à titre informatif
-                            et pédagogique. Elles ne constituent pas des conseils professionnels
-                            (juridiques, financiers, médicaux ou de sécurité informatique au
-                            sens d'une prestation rémunérée). En cas de doute sur une situation
-                            personnelle, prenez contact avec un professionnel qualifié ou avec
-                            les services officiels mentionnés sur le site (cybermalveillance.gouv.fr,
-                            CNIL, ANSSI).
-                        </p>
+        <h2 id="droit">Droit applicable</h2>
+        <p>Le présent site est soumis au droit français. Tout litige relève de la compétence exclusive des tribunaux français.</p>
 
-                        <h2 id="droit">Droit applicable</h2>
-                        <p>
-                            Le présent site est soumis au droit français. Tout litige relève
-                            de la compétence exclusive des tribunaux français.
-                        </p>
+        <h2 id="signaler">Signaler un contenu</h2>
+        <p>Pour signaler un contenu illicite, factuellement inexact ou préjudiciable, écris à <a href="mailto:contact@privaris.fr">contact@privaris.fr</a> en précisant l'URL concernée et la nature du problème. Toute demande raisonnable fera l'objet d'une réponse sous 7 jours.</p>
 
-                        <h2 id="signaler">Signaler un contenu</h2>
-                        <p>
-                            Pour signaler un contenu illicite, factuellement inexact ou
-                            préjudiciable, écrivez à
-                            <a href="mailto:contact@privaris.fr">contact@privaris.fr</a>
-                            en précisant l'URL concernée et la nature du problème. Toute
-                            demande raisonnable fera l'objet d'une réponse sous 7 jours.
-                        </p>
-                    </div>
-                </div>
-
-                {# --- Sommaire --- #}
-                <aside class="lg:col-span-1 lg:pl-8 lg:border-l border-mist lg:sticky lg:top-24 space-y-8"
-                       aria-label="Sommaire">
-
-                    <nav>
-                        <p class="text-xs uppercase tracking-[0.2em] text-fog mb-3">Sommaire</p>
-                        <ol class="space-y-2 text-sm">
-                            <li><a href="#editeur" class="no-underline text-ink hover:text-navy">1. Éditeur du site</a></li>
-                            <li><a href="#directeur" class="no-underline text-ink hover:text-navy">2. Directeur de la publication</a></li>
-                            <li><a href="#hebergement" class="no-underline text-ink hover:text-navy">3. Hébergement</a></li>
-                            <li><a href="#pi" class="no-underline text-ink hover:text-navy">4. Propriété intellectuelle</a></li>
-                            <li><a href="#responsabilite" class="no-underline text-ink hover:text-navy">5. Responsabilité</a></li>
-                            <li><a href="#droit" class="no-underline text-ink hover:text-navy">6. Droit applicable</a></li>
-                            <li><a href="#signaler" class="no-underline text-ink hover:text-navy">7. Signaler un contenu</a></li>
-                        </ol>
-                    </nav>
-
-                    <div class="card-link">
-                        <p class="text-xs uppercase tracking-[0.2em] text-fog mb-2">Confidentialité</p>
-                        <p class="text-sm text-ink leading-snug mb-3">Comment vos données sont traitées sur Privaris.</p>
-                        <a href="{{ path('app_privacy') }}" class="btn-link text-xs">
-                            Voir la politique
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-                        </a>
-                    </div>
-
-                </aside>
-            </div>
-        </div>
-    </section>
+        <p style="margin-top:32px;"><a href="{{ path('app_privacy') }}">→ Politique de confidentialité</a></p>
+    </div>
+</div>
 {% endblock %}
