@@ -38,8 +38,8 @@ class ArticleCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setEntityLabelInSingular('Article')
-            ->setEntityLabelInPlural('Articles')
+            ->setEntityLabelInSingular('Entrée')
+            ->setEntityLabelInPlural('Entrées du journal')
             ->setSearchFields(['title', 'excerpt', 'content', 'slug'])
             ->setDefaultSort(['publishedAt' => 'DESC', 'createdAt' => 'DESC']);
     }
@@ -90,13 +90,13 @@ class ArticleCrudController extends AbstractCrudController
                 Article::STATUS_SCHEDULED => 'warning',
                 Article::STATUS_PUBLISHED => 'success',
                 Article::STATUS_ARCHIVED  => 'light',
-            ]);
+            ])
+            ->setHelp('Publié = visible sur le site. Brouillon = invisible, en cours d\'écriture. Programmé = mis en ligne tout seul à la date choisie ci-dessous.');
         yield DateTimeField::new('publishedAt', 'Date de publication')->setFormat('dd/MM/yyyy HH:mm');
-        yield BooleanField::new('featured', 'À la une')
-            ->setHelp('Si activé, l\'article remplace la Une actuelle sur la home. Un seul "À la une" à la fois — le plus récent coché gagne.');
-        yield BooleanField::new('alert', 'Alerte urgente')
-            ->setHelp('Si activé, l\'article est épinglé dans le panneau Signal (sidebar) en haut de la home comme SEV-1.');
-        yield IntegerField::new('readingMinutes', 'Durée de lecture (min)')->hideOnIndex();
+        yield BooleanField::new('featured', 'Mettre en avant')
+            ->setHelp('Cette entrée devient le blip rouge du radar et passe en tête du registre, sur la page d\'accueil. Une seule à la fois : la plus récemment cochée gagne.');
+        yield IntegerField::new('readingMinutes', 'Durée de lecture (min)')->hideOnIndex()
+            ->setHelp('Optionnel. Laisse vide si tu ne sais pas, ce n\'est pas grave.');
 
         yield FormField::addTab('Classement')->setIcon('fa fa-folder-tree');
         yield AssociationField::new('category', 'Catégorie');

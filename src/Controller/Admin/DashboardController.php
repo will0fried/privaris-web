@@ -108,17 +108,22 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToDashboard('Tableau de bord', 'fa fa-gauge');
 
-        yield MenuItem::section('Contenu');
-        yield MenuItem::linkToCrud('Articles',    'fa fa-newspaper', Article::class);
-        yield MenuItem::linkToCrud('Épisodes',    'fa fa-microphone', Episode::class);
-        yield MenuItem::linkToCrud('Catégories',  'fa fa-folder',     Category::class);
-        yield MenuItem::linkToCrud('Tags',        'fa fa-tags',       Tag::class);
+        // L'essentiel au quotidien : écrire et publier.
+        yield MenuItem::section('Écrire');
+        yield MenuItem::linkToCrud('Le journal', 'fa fa-pen-nib', Article::class)
+            ->setBadge('entrées', 'secondary');
+        yield MenuItem::linkToCrud('Le podcast', 'fa fa-microphone', Episode::class);
 
-        yield MenuItem::section('Audience');
+        // Pour ranger les entrées. À toucher rarement.
+        yield MenuItem::section('Ranger');
+        yield MenuItem::linkToCrud('Catégories', 'fa fa-folder', Category::class);
+        yield MenuItem::linkToCrud('Tags', 'fa fa-tags', Tag::class);
+
+        yield MenuItem::section('Les gens');
         yield MenuItem::linkToCrud('Abonnés newsletter', 'fa fa-envelope', Subscriber::class);
 
-        yield MenuItem::section('Administration');
-        yield MenuItem::linkToCrud('Utilisateurs', 'fa fa-users', User::class);
+        yield MenuItem::section('Réglages');
+        yield MenuItem::linkToCrud('Comptes admin', 'fa fa-users', User::class);
         yield MenuItem::linkToUrl('Voir le site', 'fa fa-up-right-from-square', '/')
             ->setLinkTarget('_blank');
         yield MenuItem::linkToLogout('Se déconnecter', 'fa fa-sign-out');
